@@ -1,0 +1,102 @@
+Components of Chess:
+  - 8x8 board (64 squares)
+  - 32 pieces (black/white):
+    - 16 pieces per player:
+      - 8 pawns
+      - 2 knights
+      - 2 bishops
+      - 2 rooks
+      - 1 queen
+      - 1 knight
+  - 2 players
+
+Classes to make:
+  - Board
+  - Player
+  - Piece
+    - King
+    - Queen
+    - Rooks
+    - Bishops
+    - Knights
+    - Pawns
+  - Game
+
+Piece
+  King
+    - symbol: ♔ ♚	
+    - move:
+        from [2, 2]
+          (start down)
+          [2, 1] 0, -1 (down)
+          [3, 1] 1, -1 (down-right)
+          [3, 2] 1, 0 (right)
+          [3, 3] 1, 1 (up-right)
+          [2, 3] 0, 1 (up)
+          [1, 3] -1, 1 (up-left)
+          [1, 2] -1, 0 (left)
+          [1, 1] -1, -1 (down-left)
+    
+    #checked? or maybe @checked = false
+    #checkmated? or maybe @checkmated = false
+      come back to these later to ensure
+  
+  Queen
+    - symbol: ♕ ♛
+    - move:
+        0, -1 
+        1, -1
+        1, 0
+        1, 1
+        0, 1
+        -1, 1
+        -1, 0
+        -1, -1
+        but can go further, just only within these directions
+  
+  Rooks
+    - symbol: ♖ ♜
+    - move: 
+        from [2, 2]
+          (start down)
+          [2, 1] 0, -1 (down)
+          [3, 2] 1, 0 (right)
+          [2, 3] 0, 1 (up)
+          [1, 2] -1, 0 (left)
+          but can go further, just only within these directions
+  
+  Bishops
+    - symbol: ♗ ♝
+    - move:
+        from [2, 2]
+          (start down-left)
+          [3, 1] 1, -1 (down-right)
+          [3, 3] 1, 1 (up-right)
+          [1, 3] -1, 1 (up-left)
+          [1, 1] -1, -1 (down-left)
+          but can go further, just only within these directions
+
+  Knights:
+    - symbol: ♘ ♞
+    - move:
+        2, 1
+        2, -1
+        1, 2
+        1, -2
+        -2, 1
+        -2, -1
+        -1, 2
+        -1, -2
+
+  Pawns:
+    - symbol: ♙ ♟
+    - move:
+        from [2, 2]
+          (start up)
+          [2, 3] 0, 1 (up)
+          [2, 4] 0, 2
+          once it has moved, only 0, 1 can be done
+    #moved? or @moved = false
+    #promote
+      into queen, rook, knight, bishop
+    #en_passant_state
