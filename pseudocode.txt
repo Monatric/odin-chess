@@ -9,6 +9,9 @@ Components of Chess:
       - 1 queen
       - 1 knight
   - 2 players
+  - Save feature
+  - Resign feature
+  - Draw feature
 
 Classes to make:
   - Board
@@ -22,9 +25,16 @@ Classes to make:
     - Pawns
   - Game
 
+Board
+  @cells = create
+  @chessboard = #assemble
+  #game_over?
+    chec
+
 Piece
   King
-    - symbol: ♔ ♚	
+    - symbol: ♔ ♚
+    - notation: K	
     - move:
         from [2, 2]
           (start down)
@@ -40,9 +50,16 @@ Piece
     #checked? or maybe @checked = false
     #checkmated? or maybe @checkmated = false
       come back to these later to ensure
+    #castle
+      king hasnt moved
+      king is not checked
+      the rook on which side to castle has not moved
+      king will not cross over a check
+      cells between king and rook must be empty
   
   Queen
     - symbol: ♕ ♛
+    - notation: Q
     - move:
         0, -1 
         1, -1
@@ -56,6 +73,7 @@ Piece
   
   Rooks
     - symbol: ♖ ♜
+    - notation: R
     - move: 
         from [2, 2]
           (start down)
@@ -67,6 +85,7 @@ Piece
   
   Bishops
     - symbol: ♗ ♝
+    - notation: B
     - move:
         from [2, 2]
           (start down-left)
@@ -78,6 +97,7 @@ Piece
 
   Knights:
     - symbol: ♘ ♞
+    - notation: N
     - move:
         2, 1
         2, -1
@@ -90,6 +110,7 @@ Piece
 
   Pawns:
     - symbol: ♙ ♟
+    - notation: n/a or P
     - move:
         from [2, 2]
           (start up)
@@ -100,3 +121,29 @@ Piece
     #promote
       into queen, rook, knight, bishop
     #en_passant_state
+
+Step by step plan which features to create in order:
+  1. Create the board
+  2. Assemble the pieces in the created board
+  3. Give the pieces ability to move
+    - King
+    - Queen
+    - Rooks
+    - Bishops
+    - Knights
+    - Pawns
+  4. Make an array of possible moves by black/white for a king's checklist of checks, 
+     thus preventing the king from moving on those squares
+  5. Add resign, draw, or save options
+
+Game flow in CLI:
+  1. Prints the board with 8-1 at left side and A-H at bottom side.
+  2. Displays the current player
+  3. Provide instructions:
+    - To move, type the current coordinate to desired coordinate with hyphen e.g. "e2-e4"
+    - To save, type "save"
+    - To load the previous saved file, type "load"
+    - To resign, type "resign" and the current player loses, display the next player as winner
+    - To ask for draw, type "draw?", display a message for the next player to type "accept" or "decline"
+    - To castle short side, type "O-O", and for long side, "O-O-O"
+  4. If a player wins, display the winner message and end the game.
