@@ -25,13 +25,24 @@ Classes to make:
     - Pawns
   - Game
 
-Board
+class Board
   @cells = create
+    #create
+      variable of hash
+      generate an 8x8 hash, a-h, then in each square, another hash with :piece ' . ' and :player nil
+      return hash
+
   @chessboard = #assemble
+    #assemble
+      in @cells, iterate through the hash row 2 a-h and row 7 a-h, insert pawns and player
+      manually insert other pieces
+        looks like { e2: { piece: 'pawn', type: 'white' }}
+      return the cells
+    
   #game_over?
     chec
 
-Piece
+class Piece
   King
     - symbol: ♔ ♚
     - notation: K	
@@ -122,6 +133,18 @@ Piece
       into queen, rook, knight, bishop
     #en_passant_state
 
+class Player
+  @name
+  @side?
+
+
+class Game
+  @board = board class
+  @player1, @player2
+  @current_turn
+
+
+
 Step by step plan which features to create in order:
   1. Create the board
   2. Assemble the pieces in the created board
@@ -135,6 +158,18 @@ Step by step plan which features to create in order:
   4. Make an array of possible moves by black/white for a king's checklist of checks, 
      thus preventing the king from moving on those squares
   5. Add resign, draw, or save options
+  6. Ask player of their from-to move, e.g. e2e4
+      - Slice this string "e2e4".slice(1, 2) to get the 'from'
+        then "e2e4".slice(2, 3) to get the 'to'
+      - Verify these if from & to exists in the hash board
+      - Fetch the object (piece) on 'from', pass the from-to to its move method
+      - The move method will return a sequence of moves that 
+        reaches to that 'to' square e.g. e2e4 => [[4, 3], [4, 4]] (start from 0)
+      - Convert get the x/col of each move[0] (4) then add to 'a'.ord (97) then #chr to get character
+        formula is file = ('a'.ord + move[0]).chr which is 'e'
+      - Concatenate the result to y/row of each move[1] (3 and 4) which is the rank
+        which goes notation = file << rank which is 'e3' and 'e4'
+
 
 Game flow in CLI:
   1. Prints the board with 8-1 at left side and A-H at bottom side.
@@ -147,3 +182,29 @@ Game flow in CLI:
     - To ask for draw, type "draw?", display a message for the next player to type "accept" or "decline"
     - To castle short side, type "O-O", and for long side, "O-O-O"
   4. If a player wins, display the winner message and end the game.
+
+
+
+
+~~~~
+Piece movement
+  Say a rook from h1 wants to go h4
+    h1h4
+    source: 8, 1 dest: 8, 4
+    (very inefficient)
+    Iterate through the array
+    if source[x] == dest[x] && source[y] != dest[y] # means either up or down
+      if source[y] > dest[y] # means going down
+        return [0, -1] # not final
+      else # means going up
+        return [0, 1]
+      end
+    elsif source[x] != dest[x] && source[y] == dest[y] # means either left or right 
+      if source[x] > dest[x] # means going left
+        return [-1, 0]
+      else # means going right
+        return [1, 0]
+      end
+    end # opportunity to use ternaries
+
+      
