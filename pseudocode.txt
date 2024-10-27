@@ -218,15 +218,16 @@ Piece movement
     if source[x] == dest[x] && source[y] != dest[y] # means either up or down
       if source[y] > dest[y] # means going down
         return [0, -1] # not final
-      else # means going up
+      elsif source[y] < dest[y] # means going up
         return [0, 1]
-      end
+      end # if it's equal, find a way to invalidate
     elsif source[x] != dest[x] && source[y] == dest[y] # means either left or right 
       if source[x] > dest[x] # means going left
         return [-1, 0]
-      else # means going right
+      elsif source[x] < dest[x] # means going right
         return [1, 0]
-      end
+      end # if it's equal, find a way to invalidate
     end # opportunity to use ternaries
+        # if both are equal, find a way to invalidate
 
       
