@@ -169,6 +169,28 @@ Step by step plan which features to create in order:
         formula is file = ('a'.ord + move[0]).chr which is 'e'
       - Concatenate the result to y/row of each move[1] (3 and 4) which is the rank
         which goes notation = file << rank which is 'e3' and 'e4'
+      - For each notation, verify if there are pieces in the way. Rules will be different for each piece.
+        - Example: Pawn
+          - If there are any kind of piece in e4, then the move is invalid
+          For queens, rooks, bishops
+          - If there are pieces before they reach the dest,
+            the move is invalid.
+          - If there are enemy pieces on the dest, replace that notation with the piece.
+          For knights,
+          - If there are allied pieces before they react the dest,
+            the move is invalid.
+          For kings,
+          - If there are allied pieces before they react the dest,
+            the move is invalid.
+          - If the next move does not lead to checking itself,
+            the move is valid.
+      - The game will have a list of 'checked' squares. It has two processes:
+        1. Every move attempted will scan which squares are attacked so the
+            king cannot cross. Remove unattacked squares and insert new attacked squares.
+        2. Then before printing the board, which means it is the next turn,
+            rescan the enemies' current position, scan if there are new squares that their
+            pieces see, so we can prevent pinned pieces from moving.
+        3. If everything's valid, print the board. Next turn.  
 
 
 Game flow in CLI:
