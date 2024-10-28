@@ -1,7 +1,8 @@
 # class for the chess board and its states
 class Chessboard
-  def initialize(cells = create, board = assemble)
-    @cells = cells
+  attr_reader :board
+
+  def initialize(board = create)
     @board = board
   end
 
@@ -19,5 +20,10 @@ class Chessboard
     end
     # cells.each_pair { |k, v| puts "#{k}: #{v}" }
     cells
+  end
+
+  def assemble(board)
+    test = Player.new('test', :white)
+    board[:a1][:piece] = Pawn.new(:white, test)
   end
 end
