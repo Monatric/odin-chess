@@ -1,5 +1,9 @@
+require_relative 'displayable'
+
 # class for the chess board and its states
 class Chessboard
+  include Displayable
+
   attr_reader :board
 
   def initialize(board = create)
@@ -22,8 +26,13 @@ class Chessboard
     cells
   end
 
+  def show
+    display_board(board)
+  end
+
   def assemble(board)
     test = Player.new('test', :white)
     board[:a1][:piece] = Pawn.new(:white, test)
+    board[:h8][:piece] = Pawn.new(:white, test)
   end
 end
