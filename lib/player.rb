@@ -1,9 +1,9 @@
 # class for chess player
 class Player
-  attr_reader :name, :side
+  attr_reader :name, :color
 
-  def initialize(name = nil, side = nil)
+  def initialize(name = nil, color = nil)
     @name = name
-    @side = side
+    @color = color
   end
 end
