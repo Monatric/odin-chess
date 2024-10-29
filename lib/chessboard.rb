@@ -30,9 +30,20 @@ class Chessboard
     display_board(board)
   end
 
-  def assemble(board)
-    test = Player.new('test', :white)
-    board[:a1][:piece] = Pawn.new(:white, test)
-    board[:h8][:piece] = Pawn.new(:white, test)
+  def assemble(board, player_white, player_black)
+    add_pawns(board, player_white, player_black)
+  end
+
+  private
+
+  def add_pawns(board, player_white, player_black)
+    file = 'a'
+    rank_two = '2'
+    rank_seven = '7'
+    until file == 'i'
+      board[(file + rank_two).to_sym][:piece] = Pawn.new(player_white.color, player_white)
+      board[(file + rank_seven).to_sym][:piece] = Pawn.new(player_black.color, player_black)
+      file = (file.ord + 1).chr
+    end
   end
 end
