@@ -30,13 +30,13 @@ class Chessboard
     display_board(board)
   end
 
-  def assemble(board, player_white, player_black)
-    add_pawns(board, player_white, player_black)
+  def assemble(player_white, player_black, board = @board)
+    add_pawns(player_white, player_black, board)
   end
 
   private
 
-  def add_pawns(board, player_white, player_black)
+  def add_pawns(player_white, player_black, board = @board)
     file = 'a'
     rank_two = '2'
     rank_seven = '7'
