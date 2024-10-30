@@ -1,8 +1,9 @@
 # class for pieces of chess
 class Piece
-  attr_reader :color, :player
+  attr_reader :game, :color, :player
 
-  def initialize(color = nil, player = nil)
+  def initialize(game, color = nil, player = nil)
+    @game = game
     @color = color
     @player = player
   end

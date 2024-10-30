@@ -2,8 +2,9 @@ require_relative 'piece'
 
 # class for the pawn
 class Pawn < Piece
-  def initialize(color, player, moved = false, en_passant = false)
-    super(color, player)
+  def initialize(game, color, player, moved = false, en_passant = false)
+    super(game, color, player)
+    @game = game
     @moved = moved
     @en_passant = en_passant
   end
@@ -14,5 +15,9 @@ class Pawn < Piece
 
   def symbol
     @color == :white ? '♙' : '♟'
+  end
+
+  def can_move_to?(dest)
+    puts "test #{@game.board}"
   end
 end

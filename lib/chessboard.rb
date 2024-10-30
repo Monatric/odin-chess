@@ -41,8 +41,8 @@ class Chessboard
     rank_two = '2'
     rank_seven = '7'
     until file == 'i'
-      board[(file + rank_two).to_sym][:piece] = Pawn.new(player_white.color, player_white)
-      board[(file + rank_seven).to_sym][:piece] = Pawn.new(player_black.color, player_black)
+      board[(file + rank_two).to_sym][:piece] = Pawn.new(self, player_white.color, player_white)
+      board[(file + rank_seven).to_sym][:piece] = Pawn.new(self, player_black.color, player_black)
       file = (file.ord + 1).chr
     end
   end
