@@ -132,6 +132,8 @@ class Piece
     #promote
       into queen, rook, knight, bishop
     #en_passant_state
+    #can_move_to?(dest)
+
 
 class Player
   @name
@@ -163,6 +165,12 @@ Step by step plan which features to create in order:
         then "e2e4".slice(2, 3) to get the 'to'
       - Verify these if from & to exists in the hash board
       - Fetch the object (piece) on 'from', pass the from-to to its move method
+        - Validate the piece's move, returning true or false
+        - If true, move the piece towards that square, and delete the source
+        - If false, ask again
+        In game.rb
+        #move_piece
+          
       - The move method will return a sequence of moves that 
         reaches to that 'to' square e.g. e2e4 => [[4, 3], [4, 4]] (start from 0)
       - Convert get the x/col of each move[0] (4) then add to 'a'.ord (97) then #chr to get character
@@ -230,4 +238,48 @@ Piece movement
     end # opportunity to use ternaries
         # if both are equal, find a way to invalidate
 
+  Pawn from e2 to e4
+    e2e4
+    establish possible_moves list or array 
+    # get the number (rank) from coordinate
+    # rank = current_coordinate.delete('^0-9').to_i
+    file = current_coordinate.slice(0)
+    rank = current_coordinate.slice(1).to_i
+    if d3 or f3 is not nil and piece is :black
+      add to possible_moves
+
+    if moved == false
+      add to possible_moves if file + (rank += 1) is nil
+      add to possible_moves if file + (rank += 2) is nil
+    elsif moved == true
+      add to possible_moves if file + (rank += 1) is nil
+
+
       
+
+~~~~~~
+Flowchart for moving piece:
+                                false
+      -------------------------------------------------------------
+      |                                                           |
+      |         false                                             |
+      |   ---------------------                                   |
+      v   v                   |                      true         |
+Ask for move -> Validate if from-to coordinates exist -> Validate if 'from' can move 'to'
+                                                          Considerations:
+                                                            Pinned
+                                                            Blocked by same colored piece
+                                                            Specific rules of pieces
+                                                              Opposing piece is protected, king cannot capture
+
+                                                                  |
+                                                                  v
+                                                        Move the piece
+                                                                |
+                                                                v
+                                                        If it is a pawn's first move, set @moved
+                                                        to true 
+                                                                |
+                                                                v
+                                                        Set the opponent king to check if its checked
+                                                    
