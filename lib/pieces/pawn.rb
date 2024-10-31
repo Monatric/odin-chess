@@ -18,6 +18,13 @@ class Pawn < Piece
   end
 
   def can_move_to?(dest)
-    puts "test #{@game.board}"
+    puts current_position
+  end
+
+  def current_position
+    game.board.select do |coordinate, data|
+      return coordinate if data[:piece] == self
+    end
+    nil
   end
 end
