@@ -16,7 +16,7 @@ class Piece
     raise NotImplementedError, 'subclasses must have this method'
   end
 
-  def find_piece_in_square(coordinate)
+  def find_piece_by_coordinate(coordinate)
     game.board[coordinate][:piece]
   end
 
