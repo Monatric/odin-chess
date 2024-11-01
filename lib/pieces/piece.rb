@@ -20,9 +20,23 @@ class Piece
     game.board[coordinate][:piece]
   end
 
+  def find_coordinate_by_position(position)
+    col = position[0]
+    row = position[1] + 1 # add 1 because of indexing
+    file = 'a'
+    ((file.ord + col).chr + row.to_s).to_sym
+  end
+
   def current_coordinate
     game.board.select do |coordinate, data|
       return coordinate if data[:piece] == self
+    end
+    nil
+  end
+
+  def current_position
+    game.board.select do |_, data|
+      return data[:position] if data[:piece] == self
     end
     nil
   end
