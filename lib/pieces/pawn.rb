@@ -33,28 +33,37 @@ class Pawn < Piece
 
   def calculate_possible_moves
     possible_moves = []
-    file = current_coordinate[0]
-    rank = current_coordinate[1].to_i
-    left_capture = (file.ord - 1).chr + (rank + 1).to_s
-    right_capture = (file.ord + 1).chr + (rank + 1).to_s
-    up_left_square = find_piece_in_square(left_capture.to_sym)
-    up_right_square = find_piece_in_square(right_capture.to_sym)
-    # capture moves
-    if !up_left_square.nil? && up_left_square.color == :black
-      possible_moves << left_capture.to_sym
-    elsif !up_right_square.nil? && up_right_square.color == :black
-      possible_moves << right_capture.to_sym
-    end
+    position = current_position
+    forward_moves(position, possible_moves)
+    find_capture_moves(position, possible_moves)
+    possible_moves
+  end
 
-    one_step = (file + (rank + 1).to_s).to_sym
-    two_steps = (file + (rank + 2).to_s).to_sym
+  private
+
+  def forward_moves(position, possible_moves)
+    one_step = [position[0], position[1] + 1]
+    two_steps = [position[0], position[1] + 2]
+
     # forward moves
     if !moved
-      possible_moves << one_step
-      possible_moves << two_steps
+      possible_moves << find_coordinate_by_position(one_step)
+      possible_moves << find_coordinate_by_position(two_steps)
     elsif moved
-      possible_moves << one_step
+      possible_moves << find_coordinate_by_position(one_step)
     end
-    possible_moves
+  end
+
+  def find_capture_moves(position, possible_moves)
+    left_capture = [position[0] - 1, position[1] + 1]
+    right_capture = [position[0] + 1, position[1] + 1]
+    up_left_square = find_piece_by_position(left_capture)
+    up_right_square = find_piece_by_position(right_capture)
+    # capture moves
+    if !up_left_square.nil? && up_left_square.color == :black
+      possible_moves << find_coordinate_by_position(left_capture)
+    elsif !up_right_square.nil? && up_right_square.color == :black
+      possible_moves << find_coordinate_by_position(right_capture)
+    end
   end
 end
