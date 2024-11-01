@@ -15,4 +15,15 @@ class Piece
   def symbol
     raise NotImplementedError, 'subclasses must have this method'
   end
+
+  def find_piece_in_square(coordinate)
+    game.board[coordinate][:piece]
+  end
+
+  def current_coordinate
+    game.board.select do |coordinate, data|
+      return coordinate if data[:piece] == self
+    end
+    nil
+  end
 end
