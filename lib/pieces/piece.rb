@@ -20,6 +20,11 @@ class Piece
     game.board[coordinate][:piece]
   end
 
+  def find_piece_by_position(position)
+    coordinate = find_coordinate_by_position(position)
+    game.board[coordinate][:piece]
+  end
+
   def find_coordinate_by_position(position)
     col = position[0]
     row = position[1] + 1 # add 1 because of indexing
