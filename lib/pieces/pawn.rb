@@ -33,37 +33,39 @@ class Pawn < Piece
 
   def calculate_possible_moves
     possible_moves = []
-    position = current_position
-    forward_moves(position, possible_moves)
-    find_capture_moves(position, possible_moves)
+    file = current_coordinate[0]
+    rank = current_coordinate[1].to_i
+    add_forward_moves(file, rank, possible_moves)
+    add_capture_moves(file, rank, possible_moves)
     possible_moves
   end
 
   private
 
-  def forward_moves(position, possible_moves)
-    one_step = [position[0], position[1] + 1]
-    two_steps = [position[0], position[1] + 2]
+  def add_forward_moves(file, rank, possible_moves)
+    one_step = (file + (rank + 1).to_s).to_sym
+    two_steps = (file + (rank + 2).to_s).to_sym
 
-    # forward moves
-    if !moved
-      possible_moves << find_coordinate_by_position(one_step)
-      possible_moves << find_coordinate_by_position(two_steps)
-    elsif moved
-      possible_moves << find_coordinate_by_position(one_step)
-    end
+    possible_moves << one_step
+    possible_moves << two_steps unless moved
   end
 
-  def find_capture_moves(position, possible_moves)
-    left_capture = [position[0] - 1, position[1] + 1]
-    right_capture = [position[0] + 1, position[1] + 1]
-    up_left_square = find_piece_by_position(left_capture)
-    up_right_square = find_piece_by_position(right_capture)
-    # capture moves
-    if !up_left_square.nil? && up_left_square.color == :black
-      possible_moves << find_coordinate_by_position(left_capture)
-    elsif !up_right_square.nil? && up_right_square.color == :black
-      possible_moves << find_coordinate_by_position(right_capture)
-    end
+  def add_capture_moves(file, rank, possible_moves)
+    left_capture = calculate_square(file, rank + 1, -1)
+    right_capture = calculate_square(file, rank + 1, 1)
+
+    up_left_square = find_piece_by_coordinate(left_capture)
+    up_right_square = find_piece_by_coordinate(right_capture)
+
+    possible_moves << left_capture if capturable?(up_left_square)
+    possible_moves << right_capture if capturable?(up_right_square)
+  end
+
+  def calculate_square(file, rank, file_offset)
+    ((file.ord + file_offset).chr + rank.to_s).to_sym
+  end
+
+  def capturable?(square)
+    !square.nil? && square.color == :black
   end
 end
