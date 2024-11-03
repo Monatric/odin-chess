@@ -40,9 +40,16 @@ class Board
       return the cells
     
   #game_over?
-    chec
+  
+  should know coordinates,
+  should know pieces
+  #checked?
+  #checkmate?
+
 
 class Piece
+  should know its symbol, notation
+  should know to move and its captures
   King
     - symbol: ♔ ♚
     - notation: K	
@@ -137,13 +144,18 @@ class Piece
 
 class Player
   @name
-  @side?
+  @color
+  select_move
 
 
 class Game
   @board = board class
   @player1, @player2
   @current_turn
+  game_over
+  switch_turn
+  conclusion
+  valid_move
 
 
 
