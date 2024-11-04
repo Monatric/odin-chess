@@ -3,11 +3,10 @@ require_relative 'piece'
 # class for the pawn
 class Pawn < Piece
   attr_accessor :moved, :en_passant
-  attr_reader :game, :color, :player
+  attr_reader :color, :player
 
-  def initialize(game, color, player, moved = false, en_passant = false)
-    super(game, color, player)
-    @game = game
+  def initialize(color, player, moved = false, en_passant = false)
+    super(color, player)
     @moved = moved
     @en_passant = en_passant
   end
@@ -20,27 +19,27 @@ class Pawn < Piece
     @color == :white ? '♙' : '♟'
   end
 
-  def move(dest)
-    # first two lines can be moved to superclass
-    game.board[current_coordinate.to_sym][:piece] = nil
-    game.board[dest][:piece] = self
+  def move(dest, chessboard)
+    source = chessboard.current_coordinate(self)
     self.moved = true
+    chessboard.remove_piece(source)
+    chessboard.add_piece(dest, self)
   end
 
-  def can_move_to?(dest)
-    calculate_possible_moves.include?(dest)
-  end
-
-  def calculate_possible_moves
-    possible_moves = []
-    file = current_coordinate[0]
-    rank = current_coordinate[1].to_i
-    add_forward_moves(file, rank, possible_moves)
-    add_capture_moves(file, rank, possible_moves)
-    possible_moves
+  def can_move_to?(dest, chessboard)
+    calculate_possible_moves(chessboard).include?(dest)
   end
 
   private
+
+  def calculate_possible_moves(chessboard)
+    possible_moves = []
+    file = chessboard.current_coordinate(self)[0]
+    rank = chessboard.current_coordinate(self)[1].to_i
+    add_forward_moves(file, rank, possible_moves)
+    add_capture_moves(file, rank, possible_moves, chessboard)
+    possible_moves
+  end
 
   def add_forward_moves(file, rank, possible_moves)
     one_step = (file + (rank + 1).to_s).to_sym
@@ -50,22 +49,14 @@ class Pawn < Piece
     possible_moves << two_steps unless moved
   end
 
-  def add_capture_moves(file, rank, possible_moves)
+  def add_capture_moves(file, rank, possible_moves, chessboard)
     left_capture = calculate_square(file, rank + 1, -1)
     right_capture = calculate_square(file, rank + 1, 1)
 
-    up_left_square = find_piece_by_coordinate(left_capture)
-    up_right_square = find_piece_by_coordinate(right_capture)
+    up_left_square = chessboard.find_piece_by_coordinate(left_capture)
+    up_right_square = chessboard.find_piece_by_coordinate(right_capture)
 
-    possible_moves << left_capture if capturable?(up_left_square)
-    possible_moves << right_capture if capturable?(up_right_square)
-  end
-
-  def calculate_square(file, rank, file_offset)
-    ((file.ord + file_offset).chr + rank.to_s).to_sym
-  end
-
-  def capturable?(square)
-    !square.nil? && square.color == :black
+    possible_moves << left_capture if capturable_by_white?(up_left_square)
+    possible_moves << right_capture if capturable_by_white?(up_right_square)
   end
 end
