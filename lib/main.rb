@@ -5,11 +5,10 @@ require_relative 'player'
 require_relative 'game'
 require_relative 'displayable'
 
-# b = Chessboard.new
 magnus = Player.new('Magnus', :white)
 hikaru = Player.new('Hikaru', :black)
 game = Game.new(Chessboard.new)
-# board = g.chessboard
+
 def play(game, player_white, player_black)
   game.chessboard.assemble(player_white, player_black)
   loop do
@@ -34,6 +33,3 @@ def select_move(game)
 end
 
 play(game, magnus, hikaru)
-
-# p player_move
-# p g.valid_move?(player_move)
