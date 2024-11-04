@@ -36,6 +36,10 @@ class Chessboard
     board[coordinate][:piece] = nil
   end
 
+  def coordinate_exist?(coordinate)
+    board.key?(coordinate)
+  end
+
   def assemble(player_white, player_black, board = @board)
     add_pawns(player_white, player_black, board)
   end

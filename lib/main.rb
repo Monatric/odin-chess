@@ -6,15 +6,34 @@ require_relative 'game'
 require_relative 'displayable'
 
 # b = Chessboard.new
-# magnus = Player.new('Magnus', :white)
-# hikaru = Player.new('Hikaru', :black)
-g = Game.new(Chessboard.new)
-board = g.chessboard
-board.assemble(g.player_white, g.player_black)
-board.show
+magnus = Player.new('Magnus', :white)
+hikaru = Player.new('Hikaru', :black)
+game = Game.new(Chessboard.new)
+# board = g.chessboard
+def play(game, player_white, player_black)
+  game.chessboard.assemble(player_white, player_black)
+  loop do
+    game.chessboard.show
+    move = select_move(game)
+    source = move.slice(0, 2).to_sym
+    dest = move.slice(2, 3).to_sym
+    game.move_piece(source, dest)
+    game.switch_player!
+  end
+end
 
-print 'Your move: '
-player_move = gets.chomp
-p player_move
-p g.valid_move?(player_move)
-board.show
+def select_move(game)
+  puts "#{game.current_turn.name} move."
+  print 'Your move: '
+  player_move = gets.chomp
+  until game.valid_move?(player_move)
+    print 'Invalid move! Try again: '
+    player_move = gets.chomp
+  end
+  player_move
+end
+
+play(game, magnus, hikaru)
+
+# p player_move
+# p g.valid_move?(player_move)

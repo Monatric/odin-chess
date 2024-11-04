@@ -1,6 +1,7 @@
 # class for Game that facilitates the chess game
 class Game
-  attr_reader :chessboard, :player_white, :player_black, :current_turn
+  attr_accessor :current_turn
+  attr_reader :chessboard, :player_white, :player_black
 
   def initialize(chessboard,
                  player_white = Player.new('Magnus', :white),
@@ -17,16 +18,23 @@ class Game
     piece.move(dest, chessboard)
   end
 
+  def switch_player!
+    self.current_turn = (current_turn == player_white ? player_black : player_white)
+  end
+
+  def valid_string?(source, dest)
+    true if chessboard.coordinate_exist?(source) || chessboard.coordinate_exist?(dest)
+  end
+
   def valid_move?(move)
     source = move.slice(0, 2).to_sym
     dest = move.slice(2, 3).to_sym
     piece = chessboard.find_piece_by_coordinate(source)
 
-    if piece.player.color == current_turn.color && piece.can_move_to?(dest, chessboard)
-      move_piece(source, dest)
-    else
-      puts 'Invalid!'
-      false
-    end
+    return false unless valid_string?(source, dest)
+    return false unless piece.player.color == current_turn.color
+    return false unless piece.can_move_to?(dest, chessboard)
+
+    true
   end
 end
