@@ -22,16 +22,19 @@ class Game
     self.current_turn = (current_turn == player_white ? player_black : player_white)
   end
 
-  def valid_string?(source, dest)
-    true if chessboard.coordinate_exist?(source) || chessboard.coordinate_exist?(dest)
+  def valid_coordinate?(source, dest)
+    return true if chessboard.coordinate_exist?(source) && chessboard.coordinate_exist?(dest)
+
+    false
   end
 
   def valid_move?(move)
     source = move.slice(0, 2).to_sym
     dest = move.slice(2, 3).to_sym
-    piece = chessboard.find_piece_by_coordinate(source)
 
-    return false unless valid_string?(source, dest)
+    return false unless valid_coordinate?(source, dest)
+
+    piece = chessboard.find_piece_by_coordinate(source)
     return false unless piece.player.color == current_turn.color
     return false unless piece.can_move_to?(dest, chessboard)
 
