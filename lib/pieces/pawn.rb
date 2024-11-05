@@ -45,10 +45,10 @@ class Pawn < Piece
     one_step = (file + (rank + 1).to_s).to_sym
     two_steps = (file + (rank + 2).to_s).to_sym
 
-    return unless chessboard.find_piece_by_coordinate(one_step).nil?
+    possible_moves << one_step if chessboard.find_piece_by_coordinate(one_step).nil?
+    return unless !moved && chessboard.find_piece_by_coordinate(two_steps).nil?
 
-    possible_moves << one_step
-    possible_moves << two_steps unless moved
+    possible_moves << two_steps
   end
 
   def add_capture_moves(file, rank, possible_moves, chessboard)
