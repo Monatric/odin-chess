@@ -33,11 +33,21 @@ class Game
     dest = move.slice(2, 3).to_sym
 
     return false unless valid_coordinate?(source, dest)
-
-    piece = chessboard.find_piece_by_coordinate(source)
-    return false unless piece.player.color == current_turn.color
-    return false unless piece.can_move_to?(dest, chessboard)
+    return false unless piece_belongs_to_current_player?(source)
+    return false unless piece_can_move_to?(source, dest)
 
     true
+  end
+
+  private
+
+  def piece_belongs_to_current_player?(source)
+    piece = chessboard.find_piece_by_coordinate(source)
+    piece && piece.player.color == current_turn.color
+  end
+
+  def piece_can_move_to?(source, dest)
+    piece = chessboard.find_piece_by_coordinate(source)
+    piece && piece.can_move_to?(dest, chessboard)
   end
 end
