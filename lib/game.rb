@@ -22,12 +22,6 @@ class Game
     self.current_turn = (current_turn == player_white ? player_black : player_white)
   end
 
-  def valid_coordinate?(source, dest)
-    return true if chessboard.coordinate_exist?(source) && chessboard.coordinate_exist?(dest)
-
-    false
-  end
-
   def valid_move?(move)
     source = move.slice(0, 2).to_sym
     dest = move.slice(2, 3).to_sym
@@ -40,6 +34,12 @@ class Game
   end
 
   private
+
+  def valid_coordinate?(source, dest)
+    return true if chessboard.coordinate_exist?(source) && chessboard.coordinate_exist?(dest)
+
+    false
+  end
 
   def piece_belongs_to_current_player?(source)
     piece = chessboard.find_piece_by_coordinate(source)
