@@ -36,14 +36,16 @@ class Pawn < Piece
     possible_moves = []
     file = chessboard.current_coordinate(self)[0]
     rank = chessboard.current_coordinate(self)[1].to_i
-    add_forward_moves(file, rank, possible_moves)
+    add_forward_moves(file, rank, possible_moves, chessboard)
     add_capture_moves(file, rank, possible_moves, chessboard)
     possible_moves
   end
 
-  def add_forward_moves(file, rank, possible_moves)
+  def add_forward_moves(file, rank, possible_moves, chessboard)
     one_step = (file + (rank + 1).to_s).to_sym
     two_steps = (file + (rank + 2).to_s).to_sym
+
+    return unless chessboard.find_piece_by_coordinate(one_step).nil?
 
     possible_moves << one_step
     possible_moves << two_steps unless moved
