@@ -3,6 +3,7 @@ GEM
   specs:
     ast (2.4.2)
     colorize (1.1.0)
+    diff-lcs (1.5.1)
     json (2.7.2)
     language_server-protocol (3.17.0.3)
     parallel (1.26.3)
@@ -12,6 +13,19 @@ GEM
     racc (1.8.1)
     rainbow (3.1.1)
     regexp_parser (2.9.2)
+    rspec (3.13.0)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
+    rspec-core (3.13.2)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-support (3.13.1)
     rubocop (1.67.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -32,6 +46,7 @@ PLATFORMS
 
 DEPENDENCIES
   colorize (~> 1.1)
+  rspec (~> 3.13)
   rubocop (~> 1.67)
 
 BUNDLED WITH
