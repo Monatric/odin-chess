@@ -36,12 +36,44 @@ class Pawn < Piece
     possible_moves = []
     file = chessboard.current_coordinate(self)[0]
     rank = chessboard.current_coordinate(self)[1].to_i
-    add_forward_moves(file, rank, possible_moves, chessboard)
-    add_capture_moves(file, rank, possible_moves, chessboard)
+    add_white_moves(file, rank, possible_moves, chessboard) if color == :white
+    add_black_moves(file, rank, possible_moves, chessboard) if color == :black
+
     possible_moves
   end
 
-  def add_forward_moves(file, rank, possible_moves, chessboard)
+  def add_white_moves(file, rank, possible_moves, chessboard)
+    add_white_forward_moves(file, rank, possible_moves, chessboard)
+    add_white_capture_moves(file, rank, possible_moves, chessboard)
+  end
+
+  def add_black_moves(file, rank, possible_moves, chessboard)
+    add_black_forward_moves(file, rank, possible_moves, chessboard)
+    add_black_capture_moves(file, rank, possible_moves, chessboard)
+  end
+
+  def add_black_forward_moves(file, rank, possible_moves, chessboard)
+    one_step = (file + (rank - 1).to_s).to_sym
+    two_steps = (file + (rank - 2).to_s).to_sym
+
+    possible_moves << one_step if chessboard.find_piece_by_coordinate(one_step).nil?
+    return unless !moved && chessboard.find_piece_by_coordinate(two_steps).nil?
+
+    possible_moves << two_steps
+  end
+
+  def add_black_capture_moves(file, rank, possible_moves, chessboard)
+    left_capture = calculate_square(file, rank - 1, -1)
+    right_capture = calculate_square(file, rank - 1, 1)
+
+    down_left_square = chessboard.find_piece_by_coordinate(left_capture)
+    down_right_square = chessboard.find_piece_by_coordinate(right_capture)
+
+    possible_moves << left_capture if capturable_by_black?(down_left_square)
+    possible_moves << right_capture if capturable_by_black?(down_right_square)
+  end
+
+  def add_white_forward_moves(file, rank, possible_moves, chessboard)
     one_step = (file + (rank + 1).to_s).to_sym
     two_steps = (file + (rank + 2).to_s).to_sym
 
@@ -51,7 +83,7 @@ class Pawn < Piece
     possible_moves << two_steps
   end
 
-  def add_capture_moves(file, rank, possible_moves, chessboard)
+  def add_white_capture_moves(file, rank, possible_moves, chessboard)
     left_capture = calculate_square(file, rank + 1, -1)
     right_capture = calculate_square(file, rank + 1, 1)
 

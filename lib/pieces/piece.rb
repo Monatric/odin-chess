@@ -22,4 +22,8 @@ class Piece
   def capturable_by_white?(square)
     !square.nil? && square.color == :black
   end
+
+  def capturable_by_black?(square)
+    !square.nil? && square.color == :white
+  end
 end
