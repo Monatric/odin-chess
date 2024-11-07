@@ -12,7 +12,7 @@ class Pawn < Piece
   end
 
   def notation
-    'P'
+    @color == :white ? 'P' : 'p'
   end
 
   def symbol
