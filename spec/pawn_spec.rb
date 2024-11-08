@@ -22,6 +22,14 @@ describe Pawn do
       it 'returns true for e3 (one-square forward move)' do
         expect(white_pawn.can_move_to?(:e3, chessboard)).to be true
       end
+
+      it 'returns true for e4 (two-square forward move)' do
+        expect(white_pawn.can_move_to?(:e4, chessboard)).to be true
+      end
+
+      it 'returns false for e5 (exceeds pawn move)' do
+        expect(white_pawn.can_move_to?(:e5, chessboard)).to be false
+      end
     end
   end
 end
