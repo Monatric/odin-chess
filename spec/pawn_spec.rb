@@ -7,9 +7,10 @@ require_relative '../lib/chessboard'
 
 describe Pawn do
   subject(:white_pawn) { described_class.new(:white, player_white) }
-
+  subject(:black_pawn) { described_class.new(:black, player_black) }
   let(:chessboard) { instance_double(Chessboard) }
   let(:player_white) { instance_double(Player, name: 'Magnus', color: :white) }
+  let(:player_black) { instance_double(Player, name: 'Hikaru', color: :black) }
 
   before do
     allow(chessboard).to receive(:current_coordinate).with(white_pawn).and_return(:e2)
@@ -29,6 +30,16 @@ describe Pawn do
 
       it 'returns false for e5 (exceeds pawn move)' do
         expect(white_pawn.can_move_to?(:e5, chessboard)).to be false
+      end
+
+      context 'when an enemy pawn is at d3' do
+        before do
+          allow(chessboard).to receive(:find_piece_by_coordinate).with(:d3).and_return(black_pawn)
+        end
+
+        it 'returns true for d3 (capture move)' do
+          expect(white_pawn.can_move_to?(:d3, chessboard)).to be true
+        end
       end
     end
   end
