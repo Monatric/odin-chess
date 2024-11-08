@@ -4,13 +4,14 @@ require_relative 'pieces/piece'
 require_relative 'player'
 require_relative 'game'
 require_relative 'displayable'
+require_relative 'fen'
 
 magnus = Player.new('Magnus', :white)
 hikaru = Player.new('Hikaru', :black)
 game = Game.new(Chessboard.new)
+game.chessboard.assemble(magnus, hikaru)
 
-def play(game, player_white, player_black)
-  game.chessboard.assemble(player_white, player_black)
+def play(game)
   loop do
     game.chessboard.show
     move = select_move(game)
@@ -32,4 +33,7 @@ def select_move(game)
   player_move
 end
 
-play(game, magnus, hikaru)
+fen = FEN.new
+# play(game)
+p fen.first_field(game.chessboard)
+p fen.fen_string
