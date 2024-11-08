@@ -53,5 +53,8 @@ describe Pawn do
         expect(white_pawn.can_move_to?(:e5, chessboard)).to be false
       end
     end
+
+    # TODO: movement for black
+    # Note: still haven't considered pins and checks
   end
 end
