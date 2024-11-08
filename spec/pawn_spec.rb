@@ -19,7 +19,7 @@ describe Pawn do
   end
 
   describe '#can_move_to?' do
-    context 'when the pawn is at e2' do
+    context 'when the white pawn is at e2' do
       it 'returns true for e3 (one-square forward move)' do
         expect(white_pawn.can_move_to?(:e3, chessboard)).to be true
       end
@@ -32,7 +32,7 @@ describe Pawn do
         expect(white_pawn.can_move_to?(:e5, chessboard)).to be false
       end
 
-      context 'when an enemy pawn is at d3' do
+      context 'when a black pawn is at d3' do
         before do
           allow(chessboard).to receive(:find_piece_by_coordinate).with(:d3).and_return(black_pawn)
         end
