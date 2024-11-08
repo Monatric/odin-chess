@@ -42,5 +42,16 @@ describe Pawn do
         end
       end
     end
+
+    context 'when the white pawn is at e3' do
+      subject(:white_pawn_moved) { described_class.new(:white, player_white, true) }
+      before do
+        allow(chessboard).to receive(:current_coordinate).with(white_pawn_moved).and_return(:e3)
+      end
+
+      it 'returns false for e5 (two-square forward move but pawn has moved)' do
+        expect(white_pawn.can_move_to?(:e5, chessboard)).to be false
+      end
+    end
   end
 end
