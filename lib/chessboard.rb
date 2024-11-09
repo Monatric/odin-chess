@@ -41,7 +41,8 @@ class Chessboard
   end
 
   def assemble(player_white, player_black, board = @board)
-    add_pawns(player_white, player_black, board)
+    # add_pawns(player_white, player_black, board)
+    add_knights(player_white, player_black, board)
   end
 
   def find_piece_by_coordinate(coordinate)
@@ -82,12 +83,17 @@ class Chessboard
     file = 'a'
     rank_two = '2'
     rank_seven = '7'
-    board[:d4][:piece] = Pawn.new(player_white.color, player_white)
-    board[:g4][:piece] = Pawn.new(player_white.color, player_white)
     until file == 'i'
       board[(file + rank_two).to_sym][:piece] = Pawn.new(player_white.color, player_white)
       board[(file + rank_seven).to_sym][:piece] = Pawn.new(player_black.color, player_black)
       file = (file.ord + 1).chr
     end
+  end
+
+  def add_knights(player_white, player_black, board = @board)
+    board[:b1][:piece] = Knight.new(player_white.color, player_white)
+    board[:g1][:piece] = Knight.new(player_white.color, player_white)
+    board[:b8][:piece] = Knight.new(player_black.color, player_black)
+    board[:g8][:piece] = Knight.new(player_black.color, player_black)
   end
 end
