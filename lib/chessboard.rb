@@ -58,7 +58,8 @@ class Chessboard
     col = position[0]
     row = position[1] + 1 # add 1 because of indexing
     file = 'a'
-    ((file.ord + col).chr + row.to_s).to_sym
+    coordinate = ((file.ord + col).chr + row.to_s).to_sym
+    board.key?(coordinate) ? coordinate : nil
   end
 
   def current_coordinate(piece)
