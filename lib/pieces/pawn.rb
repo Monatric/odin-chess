@@ -66,11 +66,11 @@ class Pawn < Piece
     left_capture = calculate_square(file, rank - 1, -1)
     right_capture = calculate_square(file, rank - 1, 1)
 
-    down_left_square = chessboard.find_piece_by_coordinate(left_capture)
-    down_right_square = chessboard.find_piece_by_coordinate(right_capture)
+    down_left = chessboard.find_piece_by_coordinate(left_capture) if chessboard.coordinate_exist?(left_capture)
+    down_right = chessboard.find_piece_by_coordinate(right_capture) if chessboard.coordinate_exist?(right_capture)
 
-    possible_moves << left_capture if capturable_by_black?(down_left_square)
-    possible_moves << right_capture if capturable_by_black?(down_right_square)
+    possible_moves << left_capture if capturable_by_black?(down_left)
+    possible_moves << right_capture if capturable_by_black?(down_right)
   end
 
   def add_white_forward_moves(file, rank, possible_moves, chessboard)
@@ -87,10 +87,10 @@ class Pawn < Piece
     left_capture = calculate_square(file, rank + 1, -1)
     right_capture = calculate_square(file, rank + 1, 1)
 
-    up_left_square = chessboard.find_piece_by_coordinate(left_capture)
-    up_right_square = chessboard.find_piece_by_coordinate(right_capture)
+    up_left = chessboard.find_piece_by_coordinate(left_capture) if chessboard.coordinate_exist?(left_capture)
+    up_right = chessboard.find_piece_by_coordinate(right_capture) if chessboard.coordinate_exist?(right_capture)
 
-    possible_moves << left_capture if capturable_by_white?(up_left_square)
-    possible_moves << right_capture if capturable_by_white?(up_right_square)
+    possible_moves << left_capture if capturable_by_white?(up_left)
+    possible_moves << right_capture if capturable_by_white?(up_right)
   end
 end
