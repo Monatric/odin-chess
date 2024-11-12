@@ -2,6 +2,7 @@ require_relative 'chessboard'
 require_relative 'pieces/pawn'
 require_relative 'pieces/piece'
 require_relative 'pieces/knight'
+require_relative 'pieces/bishop'
 require_relative 'player'
 require_relative 'game'
 require_relative 'displayable'
@@ -35,6 +36,7 @@ def select_move(game)
 end
 
 fen = FEN.new
+# p game.chessboard.find_coordinate_by_position([9, 9])
 play(game)
 # p fen.first_field(game.chessboard)
 # p fen.fen_string

@@ -41,8 +41,9 @@ class Chessboard
   end
 
   def assemble(player_white, player_black, board = @board)
-    add_pawns(player_white, player_black, board)
-    add_knights(player_white, player_black, board)
+    # add_pawns(player_white, player_black, board)
+    # add_knights(player_white, player_black, board)
+    add_bishops(player_white, player_black, board)
   end
 
   def find_piece_by_coordinate(coordinate)
@@ -96,5 +97,12 @@ class Chessboard
     board[:g1][:piece] = Knight.new(player_white.color, player_white)
     board[:b8][:piece] = Knight.new(player_black.color, player_black)
     board[:g8][:piece] = Knight.new(player_black.color, player_black)
+  end
+
+  def add_bishops(player_white, player_black, board)
+    board[:c1][:piece] = Bishop.new(player_white.color, player_white)
+    board[:f1][:piece] = Bishop.new(player_white.color, player_white)
+    board[:c8][:piece] = Bishop.new(player_black.color, player_black)
+    board[:f8][:piece] = Bishop.new(player_black.color, player_black)
   end
 end
