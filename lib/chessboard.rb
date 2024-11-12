@@ -25,6 +25,7 @@ class Chessboard
   end
 
   def show
+    p board
     display_board(@board)
   end
 
@@ -41,7 +42,7 @@ class Chessboard
   end
 
   def assemble(player_white, player_black, board = @board)
-    # add_pawns(player_white, player_black, board)
+    add_pawns(player_white, player_black, board)
     add_knights(player_white, player_black, board)
   end
 
