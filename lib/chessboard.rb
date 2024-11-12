@@ -25,7 +25,6 @@ class Chessboard
   end
 
   def show
-    p board
     display_board(@board)
   end
 
