@@ -36,9 +36,7 @@ class Game
   private
 
   def valid_coordinate?(source, dest)
-    return true if chessboard.coordinate_exist?(source) && chessboard.coordinate_exist?(dest)
-
-    false
+    chessboard.coordinate_exist?(source) && chessboard.coordinate_exist?(dest)
   end
 
   def piece_belongs_to_current_player?(source)
