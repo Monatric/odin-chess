@@ -21,12 +21,6 @@ class Knight < Piece
     @color == :white ? '♘' : '♞'
   end
 
-  def move(dest, chessboard)
-    source = chessboard.current_coordinate(self)
-    chessboard.remove_piece(source)
-    chessboard.add_piece(dest, self)
-  end
-
   def can_move_to?(dest, chessboard)
     calculate_possible_moves(chessboard).include?(dest)
   end
