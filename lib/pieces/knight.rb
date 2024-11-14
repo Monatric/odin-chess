@@ -30,7 +30,7 @@ class Knight < Piece
   def calculate_possible_moves(chessboard)
     possible_moves = []
     position = chessboard.current_position(self)
-    return possible_moves if chessboard.find_coordinate_by_position(position).nil?
+    return possible_moves if chessboard.find_coordinate_by_position(position).nil? # possibly useless?
 
     file = position[0]
     rank = position[1]
