@@ -20,10 +20,8 @@ class Pawn < Piece
   end
 
   def move(dest, chessboard)
-    source = chessboard.current_coordinate(self)
     self.moved = true
-    chessboard.remove_piece(source)
-    chessboard.add_piece(dest, self)
+    super(dest, chessboard)
   end
 
   def can_move_to?(dest, chessboard)
