@@ -112,6 +112,19 @@ class Piece
           [1, 3] -1, 1 (up-left)
           [1, 1] -1, -1 (down-left)
           but can go further, just only within these directions
+        
+        make a hash of directions
+        return possible_moves if coordinate cannot be found
+        convert dest (coordinate) to position
+        take the key from hash if the position matches the value if it's positive/negative
+          ex: if position[0] is negative and position[1] is positive, the key is up-left
+        take self's position
+        add/subtract self's position x and y until it reaches the dest
+          if chessboard.find_piece_by_coordinate(coordinate).nil?
+            possible_moves << coordinate
+          elsif chessboard.find_piece_by_coordinate(coordinate).color != color
+            possible_moves << coordinate
+          end
 
   Knights:
     - symbol: ♘ ♞
