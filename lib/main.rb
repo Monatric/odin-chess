@@ -39,6 +39,7 @@ end
 
 fen = FEN.new
 # p game.chessboard.find_coordinate_by_position([9, 9])
-play(game)
-# p fen.first_field(game.chessboard)
-# p fen.fen_string
+# play(game)
+fen.first_field(game.chessboard)
+fen.second_field(game)
+p fen.print_fen
