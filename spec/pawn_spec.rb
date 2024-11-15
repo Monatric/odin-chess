@@ -16,6 +16,7 @@ describe Pawn do
     allow(chessboard).to receive(:current_coordinate).with(white_pawn).and_return(:e2)
     # default behavior for #find_piece_by_coordinate to avoid unexpected errors
     allow(chessboard).to receive(:find_piece_by_coordinate).and_return(nil)
+    allow(chessboard).to receive(:coordinate_exist?).and_return(nil)
   end
 
   describe '#can_move_to?' do
@@ -35,6 +36,7 @@ describe Pawn do
       context 'when a black pawn is at d3' do
         before do
           allow(chessboard).to receive(:find_piece_by_coordinate).with(:d3).and_return(black_pawn)
+          allow(chessboard).to receive(:coordinate_exist?).and_return(black_pawn)
         end
 
         it 'returns true for d3 (capture move)' do
