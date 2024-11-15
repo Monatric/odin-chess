@@ -32,4 +32,11 @@ class Piece
   def capturable_by_black?(square)
     !square.nil? && square.color == :white
   end
+
+  def same_color_in_coordinate?(coordinate, chessboard)
+    piece = chessboard.find_piece_by_coordinate(coordinate)
+    return false if piece.nil?
+
+    piece.color == color
+  end
 end

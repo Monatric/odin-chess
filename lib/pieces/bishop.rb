@@ -61,11 +61,4 @@ class Bishop < Piece
       # keep in mind the coordinate in possible_moves duplicates
     end
   end
-
-  def same_color_in_square?(coordinate, chessboard)
-    piece = chessboard.find_piece_by_coordinate(coordinate)
-    return false if piece.nil?
-
-    piece.color == color
-  end
 end
