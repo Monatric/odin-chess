@@ -25,7 +25,7 @@ def play(game)
 end
 
 def select_move(game)
-  puts "#{game.current_turn.name} move."
+  puts "(#{game.current_turn.color}) #{game.current_turn.name} move."
   print 'Your move: '
   player_move = gets.chomp
   until game.valid_move?(player_move)
