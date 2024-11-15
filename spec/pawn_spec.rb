@@ -43,6 +43,17 @@ describe Pawn do
           expect(white_pawn.can_move_to?(:d3, chessboard)).to be true
         end
       end
+
+      context 'when a black pawn is at e3' do
+        before do
+          # TODO: pawn hops over an enemy piece
+          allow(chessboard).to receive(:find_piece_by_coordinate).with(:e3).and_return(black_pawn)
+        end
+
+        it 'returns false for e4' do
+          expect(white_pawn.can_move_to?(:e4, chessboard)).to be false
+        end
+      end
     end
 
     context 'when the white pawn is at e3' do
