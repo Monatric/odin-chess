@@ -44,7 +44,10 @@ class Bishop < Piece
         break if coordinate.nil?
 
         possible_moves << coordinate if chessboard.find_piece_by_coordinate(coordinate).nil?
-        possible_moves << coordinate unless same_color_in_square?(coordinate, chessboard)
+        break if same_color_in_square?(coordinate, chessboard)
+
+        # keep in mind the coordinate in possible_moves duplicates
+        possible_moves << coordinate
       end
     end
     # later on, consider about checks/pins
