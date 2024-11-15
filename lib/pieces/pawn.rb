@@ -76,9 +76,12 @@ class Pawn < Piece
     two_steps = (file + (rank + 2).to_s).to_sym
 
     possible_moves << one_step if chessboard.find_piece_by_coordinate(one_step).nil?
-    return unless !moved && chessboard.find_piece_by_coordinate(two_steps).nil?
-
-    possible_moves << two_steps
+    # pawn cannot move two steps if there is a piece or has moved
+    return unless !moved &&
+           chessboard.find_piece_by_coordinate(one_step).nil? &&
+           chessboard.find_piece_by_coordinate(two_steps).nil?
+      
+      possible_moves << two_steps
   end
 
   def add_white_capture_moves(file, rank, possible_moves, chessboard)
