@@ -51,9 +51,9 @@ class Bishop < Piece
 
       if chessboard.find_piece_by_coordinate(coordinate).nil?
         possible_moves << coordinate
-      elsif same_color_in_square?(coordinate, chessboard)
+      elsif same_color_in_coordinate?(coordinate, chessboard)
         break
-      elsif !same_color_in_square?(coordinate, chessboard)
+      elsif !same_color_in_coordinate?(coordinate, chessboard)
         possible_moves << coordinate
         break
       end
