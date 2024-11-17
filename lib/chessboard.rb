@@ -41,10 +41,11 @@ class Chessboard
   end
 
   def assemble(player_white, player_black, board = @board)
-    add_pawns(player_white, player_black, board)
-    add_knights(player_white, player_black, board)
-    add_bishops(player_white, player_black, board)
-    add_rooks(player_white, player_black, board)
+    # add_pawns(player_white, player_black, board)
+    # add_knights(player_white, player_black, board)
+    # add_bishops(player_white, player_black, board)
+    # add_rooks(player_white, player_black, board)
+    add_queens(player_white, player_black, board)
   end
 
   def find_piece_by_coordinate(coordinate)
@@ -112,5 +113,10 @@ class Chessboard
     board[:h1][:piece] = Rook.new(player_white.color, player_white)
     board[:a8][:piece] = Rook.new(player_black.color, player_black)
     board[:h8][:piece] = Rook.new(player_black.color, player_black)
+  end
+
+  def add_queens(player_white, player_black, board)
+    board[:d1][:piece] = Queen.new(player_white.color, player_white)
+    board[:d8][:piece] = Queen.new(player_black.color, player_black)
   end
 end
