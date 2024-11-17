@@ -46,6 +46,7 @@ class Chessboard
     add_bishops(player_white, player_black, board)
     add_rooks(player_white, player_black, board)
     add_queens(player_white, player_black, board)
+    add_kings(player_white, player_black, board)
   end
 
   def find_piece_by_coordinate(coordinate)
@@ -118,5 +119,10 @@ class Chessboard
   def add_queens(player_white, player_black, board)
     board[:d1][:piece] = Queen.new(player_white.color, player_white)
     board[:d8][:piece] = Queen.new(player_black.color, player_black)
+  end
+
+  def add_kings(player_white, player_black, board)
+    board[:e1][:piece] = King.new(player_white.color, player_white)
+    board[:e8][:piece] = King.new(player_black.color, player_black)
   end
 end
