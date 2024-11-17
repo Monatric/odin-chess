@@ -40,6 +40,4 @@ end
 fen = FEN.new
 # p game.chessboard.find_coordinate_by_position([9, 9])
 # play(game)
-fen.first_field(game.chessboard)
-fen.second_field(game)
-p fen.print_fen
+puts fen.print_fen(game.chessboard, game)

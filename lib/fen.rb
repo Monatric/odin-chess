@@ -4,7 +4,9 @@ class FEN
     @fen_array_strings = []
   end
 
-  def print_fen
+  def print_fen(chessboard, game)
+    first_field(chessboard)
+    second_field(game)
     fen_array_strings.join(' ')
   end
 
