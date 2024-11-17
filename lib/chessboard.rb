@@ -41,10 +41,10 @@ class Chessboard
   end
 
   def assemble(player_white, player_black, board = @board)
-    # add_pawns(player_white, player_black, board)
-    # add_knights(player_white, player_black, board)
-    # add_bishops(player_white, player_black, board)
-    # add_rooks(player_white, player_black, board)
+    add_pawns(player_white, player_black, board)
+    add_knights(player_white, player_black, board)
+    add_bishops(player_white, player_black, board)
+    add_rooks(player_white, player_black, board)
     add_queens(player_white, player_black, board)
   end
 
