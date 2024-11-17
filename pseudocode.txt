@@ -74,6 +74,26 @@ class Piece
       the rook on which side to castle has not moved
       king will not cross over a check
       cells between king and rook must be empty
+    
+    movement:
+      step by step DnQ
+        determine how the king moves normally
+        when an enemy piece moves to a square and directly checks the king, find pieces to block or squares for king to move
+          if the king is checked and has no legal moves without checks/blocks, declare checkmate
+          if the king is not checked has player has no legal moves, declare stalemate
+          consider edge cases:
+            pinned ally pieces
+            discovered checks
+        
+        castling:
+          The king that makes the castling move has not yet moved in the game.
+          The rook that makes the castling move has not yet moved in the game.
+          The king is not in check.
+          The king does not move over a square that is attacked by an enemy piece during the castling move, i.e., when castling, there may not be an enemy piece that can move (in case of pawns: by diagonal movement) to a square that is moved over by the king.
+          The king does not move to a square that is attacked by an enemy piece during the castling move, i.e., you may not castle and end the move with the king in check.
+          All squares between the rook and king before the castling move are empty.
+          The King and rook must occupy the same rank (or row).
+
   
   Queen
     - symbol: ♕ ♛
