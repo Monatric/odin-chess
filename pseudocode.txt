@@ -79,6 +79,10 @@ class Piece
       step by step DnQ
         determine how the king moves normally
         when an enemy piece moves to a square and directly checks the king, find pieces to block or squares for king to move
+          - configure the pieces' moves to check for a king in every square they can pass through
+          - pass a checked method to game, setting the next player as the value
+          - 
+
           if the king is checked and has no legal moves without checks/blocks, declare checkmate
           if the king is not checked has player has no legal moves, declare stalemate
           consider edge cases:
