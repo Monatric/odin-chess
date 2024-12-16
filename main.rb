@@ -1,16 +1,5 @@
-require_relative 'lib/chessboard'
-require_relative 'lib/pieces/pawn'
-require_relative 'lib/pieces/piece'
-require_relative 'lib/pieces/knight'
-require_relative 'lib/pieces/bishop'
-require_relative 'lib/pieces/rook'
-require_relative 'lib/pieces/queen'
-require_relative 'lib/pieces/king'
-
-require_relative 'lib/player'
-require_relative 'lib/game'
-require_relative 'lib/displayable'
-require_relative 'lib/fen'
+require 'require_all'
+require_all 'lib'
 
 magnus = Player.new('Magnus', :white)
 hikaru = Player.new('Hikaru', :black)
