@@ -46,7 +46,6 @@ describe Pawn do
 
       context 'when a black pawn is at e3' do
         before do
-          # TODO: pawn hops over an enemy piece
           allow(chessboard).to receive(:find_piece_by_coordinate).with(:e3).and_return(black_pawn)
         end
 
@@ -102,7 +101,6 @@ describe Pawn do
 
       context 'when a white pawn is at e6' do
         before do
-          # TODO: pawn hops over an enemy piece
           allow(chessboard).to receive(:find_piece_by_coordinate).with(:e6).and_return(white_pawn)
         end
 
@@ -112,7 +110,6 @@ describe Pawn do
       end
     end
 
-    # TODO: movement for black
-    # Note: still haven't considered pins and checks
+    # NOTE: still haven't considered pins and checks
   end
 end
