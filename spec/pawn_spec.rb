@@ -69,6 +69,19 @@ describe Pawn do
       end
     end
 
+    context 'when the black pawn is at e7' do
+      before do
+        allow(chessboard).to receive(:current_coordinate).with(black_pawn).and_return(:e7)
+        # default behavior for #find_piece_by_coordinate to avoid unexpected errors
+        allow(chessboard).to receive(:find_piece_by_coordinate).and_return(nil)
+        allow(chessboard).to receive(:coordinate_exist?).and_return(nil)
+      end
+
+      it 'returns true for e6 (one-square forward move)' do
+        expect(black_pawn.can_move_to?(:e6, chessboard)).to be true
+      end
+    end
+
     # TODO: movement for black
     # Note: still haven't considered pins and checks
   end
