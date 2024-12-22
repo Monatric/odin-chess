@@ -88,6 +88,28 @@ describe Pawn do
       it 'returns false for e4 (exceeds pawn move)' do
         expect(black_pawn.can_move_to?(:e4, chessboard)).to be false
       end
+
+      context 'when a white pawn is at d6' do
+        before do
+          allow(chessboard).to receive(:find_piece_by_coordinate).with(:d6).and_return(white_pawn)
+          allow(chessboard).to receive(:coordinate_exist?).and_return(white_pawn)
+        end
+
+        it 'returns true for d6 (capture move)' do
+          expect(black_pawn.can_move_to?(:d6, chessboard)).to be true
+        end
+      end
+
+      context 'when a white pawn is at e6' do
+        before do
+          # TODO: pawn hops over an enemy piece
+          allow(chessboard).to receive(:find_piece_by_coordinate).with(:e6).and_return(white_pawn)
+        end
+
+        it 'returns false for e5' do
+          expect(black_pawn.can_move_to?(:e5, chessboard)).to be false
+        end
+      end
     end
 
     # TODO: movement for black

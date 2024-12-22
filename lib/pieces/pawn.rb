@@ -55,7 +55,9 @@ class Pawn < Piece
     two_steps = (file + (rank - 2).to_s).to_sym
 
     possible_moves << one_step if chessboard.find_piece_by_coordinate(one_step).nil?
-    return unless !moved && chessboard.find_piece_by_coordinate(two_steps).nil?
+    return unless !moved && 
+                  chessboard.find_piece_by_coordinate(one_step).nil? &&
+                  chessboard.find_piece_by_coordinate(two_steps).nil?
 
     possible_moves << two_steps
   end
