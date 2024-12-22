@@ -13,6 +13,13 @@ class King < Piece
     [-1, 1] # upleft
   ]
 
+  attr_accessor :moved, :en_passant
+
+  def initialize(color, player, moved = false)
+    super(color, player)
+    @moved = moved
+  end
+
   def notation
     @color == :white ? 'K' : 'k'
   end
@@ -41,6 +48,7 @@ class King < Piece
 
   def add_moves(file, rank, possible_moves, chessboard)
     add_basic_moves(file, rank, possible_moves, chessboard)
+    add_castling_moves(file, rank, possible_moves, chessboard)
 
     p possible_moves
     # later on, consider about checks/pins
@@ -58,5 +66,15 @@ class King < Piece
         possible_moves << coordinate
       end
     end
+  end
+
+  def add_castling_moves(file, rank, possible_moves, chessboard)
+    # check if king has moved
+    nil if moved
+
+    # check if no piece blocks the way in short and long
+
+    # check for checks (soon)
+    # check if short/long rook has moved
   end
 end
