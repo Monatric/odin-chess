@@ -40,6 +40,13 @@ class King < Piece
   end
 
   def add_moves(file, rank, possible_moves, chessboard)
+    add_basic_moves(file, rank, possible_moves, chessboard)
+
+    p possible_moves
+    # later on, consider about checks/pins
+  end
+
+  def add_basic_moves(file, rank, possible_moves, chessboard)
     KING_OPTIONS.each do |option|
       position = option[0] + file, option[1] + rank
       coordinate = chessboard.find_coordinate_by_position(position)
@@ -51,6 +58,5 @@ class King < Piece
         possible_moves << coordinate
       end
     end
-    # later on, consider about checks/pins
   end
 end
