@@ -110,6 +110,19 @@ describe Pawn do
       end
     end
 
+    context 'when the black pawn is at e6' do
+      subject(:black_pawn_moved) { described_class.new(:black, player_black, true) }
+      before do
+        allow(chessboard).to receive(:current_coordinate).with(black_pawn_moved).and_return(:e6)
+        allow(chessboard).to receive(:find_piece_by_coordinate).and_return(nil)
+        allow(chessboard).to receive(:coordinate_exist?).and_return(nil)
+      end
+
+      it 'returns false for e5 (two-square forward move but pawn has moved)' do
+        expect(black_pawn_moved.can_move_to?(:e4, chessboard)).to be false
+      end
+    end
+
     # NOTE: still haven't considered pins and checks
   end
 end
