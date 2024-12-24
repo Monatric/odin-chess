@@ -70,11 +70,35 @@ class King < Piece
 
   def add_castling_moves(file, rank, possible_moves, chessboard)
     # check if king has moved
-    nil if moved
+    return if moved
 
+    valid_castle_coordinates(chessboard).each { |coordinate| possible_moves << coordinate }
     # check if no piece blocks the way in short and long
 
     # check for checks (soon)
     # check if short/long rook has moved
+  end
+
+  def valid_castle_coordinates(chessboard) # rubocop:disable Metrics/MethodLength
+    castle_paths = {
+      white: {
+        g1: %i[f1 g1],
+        c1: %i[d1 c1 b1]
+      },
+      black: {
+        g8: %i[f8 g8],
+        c8: %i[d8 c8 b8]
+      }
+    }
+    results = []
+    castle_paths[color].each_pair do |castle_coordinate, path|
+      results << castle_coordinate if castle_path_empty?(path, chessboard)
+    end
+    results
+  end
+
+  def castle_path_empty?(path, chessboard)
+    pieces_found = -> { path.map { |coordinate| chessboard.find_piece_by_coordinate(coordinate) } }
+    pieces_found.call.all?(&:nil?)
   end
 end
