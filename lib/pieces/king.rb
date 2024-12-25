@@ -25,6 +25,11 @@ class King < Piece
     super(dest, chessboard)
   end
 
+  def castle(dest, chessboard)
+    self.moved = true
+    super(dest, chessboard)
+  end
+
   def notation
     @color == :white ? 'K' : 'k'
   end
@@ -105,20 +110,13 @@ class King < Piece
   end
 
   def rook_moved?(castle_coordinate, chessboard)
-    castling_rook_coordinate = {
-      g1: :h1,
-      c1: :a1,
-      g8: :h8,
-      c8: :a8
-    }
-
     # false if the chosen castle_coordinate is not a rook
-    unless chessboard.find_piece_by_coordinate(castling_rook_coordinate[castle_coordinate]).instance_of?(::Rook)
+    unless chessboard.find_piece_by_coordinate(CASTLING_ROOK_COORDINATE[castle_coordinate]).instance_of?(::Rook)
       return false
     end
 
     # if the rook has moved
-    chessboard.find_piece_by_coordinate(castling_rook_coordinate[castle_coordinate]).moved
+    chessboard.find_piece_by_coordinate(CASTLING_ROOK_COORDINATE[castle_coordinate]).moved
   end
 
   def castle_path_empty?(path, chessboard)

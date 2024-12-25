@@ -1,5 +1,7 @@
 # class for Game that facilitates the chess game
 class Game
+  CASTLING_NOTATIONS = %w[e1g1 e1c1 e8g8 e8c8]
+
   attr_accessor :current_turn
   attr_reader :chessboard, :player_white, :player_black
 
@@ -15,6 +17,10 @@ class Game
 
   def move_piece(source, dest)
     piece = chessboard.find_piece_by_coordinate(source)
+    if CASTLING_NOTATIONS.include?(source.to_s + dest.to_s)
+      piece.castle(dest, chessboard)
+      return
+    end
     piece.move(dest, chessboard)
   end
 
