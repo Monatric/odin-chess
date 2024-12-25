@@ -2,12 +2,24 @@ require_relative 'piece'
 
 # class for the Rook
 class Rook < Piece
+  attr_accessor :moved
+
   ROOK_OPTIONS = [
     [0, -1],
     [0, 1],
     [-1, 0],
     [1, 0]
   ]
+
+  def initialize(color, player, moved = false)
+    super(color, player)
+    @moved = moved
+  end
+
+  def move(dest, chessboard)
+    self.moved = true
+    super(dest, chessboard)
+  end
 
   def notation
     @color == :white ? 'R' : 'r'
