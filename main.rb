@@ -9,23 +9,49 @@ game.chessboard.assemble(magnus, hikaru)
 def play(game)
   loop do
     game.chessboard.show
-    move = select_move(game)
-    source = move.slice(0, 2).to_sym
-    dest = move.slice(2, 3).to_sym
-    game.move_piece(source, dest)
+    puts "(#{game.current_turn.color}) #{game.current_turn.name} move."
+    get_player_choice(game)
     game.switch_player!
   end
 end
 
-def select_move(game)
-  puts "(#{game.current_turn.color}) #{game.current_turn.name} move."
-  print 'Your move: '
-  player_move = gets.chomp
-  until game.valid_move?(player_move)
-    print 'Invalid move! Try again: '
-    player_move = gets.chomp
+def move(game, player_choice)
+  unless game.valid_move?(player_choice)
+    puts 'Invalid move! Try again.'
+    get_player_choice(game)
+    return
   end
-  player_move
+  source = player_choice.slice(0, 2).to_sym
+  dest = player_choice.slice(2, 3).to_sym
+  game.move_piece(source, dest)
+end
+
+def get_player_choice(game)
+  show_options
+  print 'Your move: '
+  player_choice = gets.chomp
+  if player_choice.match?(/\A[1-9]+\z/)
+    run_selected_option(game, player_choice)
+  else
+    move(game, player_choice)
+  end
+end
+
+def run_selected_option(game, player_choice)
+  case player_choice.to_i
+  when 1
+    fen = FEN.new
+    puts fen.print_fen(game.chessboard, game)
+  end
+  get_player_choice(game)
+end
+
+def show_options
+  puts "\t1: Show FEN"
+end
+
+def show_fen
+  puts fen.print_fen(game.chessboard, game)
 end
 
 fen = FEN.new
