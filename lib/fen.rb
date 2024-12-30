@@ -36,6 +36,7 @@ class FEN
     add_white_castling_availability(chessboard, field_string)
     add_black_castling_availability(chessboard, field_string)
     result = field_string.join('')
+    result << '-' if result.empty?
     fen_array_strings.push(result)
   end
 
@@ -43,9 +44,10 @@ class FEN
     h1_piece = chessboard.find_piece_by_coordinate(:h1)
     a1_piece = chessboard.find_piece_by_coordinate(:a1)
     e1_piece = chessboard.find_piece_by_coordinate(:e1)
+    return unless e1_piece.instance_of?(::King) # && e1_piece.moved
+
     field_string << 'K' if h1_piece.instance_of?(::Rook) && !h1_piece.moved
     field_string << 'Q' if a1_piece.instance_of?(::Rook) && !a1_piece.moved
-    field_string.clear if e1_piece.instance_of?(::King) && e1_piece.moved
     field_string
   end
 
@@ -53,9 +55,10 @@ class FEN
     h8_piece = chessboard.find_piece_by_coordinate(:h8)
     a8_piece = chessboard.find_piece_by_coordinate(:a8)
     e8_piece = chessboard.find_piece_by_coordinate(:e8)
+    return unless e8_piece.instance_of?(::King) # && e8_piece.moved
+
     field_string << 'k' if h8_piece.instance_of?(::Rook) && !h8_piece.moved
     field_string << 'q' if a8_piece.instance_of?(::Rook) && !a8_piece.moved
-    field_string.clear if e8_piece.instance_of?(::King) && e8_piece.moved
     field_string
   end
 
