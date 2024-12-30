@@ -80,6 +80,18 @@ class Chessboard
     nil
   end
 
+  def in_check?(color)
+    # p board[:a1][:piece].color
+    king_coordinate = board.select do |_, value|
+      value[:piece].instance_of?(::King) && value[:piece].color == color
+    end.keys.first
+
+    # board.select do |coordinate, value|
+    #   p coordinate if value[:piece].instance_of?(::King) && value[:piece].color == color
+    # end
+    p king_coordinate
+  end
+
   private
 
   attr_reader :board

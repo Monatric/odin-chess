@@ -11,6 +11,7 @@ def play(game)
     game.chessboard.show
     puts "(#{game.current_turn.color}) #{game.current_turn.name} move."
     get_player_choice(game)
+    game.chessboard.in_check?(:white)
     game.switch_player!
   end
 end
