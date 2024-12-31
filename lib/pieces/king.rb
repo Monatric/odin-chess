@@ -60,7 +60,6 @@ class King < Piece
     add_basic_moves(file, rank, possible_moves, chessboard)
     add_castling_moves(file, rank, possible_moves, chessboard)
 
-    p possible_moves
     # later on, consider about checks/pins
   end
 
