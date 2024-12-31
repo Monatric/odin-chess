@@ -120,12 +120,6 @@ class King < Piece
   end
 
   def castle_path_empty?(path, chessboard)
-    # pieces_found = -> { path.map { |coordinate| chessboard.find_piece_by_coordinate(coordinate) } }
-    # pieces_found.call.all?(&:nil?)
-    # commenting this out. Earlier I can't find a way to check if the king's castling path is blocked
-    # I came up with a lambda solution that returns all pieces found, then check if a piece exists
-    # This revised func is more readable, but I accidentally understood lambda for a moment here.
-    # This right here is the moment I understood an old concept by being stupid.
     path.all? do |coordinate|
       chessboard.find_piece_by_coordinate(coordinate).nil?
     end
