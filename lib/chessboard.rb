@@ -80,16 +80,16 @@ class Chessboard
     nil
   end
 
-  def in_check?(color)
-    # p board[:a1][:piece].color
-    king_coordinate = board.select do |_, value|
+  def king_coordinate(color)
+    board.select do |_, value|
       value[:piece].instance_of?(::King) && value[:piece].color == color
     end.keys.first
+  end
 
-    # board.select do |coordinate, value|
-    #   p coordinate if value[:piece].instance_of?(::King) && value[:piece].color == color
-    # end
-    p king_coordinate
+  def find_squares_with_pieces_by_color(color)
+    board.select do |_, info|
+      !info[:piece].nil? && info[:piece].color == color
+    end
   end
 
   private
