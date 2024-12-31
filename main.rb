@@ -11,7 +11,7 @@ def play(game)
     game.chessboard.show
     puts "(#{game.current_turn.color}) #{game.current_turn.name} move."
     get_player_choice(game)
-    game.chessboard.in_check?(:white)
+    # game.chessboard.in_check?(:white)
     game.switch_player!
   end
 end
@@ -43,12 +43,21 @@ def run_selected_option(game, player_choice)
   when 1
     fen = FEN.new
     puts fen.print_fen(game.chessboard, game)
+  when 2
+    p game.legal_moves_of_color(:black)
+  when 3
+    p game.in_check?(game.current_turn.color)
   end
   get_player_choice(game)
 end
 
 def show_options
   puts "\t1: Show FEN"
+
+  # temporary. For testing
+  puts 'Testing purposes:'
+  puts "\t2: Show legal moves"
+  puts "\t3: Show if current player in check"
 end
 
 def show_fen
