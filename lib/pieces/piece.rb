@@ -63,6 +63,10 @@ class Piece
     piece.color == color
   end
 
+  def legal_moves(chessboard)
+    calculate_possible_moves(chessboard)
+  end
+
   private
 
   def castling_rook_new_coordinate(rook_coordinate)
