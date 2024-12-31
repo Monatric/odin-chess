@@ -39,6 +39,19 @@ class Game
     true
   end
 
+  def legal_moves_of_color(color)
+    squares_with_pieces = @chessboard.find_squares_with_pieces_by_color(color)
+    squares_with_pieces.map do |_, info|
+      info[:piece].legal_moves(@chessboard)
+    end.flatten
+  end
+
+  def in_check?(color)
+    king_coordinate = @chessboard.king_coordinate(color)
+    opponent_legal_moves = legal_moves_of_color(color == :white ? :black : :white)
+    opponent_legal_moves.any? { |coordinate| coordinate == king_coordinate }
+  end
+
   private
 
   def valid_coordinate?(source, dest)
