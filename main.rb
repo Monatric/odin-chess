@@ -9,7 +9,7 @@ game.chessboard.assemble(magnus, hikaru)
 def play(game)
   loop do
     game.chessboard.show
-    puts "(#{game.current_turn.color}) #{game.current_turn.name} move."
+    puts "(#{game.current_turn_color}) #{game.current_turn_name} move."
     get_player_choice(game)
     # game.chessboard.in_check?(:white)
     game.switch_player!
@@ -24,7 +24,13 @@ def move(game, player_choice)
   end
   source = player_choice.slice(0, 2).to_sym
   dest = player_choice.slice(2, 3).to_sym
+
   game.move_piece(source, dest)
+  if game.in_check?(game.current_turn_color)
+    game.undo(source, dest)
+    puts 'Your king is in check. Try again.'
+    get_player_choice(game)
+  end
 end
 
 def get_player_choice(game)
@@ -44,9 +50,9 @@ def run_selected_option(game, player_choice)
     fen = FEN.new
     puts fen.print_fen(game.chessboard, game)
   when 2
-    p game.legal_moves_of_color(:black)
+    puts game.legal_squares_of_color(:black)
   when 3
-    p game.in_check?(game.current_turn.color)
+    puts game.in_check?(game.current_turn_color)
   end
   get_player_choice(game)
 end
