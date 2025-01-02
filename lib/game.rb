@@ -39,17 +39,47 @@ class Game
     true
   end
 
-  def legal_moves_of_color(color)
+  def covered_squares_of_color(color)
     squares_with_pieces = @chessboard.find_squares_with_pieces_by_color(color)
     squares_with_pieces.map do |_, info|
-      info[:piece].legal_moves(@chessboard)
+      info[:piece].possible_moves(@chessboard)
     end.flatten
   end
 
-  def in_check?(color)
+  def legal_squares_of_color(color)
+    # color parameter is usually the current turn. Might be confusing what it means by
+    # current_turn in the variable. Not sure what's the best design here.
     king_coordinate = @chessboard.king_coordinate(color)
-    opponent_legal_moves = legal_moves_of_color(color == :white ? :black : :white)
-    opponent_legal_moves.any? { |coordinate| coordinate == king_coordinate }
+    opponent_covered_squares = covered_squares_of_color(color == :white ? :black : :white)
+    current_turn_covered_squares = covered_squares_of_color(color)
+    current_turn_covered_squares.map do |current_turn_square|
+      current_turn_square unless current_turn_square == opponent_covered_squares.any?(king_coordinate)
+    end
+  end
+
+  def in_check?(color)
+    # color parameter is usually the current turn. Might be confusing what it means by
+    # current_turn in the variable. Not sure what's the best design here.
+    king_coordinate = @chessboard.king_coordinate(color)
+    opponent_covered_squares = covered_squares_of_color(color == :white ? :black : :white)
+    opponent_covered_squares.any? { |coordinate| coordinate == king_coordinate }
+  end
+
+  def undo(source, dest)
+    piece = chessboard.find_piece_by_coordinate(dest)
+    piece.move(source, @chessboard)
+  end
+
+  def current_turn_color
+    @current_turn.color
+  end
+
+  def current_turn_name
+    @current_turn.name
+  end
+
+  def other_turn_color
+    @current_turn == @player_white ? :black : :white
   end
 
   private
