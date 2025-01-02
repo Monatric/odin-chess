@@ -24,10 +24,6 @@ class Pawn < Piece
     super(dest, chessboard)
   end
 
-  def can_move_to?(dest, chessboard)
-    calculate_possible_moves(chessboard).include?(dest)
-  end
-
   private
 
   def calculate_possible_moves(chessboard)
