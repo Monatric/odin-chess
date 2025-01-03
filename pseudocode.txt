@@ -332,3 +332,10 @@ Ask for move -> Validate if from-to coordinates exist -> Validate if 'from' can 
                                                                 v
                                                         Set the opponent king to check if its checked
                                                     
+Notes for later:
+  1. Using #moved attribute for Pawn might be a trouble. For example, when
+     loading the game through FEN, how would the game know that these pieces have moved?
+     They may be able to move 2 steps even after moving already.
+     My solution for now is instead of relying on move method, check for the Pawn's rank
+     position. If it's white, check 2nd, otherwise 7th. They won't go backwards, so
+     if the pawn is out of the rank, then they have moved. 
