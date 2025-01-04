@@ -338,4 +338,19 @@ Notes for later:
      They may be able to move 2 steps even after moving already.
      My solution for now is instead of relying on move method, check for the Pawn's rank
      position. If it's white, check 2nd, otherwise 7th. They won't go backwards, so
-     if the pawn is out of the rank, then they have moved. 
+     if the pawn is out of the rank, then they have moved.
+  2. Refactor methods:
+    2.1 #move in main.rb. Consider writing a move parser for user's text instead of
+        manually parsing the move everytime. Also consider renaming it.
+    2.2 validation of move in #move is long. Extract it.
+    2.3 Game#legal_squares_of_color and Game#covered_squares_of_color belong to Chessboard
+    2.4 Game#valid_coordinate? can also belong to Chessboard 
+    2.5 Piece has #castle, which should only belong to ::King
+    2.6 Refer to josh's suggestion for refactoring Piece subclasses (MOVE_OPTIONS constant thing)
+    2.7 Refer to josh's suggestion for refactoring Chessboard. I've thought of BoardAnalyzer class
+        to reduce overreliance on chessboard parameter. For example, issue with FEN for adding
+        castling availability is I keep calling the same method over and over using the same
+        parameter. What I can envision here is create a BoardAnalyzer object, (tentative,
+        my idea doesn't make  sense yet)
+    2.8 Making a constant of CASTLING_ROOK_COORDINATE in Piece seems out of place.
+    2.9 Piece#Pawn move and capture logic could do some refactoring too.
