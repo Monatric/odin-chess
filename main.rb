@@ -25,9 +25,17 @@ def move(game, player_choice)
   source = player_choice.slice(0, 2).to_sym
   dest = player_choice.slice(2, 3).to_sym
 
-  game.move_piece(source, dest)
-  if game.in_check?(game.current_turn_color)
-    game.undo(source, dest)
+  if game.in_check?(game.current_turn_color, game.chessboard)
+    handle_move_in_check(source, dest, game)
+  else
+    game.move_piece(source, dest, game.chessboard)
+  end
+end
+
+def handle_move_in_check(source, dest, game)
+  if game.move_avoids_check?(source, dest, game.current_turn_color)
+    game.move_piece(source, dest, game.chessboard)
+  else
     puts 'Your king is in check. Try again.'
     get_player_choice(game)
   end
