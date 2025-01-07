@@ -1,27 +1,18 @@
 require 'require_all'
 require_all 'lib'
 
-magnus = Player.new('Magnus', :white)
-hikaru = Player.new('Hikaru', :black)
-game = Game.new(Chessboard.new)
-game.chessboard.assemble(magnus, hikaru)
-
-def play(game)
+def start(game)
   loop do
     game.chessboard.show
     puts "(#{game.current_turn_color}) #{game.current_turn_name} move."
     get_player_choice(game)
-    # game.chessboard.in_check?(:white)
     game.switch_player!
   end
 end
 
 def move(game, player_choice)
-  unless game.valid_move?(player_choice)
-    puts 'Invalid move! Try again.'
-    get_player_choice(game)
-    return
-  end
+  return invalid_move_error unless game.valid_move?(player_choice)
+
   source = player_choice.slice(0, 2).to_sym
   dest = player_choice.slice(2, 3).to_sym
 
@@ -30,6 +21,11 @@ def move(game, player_choice)
   else
     game.move_piece(source, dest, game.chessboard)
   end
+end
+
+def invalid_move_error(game)
+  puts 'Invalid move! Try again.'
+  get_player_choice(game)
 end
 
 def handle_move_in_check(source, dest, game)
@@ -78,7 +74,9 @@ def show_fen
   puts fen.print_fen(game.chessboard, game)
 end
 
-fen = FEN.new
-# p game.chessboard.find_coordinate_by_position([9, 9])
-play(game)
-# puts fen.print_fen(game.chessboard, game)
+magnus = Player.new('Magnus', :white)
+hikaru = Player.new('Hikaru', :black)
+game = Game.new(Chessboard.new)
+game.chessboard.assemble(magnus, hikaru)
+
+start(game)
