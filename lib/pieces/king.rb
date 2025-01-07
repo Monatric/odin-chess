@@ -27,7 +27,18 @@ class King < Piece
 
   def castle(dest, chessboard)
     self.moved = true
-    super(dest, chessboard)
+
+    source = chessboard.current_coordinate(self)
+
+    chessboard.remove_piece(source)
+    chessboard.add_piece(dest, self)
+
+    rook = chessboard.find_piece_by_coordinate(CASTLING_ROOK_COORDINATE[dest])
+    rook_coordinate = chessboard.current_coordinate(rook)
+    chessboard.remove_piece(rook_coordinate)
+
+    rook_new_coordinate = castling_rook_new_coordinate(rook_coordinate)
+    chessboard.add_piece(rook_new_coordinate, rook)
   end
 
   def notation
