@@ -58,14 +58,14 @@ class Piece
 
   private
 
-  # only works for Rooks, Bishops, and Queens
   def add_moves(file, rank, possible_moves, chessboard)
     self.class::MOVE_OPTIONS.each do |option|
       piece_move = [file, rank]
       calculate_piece_options(possible_moves, chessboard, piece_move, option)
     end
   end
-
+  
+  # only works for Rooks, Bishops, and Queens
   def calculate_piece_options(possible_moves, chessboard, piece_move, option)
     loop do
       piece_move = [piece_move[0] + option[0], piece_move[1] + option[1]]
