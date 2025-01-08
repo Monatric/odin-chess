@@ -26,7 +26,7 @@ class Pawn < Piece
 
   private
 
-  def calculate_possible_moves(chessboard)
+  def generate_possible_moves(chessboard)
     possible_moves = []
     file = chessboard.current_coordinate(self)[0]
     rank = chessboard.current_coordinate(self)[1].to_i
