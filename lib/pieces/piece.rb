@@ -59,6 +59,30 @@ class Piece
 
   private
 
+  # only works for Rooks, Bishops, and Queens
+  def add_moves(file, rank, possible_moves, chessboard)
+    self.class::MOVE_OPTIONS.each do |option|
+      piece_move = [file, rank]
+      calculate_piece_options(possible_moves, chessboard, piece_move, option)
+    end
+  end
+
+  def calculate_piece_options(possible_moves, chessboard, piece_move, option)
+    loop do
+      piece_move = [piece_move[0] + option[0], piece_move[1] + option[1]]
+      coordinate = chessboard.find_coordinate_by_position(piece_move)
+      break if coordinate.nil?
+
+      if chessboard.find_piece_by_coordinate(coordinate).nil?
+        possible_moves << coordinate
+      elsif same_color_in_coordinate?(coordinate, chessboard)
+        break
+      elsif !same_color_in_coordinate?(coordinate, chessboard)
+        possible_moves << coordinate
+        break
+      end
+    end
+  end
 
   def calculate_possible_moves(chessboard)
     possible_moves = []
