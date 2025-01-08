@@ -25,7 +25,6 @@ class Piece
 
   def move(dest, chessboard)
     source = chessboard.current_coordinate(self)
-    p self.class.name
     chessboard.remove_piece(source)
     chessboard.add_piece(dest, self)
   end
