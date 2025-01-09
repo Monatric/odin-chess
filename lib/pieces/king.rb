@@ -33,11 +33,11 @@ class King < Piece
     chessboard.remove_piece(source)
     chessboard.add_piece(dest, self)
 
-    rook = chessboard.find_piece_by_coordinate(CASTLING_ROOK_COORDINATE[dest])
+    rook = chessboard.find_piece_by_coordinate(chessboard.castling_rook_coordinate[dest][0])
     rook_coordinate = chessboard.current_coordinate(rook)
     chessboard.remove_piece(rook_coordinate)
 
-    rook_new_coordinate = castling_rook_new_coordinate(rook_coordinate)
+    rook_new_coordinate = chessboard.castling_rook_coordinate[dest][1]
     chessboard.add_piece(rook_new_coordinate, rook)
   end
 
@@ -77,10 +77,6 @@ class King < Piece
     return if moved
 
     valid_castle_coordinates(chessboard).each { |coordinate| possible_moves << coordinate }
-    # check if no piece blocks the way in short and long
-
-    # check for checks (soon)
-    # check if short/long rook has moved
   end
 
   def valid_castle_coordinates(chessboard) # rubocop:disable Metrics/MethodLength
@@ -105,12 +101,10 @@ class King < Piece
 
   def rook_moved?(castle_coordinate, chessboard)
     # false if the chosen castle_coordinate is not a rook
-    unless chessboard.find_piece_by_coordinate(CASTLING_ROOK_COORDINATE[castle_coordinate]).instance_of?(::Rook)
-      return false
-    end
+    return false unless chessboard.castling_rook_coordinate[castle_coordinate].instance_of?(::Rook)
 
     # if the rook has moved
-    chessboard.find_piece_by_coordinate(CASTLING_ROOK_COORDINATE[castle_coordinate]).moved
+    chessboard.castling_rook_coordinate[castle_coordinate].moved
   end
 
   def castle_path_empty?(path, chessboard)

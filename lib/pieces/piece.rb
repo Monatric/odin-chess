@@ -1,13 +1,5 @@
 # class for pieces of chess
 class Piece
-  # keys are King destination by player, the values are the rook's coordinates
-  CASTLING_ROOK_COORDINATE = {
-      g1: :h1,
-      c1: :a1,
-      g8: :h8,
-      c8: :a8
-  }
-
   attr_reader :color, :player
 
   def initialize(color = nil, player = nil)
@@ -64,7 +56,7 @@ class Piece
       calculate_piece_options(possible_moves, chessboard, piece_move, option)
     end
   end
-  
+
   # only works for Rooks, Bishops, and Queens
   def calculate_piece_options(possible_moves, chessboard, piece_move, option)
     loop do
@@ -93,18 +85,5 @@ class Piece
     add_moves(file, rank, possible_moves, chessboard)
 
     possible_moves
-  end
-
-  def castling_rook_new_coordinate(rook_coordinate)
-    case rook_coordinate
-    when :h1
-      return :f1
-    when :a1
-      return :d1
-    when :h8
-      return :f8
-    when :a8
-      return :d8
-    end
   end
 end
