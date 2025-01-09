@@ -342,11 +342,12 @@ Notes for later:
   2. Refactor methods:
     2.1 #move in main.rb. Consider writing a move parser for user's text instead of
         manually parsing the move everytime. Also consider renaming it.
-    2.2 validation of move in #move is long. Extract it.
-    2.3 Game#legal_squares_of_color and Game#covered_squares_of_color belong to Chessboard
+    2.2 validation of move in #move is long. Extract it. ✔️
+    2.3 Game#legal_squares_of_color and Game#covered_squares_of_color belong to Chessboard 
+        (actually, maybe not. It needs to check which chessboard to be validated)
     2.4 Game#valid_coordinate? can also belong to Chessboard 
-    2.5 Piece has #castle, which should only belong to ::King
-    2.6 Refer to josh's suggestion for refactoring Piece subclasses (MOVE_OPTIONS constant thing)
+    2.5 Piece has #castle, which should only belong to ::King ✔️
+    2.6 Refer to josh's suggestion for refactoring Piece subclasses (MOVE_OPTIONS constant thing) ✔️
     2.7 Refer to josh's suggestion for refactoring Chessboard. I've thought of BoardAnalyzer class
         to reduce overreliance on chessboard parameter. For example, issue with FEN for adding
         castling availability is I keep calling the same method over and over using the same
@@ -354,3 +355,4 @@ Notes for later:
         my idea doesn't make  sense yet)
     2.8 Making a constant of CASTLING_ROOK_COORDINATE in Piece seems out of place.
     2.9 Piece#Pawn move and capture logic could do some refactoring too.
+  3. Complete FEN class
