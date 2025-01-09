@@ -1,19 +1,19 @@
 # class for generating, saving, loading, or getting/setting data for a valid chess position
 class FEN
   def initialize
-    @fen_array_strings = []
+    @fen_strings = []
   end
 
-  def print_fen(chessboard, game)
+  def generate_fen(chessboard, game)
     first_field(chessboard)
     second_field(game)
     third_field(chessboard)
-    fen_array_strings.join(' ')
+    fen_strings.join(' ')
   end
 
   private
 
-  attr_accessor :fen_array_strings
+  attr_accessor :fen_strings
 
   def first_field(chessboard)
     file = 'a'
@@ -23,12 +23,12 @@ class FEN
     add_first_field_data(file, space, rank, chessboard, first_field_array)
     first_field_array = first_field_array.join('')
     # p first_field_array[-1] (remove slash later)
-    fen_array_strings.push(first_field_array)
+    fen_strings.push(first_field_array)
   end
 
   def second_field(game)
     current_color_turn = game.current_turn.color == :white ? 'w' : 'b'
-    fen_array_strings.push(current_color_turn)
+    fen_strings.push(current_color_turn)
   end
 
   def third_field(chessboard)
@@ -37,7 +37,7 @@ class FEN
     add_black_castling_availability(chessboard, field_string)
     result = field_string.join('')
     result << '-' if result.empty?
-    fen_array_strings.push(result)
+    fen_strings.push(result)
   end
 
   def add_white_castling_availability(chessboard, field_string)
