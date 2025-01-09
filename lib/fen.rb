@@ -1,6 +1,8 @@
 # class for generating, saving, loading, or getting/setting data for a valid chess position
 class FEN
-  def initialize
+  def initialize(game, chessboard)
+    @game = game
+    @chessboard = chessboard
     @fen_strings = []
   end
 
