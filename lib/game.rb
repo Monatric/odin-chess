@@ -1,7 +1,5 @@
 # class for Game that facilitates the chess game
 class Game
-  CASTLING_NOTATIONS = %w[e1g1 e1c1 e8g8 e8c8]
-
   attr_accessor :current_turn
   attr_reader :chessboard, :player_white, :player_black
 
@@ -84,9 +82,11 @@ class Game
   private
 
   def determine_move_action(source, dest, chessboard)
+    castling_notations = %w[e1g1 e1c1 e8g8 e8c8]
+
     piece = chessboard.find_piece_by_coordinate(source)
 
-    if CASTLING_NOTATIONS.include?(source.to_s + dest.to_s)
+    if castling_notations.include?(source.to_s + dest.to_s)
       piece.castle(dest, chessboard)
     else
       piece.move(dest, chessboard)
