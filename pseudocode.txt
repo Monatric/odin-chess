@@ -353,6 +353,7 @@ Notes for later:
         castling availability is I keep calling the same method over and over using the same
         parameter. What I can envision here is create a BoardAnalyzer object, (tentative,
         my idea doesn't make  sense yet)
-    2.8 Making a constant of CASTLING_ROOK_COORDINATE in Piece seems out of place.
+    2.8 Making a constant of CASTLING_ROOK_COORDINATE in Piece seems out of place. ✔️
     2.9 Piece#Pawn move and capture logic could do some refactoring too.
+    2.10 Pinned pieces can move
   3. Complete FEN class
