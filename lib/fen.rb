@@ -7,9 +7,9 @@ class FEN
 
   def generate_fen
     @fen_strings = []
-    first_field
-    second_field
-    third_field
+    @fen_strings << first_field
+    @fen_strings << second_field
+    @fen_strings << third_field
     @fen_strings.join(' ')
   end
 
@@ -23,13 +23,11 @@ class FEN
     space = 0
     first_field_array = []
     add_first_field_data(file, space, rank, first_field_array)
-    first_field_array = first_field_array.join('')
-    fen_strings.push(first_field_array)
+    first_field_array.join('')
   end
 
   def second_field
-    current_color_turn = @game.current_turn.color == :white ? 'w' : 'b'
-    fen_strings.push(current_color_turn)
+    @game.current_turn.color == :white ? 'w' : 'b'
   end
 
   def third_field
@@ -38,7 +36,7 @@ class FEN
     add_black_castling_availability(field_string)
     result = field_string.join('')
     result << '-' if result.empty?
-    fen_strings.push(result)
+    result
   end
 
   def add_white_castling_availability(field_string)
