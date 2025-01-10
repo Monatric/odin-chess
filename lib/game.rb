@@ -25,7 +25,7 @@ class Game
     source = move.slice(0, 2).to_sym
     dest = move.slice(2, 3).to_sym
 
-    return false unless valid_coordinate?(source, dest)
+    return false unless @chessboard.valid_source_and_dest?(source, dest)
     return false unless piece_belongs_to_current_player?(source)
     return false unless piece_can_move_to?(source, dest)
 
@@ -91,10 +91,6 @@ class Game
     else
       piece.move(dest, chessboard)
     end
-  end
-
-  def valid_coordinate?(source, dest)
-    chessboard.coordinate_exist?(source) && chessboard.coordinate_exist?(dest)
   end
 
   def piece_belongs_to_current_player?(source)

@@ -40,6 +40,10 @@ class Chessboard
     board.key?(coordinate)
   end
 
+  def valid_source_and_dest?(source, dest)
+    coordinate_exist?(source) && coordinate_exist?(dest)
+  end
+
   def assemble(player_white, player_black, board = @board)
     add_pawns(player_white, player_black, board)
     add_knights(player_white, player_black, board)
