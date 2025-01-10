@@ -3,7 +3,7 @@ class Game
   attr_accessor :current_turn
   attr_reader :chessboard, :player_white, :player_black
 
-  def initialize(chessboard,
+  def initialize(chessboard = Chessboard.new, # rubocop:disable Metrics/ParameterLists
                  player_white = Player.new('Magnus', :white),
                  player_black = Player.new('Hikaru', :black),
                  current_turn = player_white)
