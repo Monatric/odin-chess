@@ -355,5 +355,7 @@ Notes for later:
         my idea doesn't make  sense yet)
     2.8 Making a constant of CASTLING_ROOK_COORDINATE in Piece seems out of place. ✔️
     2.9 Piece#Pawn move and capture logic could do some refactoring too.
-    2.10 Pinned pieces can move
   3. Complete FEN class
+  4. Pinned pieces can move
+  5. Third field returns value that indicates castling availability even after the king
+      has moved. This happens when the king moved away from e1 and came back
