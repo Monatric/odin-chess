@@ -6,6 +6,7 @@ class Chessboard
 
   def initialize(board = create)
     @board = board
+    assemble
   end
 
   def create
@@ -44,13 +45,13 @@ class Chessboard
     coordinate_exist?(source) && coordinate_exist?(dest)
   end
 
-  def assemble(player_white, player_black, board = @board)
-    add_pawns(player_white, player_black, board)
-    add_knights(player_white, player_black, board)
-    add_bishops(player_white, player_black, board)
-    add_rooks(player_white, player_black, board)
-    add_queens(player_white, player_black, board)
-    add_kings(player_white, player_black, board)
+  def assemble
+    add_pawns
+    add_knights
+    add_bishops
+    add_rooks
+    add_queens
+    add_kings
   end
 
   def find_piece_by_coordinate(coordinate)
@@ -123,45 +124,45 @@ class Chessboard
 
   attr_reader :board
 
-  def add_pawns(player_white, player_black, board = @board)
+  def add_pawns
     file = 'a'
     rank_two = '2'
     rank_seven = '7'
     until file == 'i'
-      board[(file + rank_two).to_sym][:piece] = Pawn.new(player_white.color)
-      board[(file + rank_seven).to_sym][:piece] = Pawn.new(player_black.color)
+      @board[(file + rank_two).to_sym][:piece] = Pawn.new(:white)
+      @board[(file + rank_seven).to_sym][:piece] = Pawn.new(:black)
       file = (file.ord + 1).chr
     end
   end
 
-  def add_knights(player_white, player_black, board = @board)
-    board[:b1][:piece] = Knight.new(player_white.color)
-    board[:g1][:piece] = Knight.new(player_white.color)
-    board[:b8][:piece] = Knight.new(player_black.color)
-    board[:g8][:piece] = Knight.new(player_black.color)
+  def add_knights
+    @board[:b1][:piece] = Knight.new(:white)
+    @board[:g1][:piece] = Knight.new(:white)
+    @board[:b8][:piece] = Knight.new(:black)
+    @board[:g8][:piece] = Knight.new(:black)
   end
 
-  def add_bishops(player_white, player_black, board)
-    board[:c1][:piece] = Bishop.new(player_white.color)
-    board[:f1][:piece] = Bishop.new(player_white.color)
-    board[:c8][:piece] = Bishop.new(player_black.color)
-    board[:f8][:piece] = Bishop.new(player_black.color)
+  def add_bishops
+    @board[:c1][:piece] = Bishop.new(:white)
+    @board[:f1][:piece] = Bishop.new(:white)
+    @board[:c8][:piece] = Bishop.new(:black)
+    @board[:f8][:piece] = Bishop.new(:black)
   end
 
-  def add_rooks(player_white, player_black, board)
-    board[:a1][:piece] = Rook.new(player_white.color)
-    board[:h1][:piece] = Rook.new(player_white.color)
-    board[:a8][:piece] = Rook.new(player_black.color)
-    board[:h8][:piece] = Rook.new(player_black.color)
+  def add_rooks
+    @board[:a1][:piece] = Rook.new(:white)
+    @board[:h1][:piece] = Rook.new(:white)
+    @board[:a8][:piece] = Rook.new(:black)
+    @board[:h8][:piece] = Rook.new(:black)
   end
 
-  def add_queens(player_white, player_black, board)
-    board[:d1][:piece] = Queen.new(player_white.color)
-    board[:d8][:piece] = Queen.new(player_black.color)
+  def add_queens
+    @board[:d1][:piece] = Queen.new(:white)
+    @board[:d8][:piece] = Queen.new(:black)
   end
 
-  def add_kings(player_white, player_black, board)
-    board[:e1][:piece] = King.new(player_white.color)
-    board[:e8][:piece] = King.new(player_black.color, player_black)
+  def add_kings
+    @board[:e1][:piece] = King.new(:white)
+    @board[:e8][:piece] = King.new(:black)
   end
 end

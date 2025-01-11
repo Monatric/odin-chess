@@ -11,6 +11,8 @@ class Game
     @player_white = player_white
     @player_black = player_black
     @current_turn = current_turn
+    @fen = FEN.new(self, @chessboard)
+    p @fen.generate_fen
   end
 
   def move_piece(source, dest, chessboard)
