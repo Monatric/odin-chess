@@ -358,4 +358,4 @@ Notes for later:
   3. Complete FEN class
   4. Pinned pieces can move
   5. Third field returns value that indicates castling availability even after the king
-      has moved. This happens when the king moved away from e1 and came back
+      has moved. This happens when the king moved away from e1 and came back ✔️
