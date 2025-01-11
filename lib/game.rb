@@ -95,7 +95,7 @@ class Game
 
   def piece_belongs_to_current_player?(source)
     piece = chessboard.find_piece_by_coordinate(source)
-    piece && piece.player.color == current_turn.color
+    piece && piece.color == current_turn.color
   end
 
   def piece_can_move_to?(source, dest)

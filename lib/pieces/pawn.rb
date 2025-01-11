@@ -3,10 +3,10 @@ require_relative 'piece'
 # class for the pawn
 class Pawn < Piece
   attr_accessor :moved, :en_passant
-  attr_reader :color, :player
+  attr_reader :color
 
-  def initialize(color, player, moved = false, en_passant = false)
-    super(color, player)
+  def initialize(color, moved = false, en_passant = false)
+    super(color)
     @moved = moved
     @en_passant = en_passant
   end

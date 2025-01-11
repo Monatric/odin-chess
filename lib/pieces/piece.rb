@@ -1,10 +1,9 @@
 # class for pieces of chess
 class Piece
-  attr_reader :color, :player
+  attr_reader :color
 
-  def initialize(color = nil, player = nil)
+  def initialize(color = nil)
     @color = color
-    @player = player
   end
 
   def notation

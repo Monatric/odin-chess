@@ -15,7 +15,7 @@ class Chessboard
     until file == 'i'
       (1..8).each do |rank|
         notation = file + rank.to_s
-        cells[notation.to_sym] = { piece: nil, player: nil, position: [rank_counter, rank - 1] }
+        cells[notation.to_sym] = { piece: nil, position: [rank_counter, rank - 1] }
       end
       file = (file.ord + 1).chr
       rank_counter += 1
@@ -128,40 +128,40 @@ class Chessboard
     rank_two = '2'
     rank_seven = '7'
     until file == 'i'
-      board[(file + rank_two).to_sym][:piece] = Pawn.new(player_white.color, player_white)
-      board[(file + rank_seven).to_sym][:piece] = Pawn.new(player_black.color, player_black)
+      board[(file + rank_two).to_sym][:piece] = Pawn.new(player_white.color)
+      board[(file + rank_seven).to_sym][:piece] = Pawn.new(player_black.color)
       file = (file.ord + 1).chr
     end
   end
 
   def add_knights(player_white, player_black, board = @board)
-    board[:b1][:piece] = Knight.new(player_white.color, player_white)
-    board[:g1][:piece] = Knight.new(player_white.color, player_white)
-    board[:b8][:piece] = Knight.new(player_black.color, player_black)
-    board[:g8][:piece] = Knight.new(player_black.color, player_black)
+    board[:b1][:piece] = Knight.new(player_white.color)
+    board[:g1][:piece] = Knight.new(player_white.color)
+    board[:b8][:piece] = Knight.new(player_black.color)
+    board[:g8][:piece] = Knight.new(player_black.color)
   end
 
   def add_bishops(player_white, player_black, board)
-    board[:c1][:piece] = Bishop.new(player_white.color, player_white)
-    board[:f1][:piece] = Bishop.new(player_white.color, player_white)
-    board[:c8][:piece] = Bishop.new(player_black.color, player_black)
-    board[:f8][:piece] = Bishop.new(player_black.color, player_black)
+    board[:c1][:piece] = Bishop.new(player_white.color)
+    board[:f1][:piece] = Bishop.new(player_white.color)
+    board[:c8][:piece] = Bishop.new(player_black.color)
+    board[:f8][:piece] = Bishop.new(player_black.color)
   end
 
   def add_rooks(player_white, player_black, board)
-    board[:a1][:piece] = Rook.new(player_white.color, player_white)
-    board[:h1][:piece] = Rook.new(player_white.color, player_white)
-    board[:a8][:piece] = Rook.new(player_black.color, player_black)
-    board[:h8][:piece] = Rook.new(player_black.color, player_black)
+    board[:a1][:piece] = Rook.new(player_white.color)
+    board[:h1][:piece] = Rook.new(player_white.color)
+    board[:a8][:piece] = Rook.new(player_black.color)
+    board[:h8][:piece] = Rook.new(player_black.color)
   end
 
   def add_queens(player_white, player_black, board)
-    board[:d1][:piece] = Queen.new(player_white.color, player_white)
-    board[:d8][:piece] = Queen.new(player_black.color, player_black)
+    board[:d1][:piece] = Queen.new(player_white.color)
+    board[:d8][:piece] = Queen.new(player_black.color)
   end
 
   def add_kings(player_white, player_black, board)
-    board[:e1][:piece] = King.new(player_white.color, player_white)
+    board[:e1][:piece] = King.new(player_white.color)
     board[:e8][:piece] = King.new(player_black.color, player_black)
   end
 end

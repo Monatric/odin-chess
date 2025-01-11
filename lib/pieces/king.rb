@@ -15,8 +15,8 @@ class King < Piece
 
   attr_accessor :moved, :en_passant
 
-  def initialize(color, player, moved = false)
-    super(color, player)
+  def initialize(color, moved = false)
+    super(color)
     @moved = moved
   end
 

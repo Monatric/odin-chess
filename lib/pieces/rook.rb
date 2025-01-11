@@ -11,8 +11,8 @@ class Rook < Piece
     [1, 0]
   ]
 
-  def initialize(color, player, moved = false)
-    super(color, player)
+  def initialize(color, moved = false)
+    super(color)
     @moved = moved
   end
 
