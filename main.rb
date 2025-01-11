@@ -51,8 +51,7 @@ end
 def run_selected_option(game, player_choice)
   case player_choice.to_i
   when 1
-    fen = FEN.new
-    puts fen.print_fen(game.chessboard, game)
+    puts game.fen.generate_fen
   when 2
     puts game.legal_squares_of_color(:black)
   when 3
@@ -76,7 +75,7 @@ end
 
 magnus = Player.new('Magnus', :white)
 hikaru = Player.new('Hikaru', :black)
-game = Game.new(Chessboard.new)
-game.chessboard.assemble(magnus, hikaru)
+chessboard = Chessboard.new
+game = Game.new(chessboard)
 
 start(game)

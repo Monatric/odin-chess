@@ -1,13 +1,12 @@
 # class for Game that facilitates the chess game
 class Game
-  attr_accessor :current_turn
-  attr_reader :chessboard, :player_white, :player_black
-
+  attr_reader :chessboard, :player_white, :player_black, :fen
+  
   def initialize(chessboard = Chessboard.new, # rubocop:disable Metrics/ParameterLists
-                 player_white = Player.new('Magnus', :white),
+    player_white = Player.new('Magnus', :white),
                  player_black = Player.new('Hikaru', :black),
                  current_turn = player_white)
-    @chessboard = chessboard
+                 @chessboard = chessboard
     @player_white = player_white
     @player_black = player_black
     @current_turn = current_turn
@@ -60,7 +59,7 @@ class Game
     opponent_covered_squares = covered_squares_of_color(color == :white ? :black : :white, chessboard)
     opponent_covered_squares.any? { |coordinate| coordinate == king_coordinate }
   end
-
+  
   def move_avoids_check?(source, dest, color)
     board_duplicate = Marshal.load(Marshal.dump(@chessboard))
     move_piece(source, dest, board_duplicate)
@@ -82,6 +81,8 @@ class Game
   end
 
   private
+  
+  attr_accessor :current_turn
 
   def determine_move_action(source, dest, chessboard)
     castling_notations = %w[e1g1 e1c1 e8g8 e8c8]

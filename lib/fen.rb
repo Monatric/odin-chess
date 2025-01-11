@@ -10,6 +10,7 @@ class FEN
     @fen_strings << first_field
     @fen_strings << second_field
     @fen_strings << third_field
+    fourth_field
     @fen_strings.join(' ')
   end
 
@@ -27,7 +28,7 @@ class FEN
   end
 
   def second_field
-    @game.current_turn.color == :white ? 'w' : 'b'
+    @game.current_turn_color == :white ? 'w' : 'b'
   end
 
   def third_field
@@ -37,6 +38,18 @@ class FEN
     result = field_string.join('')
     result << '-' if result.empty?
     result
+  end
+
+  def fourth_field
+    current_turn = second_field
+    next_turn = current_turn == 'w' ? 'b' : 'w'
+    # algorithm pseudocode:
+    # get all the pawns location by white and black, store in a hash
+    # Keys are the pawn objects, value is a hash with current coordinate,
+    #   en_passantable that starts with false, if it moves 1 square then nil,
+    #   if 2 then check if there's a black pawn beside it, if there is a black pawn then true, else nil
+    # If the current turn is white, check black pieces if any object has en_passantable to true.
+    #   Return that coordinate if true, else return hyphen '-'
   end
 
   def add_white_castling_availability(field_string)
