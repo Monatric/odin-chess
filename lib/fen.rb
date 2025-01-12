@@ -50,6 +50,30 @@ class FEN
     #   if 2 then check if there's a black pawn beside it, if there is a black pawn then true, else nil
     # If the current turn is white, check black pieces if any object has en_passantable to true.
     #   Return that coordinate if true, else return hyphen '-'
+
+    p create_pawn_rank_structure
+  end
+
+  def create_pawn_rank_structure
+    pawns = { white: {}, black: {} }
+    file = 'a'
+    rank = '2'
+    until file == 'i'
+      square = "#{file}#{rank}".to_sym
+      # piece = @chessboard.find_piece_by_coordinate(square)
+      # next if piece.nil? || !piece.instance_of?(::Pawn)
+      # if not pawn then next
+      # if nil then check if it hopped two squares, then check if it has an adjacent opposing pawn
+      # pawns[piece.color][square] = piece
+      color = (rank == '2' ? :white : :black)
+      pawns[color][square] = nil
+      file = (file.ord + 1).chr
+      if square == :h2
+        file = 'a'
+        rank = '7'
+      end
+    end
+    pawns
   end
 
   def add_white_castling_availability(field_string)
