@@ -51,7 +51,21 @@ class FEN
     # If the current turn is white, check black pieces if any object has en_passantable to true.
     #   Return that coordinate if true, else return hyphen '-'
 
-    p create_pawn_rank_structure
+    pawn_rank_struct = add_pieces_in_pawn_rank_struct
+    p pawn_rank_struct
+  end
+
+  def add_pieces_in_pawn_rank_struct
+    pawn_rank_struct = create_pawn_rank_structure
+    pawn_rank_struct.map do |_, coordinates|
+      coordinates.map do |coordinate, _|
+        piece = @chessboard.find_piece_by_coordinate(coordinate)
+        next if piece.nil?
+
+        coordinates[coordinate] = piece
+      end
+    end
+    pawn_rank_struct
   end
 
   def create_pawn_rank_structure
