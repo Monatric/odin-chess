@@ -6,6 +6,7 @@ def start(game)
     game.chessboard.show
     puts "(#{game.current_turn_color}) #{game.current_turn_name} move."
     get_player_choice(game)
+    game.refresh_en_passantable_pawn
     game.switch_player!
   end
 end
