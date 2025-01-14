@@ -3,6 +3,7 @@ class FEN
   def initialize(game = Game.new, chessboard = Chessboard.new)
     @game = game
     @chessboard = chessboard
+    @pawn_rank_struct = add_pieces_in_pawn_rank_struct
   end
 
   def generate_fen
@@ -42,7 +43,7 @@ class FEN
 
   def fourth_field
     current_turn = second_field
-    next_turn = current_turn == 'w' ? 'b' : 'w'
+    next_turn = current_turn == 'w' ? :black : :white
     # algorithm pseudocode:
     # get all the pawns location by white and black, store in a hash
     # Keys are the pawn objects, value is a hash with current coordinate,
@@ -51,18 +52,49 @@ class FEN
     # If the current turn is white, check black pieces if any object has en_passantable to true.
     #   Return that coordinate if true, else return hyphen '-'
 
-    pawn_rank_struct = add_pieces_in_pawn_rank_struct
-    p pawn_rank_struct
+    temp_pawn_rank_struct = add_pieces_in_pawn_rank_struct
+    @pawn_rank_struct[next_turn].each_pair do |k, v|
+    end
+    temp_pawn_rank_struct[next_turn].each_pair do |k, v|
+      # if value is nil, a pawn has moved. Must find if two ranks above it has the pawn
+      # If it has the pawn, then check for opposing adjacent pawn, left n right, but one only needs to return true
+      puts " #{k} #{v}"
+      next unless v.nil?
+
+      two_steps = (k.to_s[0] + k.to_s[1] = '4').to_sym
+      two_steps_piece = @chessboard.find_piece_by_coordinate(two_steps)
+      next unless !two_steps_piece.nil? && two_steps_piece.instance_of?(::Pawn)
+
+      left_adjacent = ((two_steps.to_s.ord - 1).chr + two_steps[1]).to_sym
+      right_adjacent = ((two_steps.to_s.ord + 1).chr + two_steps[1]).to_sym
+      if @chessboard.coordinate_exist?(left_adjacent)
+        left_adjacent_piece = @chessboard.find_piece_by_coordinate(left_adjacent)
+        v[:en_passantable] = true if left_adjacent_piece.instance_of?(::Pawn) && left_adjacent_piece.color == next_turn
+      elsif @chessboard.coordinate_exist?(right_adjacent)
+        right_adjacent_piece = @chessboard.find_piece_by_coordinate(right_adjacent)
+        if right_adjacent_piece.instance_of?(::Pawn) && right_adjacent_piece.color == next_turn
+          v[:en_passantable] =
+            true
+        end
+
+      end
+    end
+  end
+
+  def en_passantable_square(pawn_rank_struct)
+    current_turn = second_field
+    next_turn = current_turn == 'w' ? :black : :white
+    pawn_rank_struct[next_turn]
   end
 
   def add_pieces_in_pawn_rank_struct
     pawn_rank_struct = create_pawn_rank_structure
-    pawn_rank_struct.map do |_, coordinates|
+    pawn_rank_struct.map do |_, coordinates| # later rename coordinates as rank
       coordinates.map do |coordinate, _|
         piece = @chessboard.find_piece_by_coordinate(coordinate)
         next if piece.nil?
 
-        coordinates[coordinate] = piece
+        coordinates[coordinate] = { piece: piece, en_passantable: nil }
       end
     end
     pawn_rank_struct
