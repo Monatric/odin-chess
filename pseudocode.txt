@@ -176,6 +176,16 @@ class Piece
     #promote
       into queen, rook, knight, bishop
     #en_passant_state
+      If Pawn moved two squares, invoke set_enpassantable
+        If an adjacent opposing pawn exists, set enpassantable to true
+      Invoke Game method for enpassant refresher
+        This means that when the pawn has moved, a new turn is made, e.g. black
+        Find which pawn color has a true enpassantable. For example it must be white
+        When another turn has been made, the current turn now is white. Now set enpassantable to false again
+
+      For move generation, a pawn will use the Game method to check if a pawn is enpassantable,
+      and it will also find the square behind it.
+
     #can_move_to?(dest)
 
 
