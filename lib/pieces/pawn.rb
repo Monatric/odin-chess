@@ -36,15 +36,28 @@ class Pawn < Piece
   def en_passantable?(dest, chessboard)
     source = chessboard.current_coordinate(self)
     if source[1] == '2' && dest[1] == '4'
-      left_adjacent = ((dest.to_s.ord - 1).chr + dest[1]).to_sym
-      right_adjacent = ((dest.to_s.ord + 1).chr + dest[1]).to_sym
-      left_adjacent_piece = chessboard.find_piece_by_coordinate(left_adjacent)
-      right_adjacent_piece = chessboard.find_piece_by_coordinate(right_adjacent)
-      (left_adjacent_piece.instance_of?(::Pawn) && left_adjacent_piece.color == :black) ||
-      (right_adjacent_piece.instance_of?(::Pawn) && right_adjacent_piece.color == :black)
+      adjacent_is_opponent_pawn?( dest, chessboard, :black)
+    elsif source[1] == '7' && dest[1] == '5'
+      adjacent_is_opponent_pawn?( dest, chessboard, :white)
     end
   end
 
+  def adjacent_is_opponent_pawn?(dest, chessboard, color)
+    left_adjacent = ((dest.to_s.ord - 1).chr + dest[1]).to_sym
+    right_adjacent = ((dest.to_s.ord + 1).chr + dest[1]).to_sym
+
+    # default to dest which is the pawn's new position if coordinate is invalid
+    # This avoids error and won't mess up the evaluation because it only
+    # evaluates the opposing color. Dest would always be the opposite of opposing color, 
+    # such as white if color is black
+    left_adjacent = dest unless chessboard.coordinate_exist?(left_adjacent)
+    right_adjacent = dest unless chessboard.coordinate_exist?(right_adjacent)
+
+    left_adjacent_piece = chessboard.find_piece_by_coordinate(left_adjacent)
+    right_adjacent_piece = chessboard.find_piece_by_coordinate(right_adjacent)
+    (left_adjacent_piece.instance_of?(::Pawn) && left_adjacent_piece.color == color) ||
+    (right_adjacent_piece.instance_of?(::Pawn) && right_adjacent_piece.color == color)
+  end
 
   def en_passantable_square(chessboard)
     # For ex., if :black, it should return '4' to since that's where an opposing pawn starts
