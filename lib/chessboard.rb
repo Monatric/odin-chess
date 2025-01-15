@@ -45,13 +45,55 @@ class Chessboard
     coordinate_exist?(source) && coordinate_exist?(dest)
   end
 
-  def assemble
-    add_pawns
-    add_knights
-    add_bishops
-    add_rooks
-    add_queens
-    add_kings
+  def assemble(fen_first_field = 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPPPPPP/RNBQKBNR/')
+    rank = '8'
+    first_field_split = fen_first_field.split('/')
+    first_field_split.each do |piece_placement_data|
+      file = 'a'
+
+      add_pieces_by_piece_placement_data(file, rank, piece_placement_data)
+      
+      # decrease rank number
+      rank = (rank.to_i - 1).to_s
+    end
+  end
+
+  def add_pieces_by_piece_placement_data(file, rank, piece_placement_data)
+    # convert to chars to get individual chars into array
+    piece_placement_data.chars.each do |notation|
+      coordinate = (file + rank).to_sym
+      
+      # if the char is a number, this must be space. Use it as how many spaces (nil) must be placed
+      if notation.match(/[0-9]/)
+        notation.to_i.times do
+          break if file == 'i'
+          @board[coordinate][:piece] = nil
+  
+          file = (file.ord + 1).chr
+          coordinate = (file + rank).to_sym
+        end
+      else
+        @board[coordinate][:piece] = piece_notation_equivalent[notation]
+        file = (file.ord + 1).chr
+      end      
+    end
+  end
+
+  def piece_notation_equivalent
+    piece_notation_equivalent = {
+      'r' => Rook.new(:black),
+      'n' => Knight.new(:black),
+      'b' => Bishop.new(:black),
+      'q' => Queen.new(:black),
+      'k' => King.new(:black),
+      'p' => Pawn.new(:black),
+      'R' => Rook.new(:white),
+      'N' => Knight.new(:white),
+      'B' => Bishop.new(:white),
+      'Q' => Queen.new(:white),
+      'K' => King.new(:white),
+      'P' => Pawn.new(:white)
+    }
   end
 
   def find_piece_by_coordinate(coordinate)
