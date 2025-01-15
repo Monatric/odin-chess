@@ -148,63 +148,9 @@ class Chessboard
       c8: %i[a8 d8]
     }
   end
-
-  # def castling_rook_new_coordinate(rook_coordinate)
-  #   case rook_coordinate
-  #   when :h1
-  #     :f1
-  #   when :a1
-  #     :d1
-  #   when :h8
-  #     :f8
-  #   when :a8
-  #     :d8
-  #   end
-  # end
-
+  
   private
 
   attr_reader :board
 
-  def add_pawns
-    file = 'a'
-    rank_two = '2'
-    rank_seven = '7'
-    until file == 'i'
-      @board[(file + rank_two).to_sym][:piece] = Pawn.new(:white)
-      @board[(file + rank_seven).to_sym][:piece] = Pawn.new(:black)
-      file = (file.ord + 1).chr
-    end
-  end
-
-  def add_knights
-    @board[:b1][:piece] = Knight.new(:white)
-    @board[:g1][:piece] = Knight.new(:white)
-    @board[:b8][:piece] = Knight.new(:black)
-    @board[:g8][:piece] = Knight.new(:black)
-  end
-
-  def add_bishops
-    @board[:c1][:piece] = Bishop.new(:white)
-    @board[:f1][:piece] = Bishop.new(:white)
-    @board[:c8][:piece] = Bishop.new(:black)
-    @board[:f8][:piece] = Bishop.new(:black)
-  end
-
-  def add_rooks
-    @board[:a1][:piece] = Rook.new(:white)
-    @board[:h1][:piece] = Rook.new(:white)
-    @board[:a8][:piece] = Rook.new(:black)
-    @board[:h8][:piece] = Rook.new(:black)
-  end
-
-  def add_queens
-    @board[:d1][:piece] = Queen.new(:white)
-    @board[:d8][:piece] = Queen.new(:black)
-  end
-
-  def add_kings
-    @board[:e1][:piece] = King.new(:white)
-    @board[:e8][:piece] = King.new(:black)
-  end
 end
