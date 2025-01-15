@@ -24,7 +24,7 @@ class Pawn < Piece
     if dest == en_passantable_square(chessboard)
       # if dest is 3, this means white pawn is captured at fourth rank
       # else it would be 6, captured black pawn at fifth rank
-      opponent_pawn_coordinate = (dest[1] == '3' ? (dest[0] + '4').to_sym : (dest[0] + '5').to_sym)
+      opponent_pawn_coordinate = (dest[1] == '3' ? "#{dest[0]}4".to_sym : "#{dest[0]}5".to_sym)
       chessboard.remove_piece(opponent_pawn_coordinate)
     end
     self.moved = true
@@ -36,9 +36,9 @@ class Pawn < Piece
   def en_passantable?(dest, chessboard)
     source = chessboard.current_coordinate(self)
     if source[1] == '2' && dest[1] == '4'
-      adjacent_is_opponent_pawn?( dest, chessboard, :black)
+      adjacent_is_opponent_pawn?(dest, chessboard, :black)
     elsif source[1] == '7' && dest[1] == '5'
-      adjacent_is_opponent_pawn?( dest, chessboard, :white)
+      adjacent_is_opponent_pawn?(dest, chessboard, :white)
     end
   end
 
@@ -48,7 +48,7 @@ class Pawn < Piece
 
     # default to dest which is the pawn's new position if coordinate is invalid
     # This avoids error and won't mess up the evaluation because it only
-    # evaluates the opposing color. Dest would always be the opposite of opposing color, 
+    # evaluates the opposing color. Dest would always be the opposite of opposing color,
     # such as white if color is black
     left_adjacent = dest unless chessboard.coordinate_exist?(left_adjacent)
     right_adjacent = dest unless chessboard.coordinate_exist?(right_adjacent)
@@ -56,7 +56,7 @@ class Pawn < Piece
     left_adjacent_piece = chessboard.find_piece_by_coordinate(left_adjacent)
     right_adjacent_piece = chessboard.find_piece_by_coordinate(right_adjacent)
     (left_adjacent_piece.instance_of?(::Pawn) && left_adjacent_piece.color == color) ||
-    (right_adjacent_piece.instance_of?(::Pawn) && right_adjacent_piece.color == color)
+      (right_adjacent_piece.instance_of?(::Pawn) && right_adjacent_piece.color == color)
   end
 
   def en_passantable_square(chessboard)
@@ -68,12 +68,12 @@ class Pawn < Piece
       coordinate = "#{file}#{rank}".to_sym
       file = (file.ord + 1).chr
       piece = chessboard.find_piece_by_coordinate(coordinate)
-      if piece.instance_of?(::Pawn) && piece.en_passant == true
-        # if rank is 5, meaning it's above it or 6
-        # if rank is 4 then beneath it is 3
-        rank_behind_pawn = (rank == '5' ? '6' : '3')
-        return (coordinate[0] + rank_behind_pawn).to_sym
-      end
+      next unless piece.instance_of?(::Pawn) && piece.en_passant == true
+
+      # if rank is 5, meaning it's above it or 6
+      # if rank is 4 then beneath it is 3
+      rank_behind_pawn = (rank == '5' ? '6' : '3')
+      return (coordinate[0] + rank_behind_pawn).to_sym
     end
   end
 
@@ -103,7 +103,7 @@ class Pawn < Piece
     two_steps = (file + (rank - 2).to_s).to_sym
 
     possible_moves << one_step if chessboard.find_piece_by_coordinate(one_step).nil?
-    return unless !moved && 
+    return unless !moved &&
                   chessboard.find_piece_by_coordinate(one_step).nil? &&
                   chessboard.find_piece_by_coordinate(two_steps).nil?
 
@@ -128,10 +128,10 @@ class Pawn < Piece
     possible_moves << one_step if chessboard.find_piece_by_coordinate(one_step).nil?
     # pawn cannot move two steps if there is a piece or has moved
     return unless !moved &&
-           chessboard.find_piece_by_coordinate(one_step).nil? &&
-           chessboard.find_piece_by_coordinate(two_steps).nil?
-      
-      possible_moves << two_steps
+                  chessboard.find_piece_by_coordinate(one_step).nil? &&
+                  chessboard.find_piece_by_coordinate(two_steps).nil?
+
+    possible_moves << two_steps
   end
 
   def add_white_capture_moves(file, rank, possible_moves, chessboard)
