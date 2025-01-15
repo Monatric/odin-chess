@@ -1,12 +1,12 @@
 # class for Game that facilitates the chess game
 class Game
   attr_reader :chessboard, :player_white, :player_black, :fen
-  
+
   def initialize(chessboard = Chessboard.new, # rubocop:disable Metrics/ParameterLists
-    player_white = Player.new('Magnus', :white),
+                 player_white = Player.new('Magnus', :white),
                  player_black = Player.new('Hikaru', :black),
                  current_turn = player_white)
-                 @chessboard = chessboard
+    @chessboard = chessboard
     @player_white = player_white
     @player_black = player_black
     @current_turn = current_turn
@@ -59,7 +59,7 @@ class Game
     opponent_covered_squares = covered_squares_of_color(color == :white ? :black : :white, chessboard)
     opponent_covered_squares.any? { |coordinate| coordinate == king_coordinate }
   end
-  
+
   def move_avoids_check?(source, dest, color)
     board_duplicate = Marshal.load(Marshal.dump(@chessboard))
     move_piece(source, dest, board_duplicate)
@@ -76,9 +76,7 @@ class Game
       coordinate = "#{file}#{rank}".to_sym
       file = (file.ord + 1).chr
       piece = chessboard.find_piece_by_coordinate(coordinate)
-      if piece.instance_of?(::Pawn) && piece.en_passant == true
-        piece.en_passant = false
-      end
+      piece.en_passant = false if piece.instance_of?(::Pawn) && piece.en_passant == true
     end
   end
 
@@ -95,7 +93,7 @@ class Game
   end
 
   private
-  
+
   attr_accessor :current_turn
 
   def determine_move_action(source, dest, chessboard)
