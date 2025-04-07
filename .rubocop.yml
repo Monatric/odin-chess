@@ -11,3 +11,7 @@
 Metrics/BlockLength:
   Exclude:
     - "spec/*"
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+  AutoCorrect: true
