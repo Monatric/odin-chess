@@ -53,7 +53,7 @@ class King < Piece
 
   def add_moves(file, rank, possible_moves, chessboard)
     add_basic_moves(file, rank, possible_moves, chessboard)
-    add_castling_moves(file, rank, possible_moves, chessboard)
+    add_castling_moves(possible_moves, chessboard)
 
     # later on, consider about checks/pins
   end
@@ -72,7 +72,7 @@ class King < Piece
     end
   end
 
-  def add_castling_moves(file, rank, possible_moves, chessboard)
+  def add_castling_moves(possible_moves, chessboard)
     # check if king has moved
     return if moved
 
