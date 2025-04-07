@@ -10,4 +10,4 @@
 # See https://docs.rubocop.org/rubocop/configuration
 Metrics/BlockLength:
   Exclude:
-    - 'spec/*'
+    - "spec/*"
