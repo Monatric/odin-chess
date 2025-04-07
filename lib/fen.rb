@@ -1,5 +1,7 @@
 # class for generating, saving, loading, or getting/setting data for a valid chess position
+require_relative 'helpers/chessboard_navigatable'
 class FEN
+  include ChessboardNavigatable
   def initialize(game = Game.new, chessboard = Chessboard.new)
     @game = game
     @chessboard = chessboard
@@ -11,6 +13,7 @@ class FEN
     @fen_strings << second_field
     @fen_strings << third_field
     @fen_strings << fourth_field
+    @fen_strings << fifth_field
     @fen_strings.join(' ')
   end
 
@@ -54,6 +57,13 @@ class FEN
       end
     end
     '-'
+  end
+
+  def fifth_field
+    coordinate_iterator(file: 'a', rank: '8') do |coordinate|
+      p coordinate
+      @chessboard.find_piece_by_coordinate(coordinate)
+    end
   end
 
   def add_white_castling_availability(field_string)
