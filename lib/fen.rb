@@ -11,7 +11,7 @@ class FEN
     @fen_strings << second_field
     @fen_strings << third_field
     @fen_strings << fourth_field
-    @fen_strings << fifth_field
+    # @fen_strings << fifth_field
     @fen_strings.join(' ')
   end
 
@@ -45,12 +45,12 @@ class FEN
     ('a'..'h').each do |file|
       coordinate = "#{file}#{rank}".to_sym
       piece = @chessboard.find_piece_by_coordinate(coordinate)
-      if !piece.nil? && piece.en_passant == true
+      if piece&.en_passant == true
         rank_behind_pawn = (rank == '5' ? '6' : '3')
         return (coordinate[0] + rank_behind_pawn)
       end
     end
-    '-'
+    '-' # return hyphen if nothing's en passantable
   end
 
   def fifth_field
