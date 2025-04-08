@@ -44,14 +44,12 @@ class FEN
   end
 
   def fourth_field
-    file = 'a'
     # if current color is white, it means a turn has passed without the opponent capturing the en passant, thus a reset
     rank = (second_field == 'w' ? '5' : '4')
-    until file == 'i'
+    ('a'..'h').each do |file|
       coordinate = "#{file}#{rank}".to_sym
-      file = (file.ord + 1).chr
       piece = @chessboard.find_piece_by_coordinate(coordinate)
-      if piece.instance_of?(::Pawn) && piece.en_passant == true
+      if !piece.nil? && piece.en_passant == true
         rank_behind_pawn = (rank == '5' ? '6' : '3')
         return (coordinate[0] + rank_behind_pawn)
       end
