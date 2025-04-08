@@ -13,7 +13,7 @@ class King < Piece
     [-1, 1] # upleft
   ]
 
-  attr_accessor :moved, :en_passant
+  attr_accessor :moved
 
   def initialize(color, moved = false)
     super(color)
