@@ -1,7 +1,5 @@
 # class for generating, saving, loading, or getting/setting data for a valid chess position
-require_relative 'helpers/chessboard_navigatable'
 class FEN
-  include ChessboardNavigatable
   def initialize(game = Game.new, chessboard = Chessboard.new)
     @game = game
     @chessboard = chessboard
