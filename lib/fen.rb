@@ -22,11 +22,9 @@ class FEN
   attr_accessor :fen_strings
 
   def first_field
-    file = 'a'
-    rank = 8
     space = 0
     first_field_array = []
-    add_first_field_data(file, space, rank, first_field_array)
+    add_first_field_data(space, first_field_array)
     first_field_array.join('')
   end
 
@@ -59,7 +57,7 @@ class FEN
 
   def fifth_field
     coordinate_iterator(file: 'a', rank: '8') do |coordinate|
-      p coordinate
+      # p coordinate
       @chessboard.find_piece_by_coordinate(coordinate)
     end
   end
@@ -90,27 +88,18 @@ class FEN
     king.moved
   end
 
-  def add_first_field_data(file, space, rank, first_field_array)
-    until rank.zero?
-      add_rank_data(file, space, rank, first_field_array)
-      rank -= 1
+  def add_first_field_data(space, first_field_array)
+    8.downto(1) do |rank|
+      ('a'..'h').each do |file|
+        coordinate = (file + rank.to_s).to_sym
+        piece = @chessboard.find_piece_by_coordinate(coordinate)
+
+        space = add_space_between_piece(piece, space, first_field_array)
+      end
+      first_field_array << space.to_s unless space.zero?
+      first_field_array << '/'
+      space = 0
     end
-  end
-
-  def add_rank_data(file, space, rank, first_field_array)
-    until file == 'i'
-      coordinate = (file + rank.to_s).to_sym
-      piece = @chessboard.find_piece_by_coordinate(coordinate)
-
-      space = add_space_between_piece(piece, space, first_field_array)
-      file = next_file(file)
-    end
-    first_field_array << space.to_s unless space.zero?
-    first_field_array << '/'
-  end
-
-  def next_file(file)
-    (file.ord + 1).chr
   end
 
   def add_space_between_piece(piece, space, first_field_array)
