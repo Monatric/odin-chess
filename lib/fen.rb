@@ -7,10 +7,10 @@ class FEN
 
   def generate_fen
     @fen_strings = []
-    @fen_strings << first_field
-    @fen_strings << second_field
-    @fen_strings << third_field
-    @fen_strings << fourth_field
+    @fen_strings << piece_placement_field
+    @fen_strings << active_color_field
+    @fen_strings << castling_availability_field
+    @fen_strings << en_passant_field
     # @fen_strings << fifth_field
     @fen_strings.join(' ')
   end
@@ -19,18 +19,18 @@ class FEN
 
   attr_accessor :fen_strings
 
-  def first_field
+  def piece_placement_field
     space = 0
-    first_field_array = []
-    add_first_field_data(space, first_field_array)
-    first_field_array.join('')
+    piece_placement_field_array = []
+    add_piece_placement_field(space, piece_placement_field_array)
+    piece_placement_field_array.join('')
   end
 
-  def second_field
+  def active_color_field
     @game.current_turn_color == :white ? 'w' : 'b'
   end
 
-  def third_field
+  def castling_availability_field
     field_string = []
     add_white_castling_availability(field_string)
     add_black_castling_availability(field_string)
@@ -47,7 +47,7 @@ class FEN
     sixth_rank = '6'
 
     # if current color is white, it means a turn has passed without the opponent capturing the en passant, thus a reset
-    rank = (second_field == white_notation ? fifth_rank : fourth_rank)
+    rank = (active_color_field == white_notation ? fifth_rank : fourth_rank)
 
     # check all files of the given rank to find out if a pawn is en passantable
     ('a'..'h').each do |file|
@@ -95,26 +95,26 @@ class FEN
     king.moved
   end
 
-  def add_first_field_data(space, first_field_array)
+  def add_piece_placement_field(space, piece_placement_field_array)
     8.downto(1) do |rank|
       ('a'..'h').each do |file|
         coordinate = (file + rank.to_s).to_sym
         piece = @chessboard.find_piece_by_coordinate(coordinate)
 
-        space = add_space_between_piece(piece, space, first_field_array)
+        space = add_space_between_piece(piece, space, piece_placement_field_array)
       end
-      first_field_array << space.to_s unless space.zero?
-      first_field_array << '/'
+      piece_placement_field_array << space.to_s unless space.zero?
+      piece_placement_field_array << '/'
       space = 0
     end
   end
 
-  def add_space_between_piece(piece, space, first_field_array)
+  def add_space_between_piece(piece, space, piece_placement_field_array)
     if piece.nil?
       space + 1
     else
-      first_field_array << space.to_s unless space.zero?
-      first_field_array << piece.notation
+      piece_placement_field_array << space.to_s unless space.zero?
+      piece_placement_field_array << piece.notation
       0
     end
   end
