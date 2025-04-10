@@ -43,15 +43,25 @@ class Chessboard
   end
 
   def assemble(fen_first_field = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/')
-    rank = '8'
-    first_field_split = fen_first_field.split('/')
-    first_field_split.each do |piece_placement_data|
-      file = 'a'
+    max_rank = 8
+    first_file = 'a'
+    rank_data = fen_first_field.split('/')
+    rank_data.each_with_index do |piece_placement_data, current_rank|
+      rank = (max_rank - current_rank).to_s
+      piece_placement_data.chars.each_with_index do |notation, char|
+        file = (first_file.ord + char).chr
+        coordinate = (file + rank).to_sym
 
-      add_pieces_by_piece_placement_data(file, rank, piece_placement_data)
-
-      # decrease rank number
-      rank = (rank.to_i - 1).to_s
+        # if the char is a number, this must be space. Use it as how many spaces (nil) must be placed
+        if notation.match(/[0-9]/)
+          notation.to_i.times do
+            @board[coordinate][:piece] = nil
+            coordinate = (file + rank).to_sym
+          end
+        else
+          @board[coordinate][:piece] = piece_notation_equivalent[notation]
+        end
+      end
     end
   end
 
