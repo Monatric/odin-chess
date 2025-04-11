@@ -1,30 +1,24 @@
 # module for displaying CLI messages
 module Displayable
   def display_board(board)
-    file = 'a'
-    rank = '8'
-    loop_through_board_hash(board, file, rank)
-
+    puts '   ┌───┬───┬───┬───┬───┬───┬───┬───┐'
+    loop_through_board_hash(board)
+    puts '   └───┴───┴───┴───┴───┴───┴───┴───┘'
     puts '     a   b   c   d   e   f   g   h'
   end
 
   private
 
-  def loop_through_board_hash(board, file, rank)
-    puts '   ┌───┬───┬───┬───┬───┬───┬───┬───┐'
-    until rank == '0'
+  def loop_through_board_hash(board)
+    8.downto(1) do |rank|
       print "#{rank}  "
-      until file == 'i'
-        piece = board[(file + rank).to_sym][:piece]
+      ('a'..'h').each do |file|
+        piece = board[(file + rank.to_s).to_sym][:piece]
         print "│ #{piece.nil? ? ' ' : piece.symbol} "
-        file = (file.ord + 1).chr
       end
       puts '│'
-      file = 'a'
-      rank = (rank.to_i - 1).to_s
-      puts '   ├───┼───┼───┼───┼───┼───┼───┼───┤' unless rank == '0'
+      puts '   ├───┼───┼───┼───┼───┼───┼───┼───┤' unless rank == 1
     end
-    puts '   └───┴───┴───┴───┴───┴───┴───┴───┘'
   end
 end
 # ┫ ┛ ┗ ┴ ┬ ┘ └ ┐ ┌ ─ ┼ ┻ ╋ ┣ ┏ ┓ ┤ ├ ┃
