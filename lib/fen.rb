@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # class for generating, saving, loading, or getting/setting data for a valid chess position
 class FEN
   def initialize(game = Game.new, chessboard = Chessboard.new)
