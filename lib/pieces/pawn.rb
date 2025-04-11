@@ -75,8 +75,7 @@ class Pawn < Piece
 
     left_adjacent_piece = chessboard.find_piece_by_coordinate(left_adjacent)
     right_adjacent_piece = chessboard.find_piece_by_coordinate(right_adjacent)
-    (left_adjacent_piece.instance_of?(::Pawn) && left_adjacent_piece.color == color) ||
-      (right_adjacent_piece.instance_of?(::Pawn) && right_adjacent_piece.color == color)
+    (left_adjacent_piece&.color == color) || (right_adjacent_piece&.color == color)
   end
 
   def generate_possible_moves(chessboard)
