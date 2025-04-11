@@ -39,6 +39,7 @@ class Pawn < Piece
     fourth_rank = '4'
     third_rank = '3'
     rank = (@color == :white ? fifth_rank : fourth_rank)
+    result = nil
     ('a'..'h').each do |file|
       coordinate = "#{file}#{rank}".to_sym
       piece = chessboard.find_piece_by_coordinate(coordinate)
@@ -47,8 +48,9 @@ class Pawn < Piece
       # if rank is 5, meaning it's above it or 6
       # if rank is 4 then beneath it is 3
       rank_behind_pawn = (rank == fifth_rank ? sixth_rank : third_rank)
-      return (coordinate[0] + rank_behind_pawn).to_sym
+      result << (coordinate[0] + rank_behind_pawn).to_sym
     end
+    result
   end
 
   private
@@ -84,7 +86,7 @@ class Pawn < Piece
     rank = chessboard.current_coordinate(self)[1].to_i
     add_white_moves(file, rank, possible_moves, chessboard) if color == :white
     add_black_moves(file, rank, possible_moves, chessboard) if color == :black
-    possible_moves << en_passantable_square(chessboard)
+    possible_moves << en_passantable_square(chessboard) if en_passant
 
     possible_moves
   end
