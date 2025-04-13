@@ -9,6 +9,7 @@ class Pawn < Piece
     super(color)
     @moved = moved
     @en_passant = en_passant
+    # @possible_moves = []
   end
 
   def notation
@@ -20,7 +21,7 @@ class Pawn < Piece
   end
 
   def move(dest, chessboard)
-    self.en_passant = true if en_passantable?(dest, chessboard)
+    self.en_passant = true if self_is_en_passantable?(dest, chessboard)
     if dest == en_passantable_square(chessboard)
       # if dest is 3, this means white pawn is captured at fourth rank
       # else it would be 6, captured black pawn at fifth rank
@@ -31,31 +32,42 @@ class Pawn < Piece
     super(dest, chessboard)
   end
 
+  # def en_passantable_square(chessboard)
+  #   en_passant_rank_offset = 1
+  #   current_coordinate = chessboard.current_coordinate(self)
+  #   current_file = current_coordinate[0]
+  #   current_rank = current_coordinate[1].to_i
+  #   if @color == :white
+  #     # if rank is 4 then beneath it is 3
+  #     (current_file + (current_rank - en_passant_rank_offset).to_s).to_sym
+  #   else
+  #     # if rank is 5, meaning it's above it or 6
+  #     (current_file + (current_rank + en_passant_rank_offset).to_s).to_sym
+  #   end
+  # end
+
   def en_passantable_square(chessboard)
     # For ex., if :black, it should return '4' to since that's where an opposing pawn starts
     # to be en_passantable
-    sixth_rank = '6'
-    fifth_rank = '5'
-    fourth_rank = '4'
-    third_rank = '3'
-    rank = (@color == :white ? fifth_rank : fourth_rank)
     result = nil
+    rank = (@color == :white ? '5' : '4')
     ('a'..'h').each do |file|
       coordinate = "#{file}#{rank}".to_sym
+      # file = (file.ord + 1).chr
       piece = chessboard.find_piece_by_coordinate(coordinate)
-      next unless piece&.en_passant == true
+      next unless piece.respond_to?(:en_passant) && piece.en_passant == true
 
       # if rank is 5, meaning it's above it or 6
       # if rank is 4 then beneath it is 3
-      rank_behind_pawn = (rank == fifth_rank ? sixth_rank : third_rank)
-      result << (coordinate[0] + rank_behind_pawn).to_sym
+      rank_behind_pawn = (rank == '5' ? '6' : '3')
+      result = (coordinate[0] + rank_behind_pawn).to_sym
     end
     result
   end
 
   private
 
-  def en_passantable?(dest, chessboard)
+  def self_is_en_passantable?(dest, chessboard)
     source = chessboard.current_coordinate(self)
     if source[1] == '2' && dest[1] == '4'
       adjacent_is_opponent_pawn?(dest, chessboard, :black)
@@ -86,7 +98,7 @@ class Pawn < Piece
     rank = chessboard.current_coordinate(self)[1].to_i
     add_white_moves(file, rank, possible_moves, chessboard) if color == :white
     add_black_moves(file, rank, possible_moves, chessboard) if color == :black
-    possible_moves << en_passantable_square(chessboard) if en_passant
+    possible_moves << en_passantable_square(chessboard)
 
     possible_moves
   end

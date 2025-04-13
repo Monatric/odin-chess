@@ -42,26 +42,19 @@ class FEN
   end
 
   def en_passant_field
-    white_notation = 'w'
-    third_rank = '3'
-    fourth_rank = '4'
-    fifth_rank = '5'
-    sixth_rank = '6'
-
-    # if current color is white, it means a turn has passed without the opponent capturing the en passant, thus a reset
-    rank = (active_color_field == white_notation ? fifth_rank : fourth_rank)
-
+    no_en_passant_square = '-'
+    result = nil
     # check all files of the given rank to find out if a pawn is en passantable
     ('a'..'h').each do |file|
-      coordinate = "#{file}#{rank}".to_sym
-      coordinate_file = coordinate[0]
-      piece = @chessboard.find_piece_by_coordinate(coordinate)
-      if piece&.en_passant == true
-        rank_behind_pawn = (rank == fifth_rank ? sixth_rank : third_rank)
-        return (coordinate_file + rank_behind_pawn)
+      6.downto(3).each do |rank|
+        coordinate = "#{file}#{rank}".to_sym
+        # coordinate_file = coordinate[0]
+        piece = @chessboard.find_piece_by_coordinate(coordinate)
+        en_passantable_square = piece&.en_passantable_square(@chessboard) if piece.respond_to?(:en_passant)
+        result = en_passantable_square unless en_passantable_square.nil?
       end
     end
-    '-' # return hyphen if nothing's en passantable
+    result = (result.nil? ? no_en_passant_square : result) # default hyphen, no en passant square
   end
 
   def fifth_field
