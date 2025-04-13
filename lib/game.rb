@@ -1,120 +1,124 @@
-# class for Game that facilitates the chess game
-class Game
-  attr_reader :chessboard, :player_white, :player_black, :fen
+# frozen_string_literal: true
 
-  def initialize(chessboard = Chessboard.new, # rubocop:disable Metrics/ParameterLists
-                 player_white = Player.new('Magnus', :white),
-                 player_black = Player.new('Hikaru', :black),
-                 current_turn = player_white)
-    @chessboard = chessboard
-    @player_white = player_white
-    @player_black = player_black
-    @current_turn = current_turn
-    @fen = FEN.new(self, @chessboard)
-    p @fen.generate_fen
-  end
+module Chess
+  # class for Game that facilitates the chess game
+  class Game
+    attr_reader :chessboard, :player_white, :player_black, :fen
 
-  def move_piece(source, dest, chessboard)
-    determine_move_action(source, dest, chessboard)
-  end
-
-  def switch_player!
-    self.current_turn = (current_turn == player_white ? player_black : player_white)
-  end
-
-  def valid_move?(move)
-    source = move.slice(0, 2).to_sym
-    dest = move.slice(2, 3).to_sym
-
-    return false unless @chessboard.valid_source_and_dest?(source, dest)
-    return false unless piece_belongs_to_current_player?(source)
-    return false unless piece_can_move_to?(source, dest)
-
-    true
-  end
-
-  def covered_squares_of_color(color, chessboard)
-    squares_with_pieces = chessboard.find_squares_with_pieces_by_color(color)
-    squares_with_pieces.map do |_, info|
-      info[:piece].possible_moves(chessboard)
-    end.flatten
-  end
-
-  def legal_squares_of_color(color, chessboard)
-    # color parameter is usually the current turn. Might be confusing what it means by
-    # current_turn in the variable. Not sure what's the best design here.
-    king_coordinate = chessboard.king_coordinate(color)
-    opponent_covered_squares = covered_squares_of_color(color == :white ? :black : :white, chessboard)
-    current_turn_covered_squares = covered_squares_of_color(color, chessboard)
-    current_turn_covered_squares.map do |current_turn_square|
-      current_turn_square unless current_turn_square == opponent_covered_squares.any?(king_coordinate)
+    def initialize(chessboard = Chessboard.new, # rubocop:disable Metrics/ParameterLists
+                   player_white = Player.new('Magnus', :white),
+                   player_black = Player.new('Hikaru', :black),
+                   current_turn = player_white)
+      @chessboard = chessboard
+      @player_white = player_white
+      @player_black = player_black
+      @current_turn = current_turn
+      @fen = FEN.new(self, @chessboard)
+      p @fen.generate_fen
     end
-  end
 
-  def in_check?(color, chessboard)
-    # color parameter is usually the current turn. Might be confusing what it means by
-    # current_turn in the variable. Not sure what's the best design here.
-    # Use chessboard parameter to validate duplicate board or real board
-    king_coordinate = chessboard.king_coordinate(color)
-    opponent_covered_squares = covered_squares_of_color(color == :white ? :black : :white, chessboard)
-    opponent_covered_squares.any? { |coordinate| coordinate == king_coordinate }
-  end
-
-  def move_avoids_check?(source, dest, color)
-    board_duplicate = Marshal.load(Marshal.dump(@chessboard))
-    move_piece(source, dest, board_duplicate)
-
-    # if the king is still in check (true), then move does not avoid the check (false)
-    in_check?(color, board_duplicate) ? false : true
-  end
-
-  def refresh_en_passantable_pawn
-    file = 'a'
-    # if current color is white, it means a turn has passed without the opponent capturing the en passant, thus a reset
-    rank = (current_turn_color == :white ? '5' : '4')
-    until file == 'i'
-      coordinate = "#{file}#{rank}".to_sym
-      file = (file.ord + 1).chr
-      piece = chessboard.find_piece_by_coordinate(coordinate)
-      piece.en_passant = false if piece.instance_of?(::Pawn) && piece.en_passant == true
+    def move_piece(source, dest, chessboard)
+      determine_move_action(source, dest, chessboard)
     end
-  end
 
-  def current_turn_color
-    @current_turn.color
-  end
-
-  def current_turn_name
-    @current_turn.name
-  end
-
-  def other_turn_color
-    @current_turn == @player_white ? :black : :white
-  end
-
-  private
-
-  attr_accessor :current_turn
-
-  def determine_move_action(source, dest, chessboard)
-    castling_notations = %w[e1g1 e1c1 e8g8 e8c8]
-
-    piece = chessboard.find_piece_by_coordinate(source)
-
-    if castling_notations.include?(source.to_s + dest.to_s)
-      piece.castle(dest, chessboard)
-    else
-      piece.move(dest, chessboard)
+    def switch_player!
+      self.current_turn = (current_turn == player_white ? player_black : player_white)
     end
-  end
 
-  def piece_belongs_to_current_player?(source)
-    piece = chessboard.find_piece_by_coordinate(source)
-    piece && piece.color == current_turn.color
-  end
+    def valid_move?(move)
+      source = move.slice(0, 2).to_sym
+      dest = move.slice(2, 3).to_sym
 
-  def piece_can_move_to?(source, dest)
-    piece = chessboard.find_piece_by_coordinate(source)
-    piece && piece.can_move_to?(dest, chessboard)
+      return false unless @chessboard.valid_source_and_dest?(source, dest)
+      return false unless piece_belongs_to_current_player?(source)
+      return false unless piece_can_move_to?(source, dest)
+
+      true
+    end
+
+    def covered_squares_of_color(color, chessboard)
+      squares_with_pieces = chessboard.find_squares_with_pieces_by_color(color)
+      squares_with_pieces.map do |_, info|
+        info[:piece].possible_moves(chessboard)
+      end.flatten
+    end
+
+    def legal_squares_of_color(color, chessboard)
+      # color parameter is usually the current turn. Might be confusing what it means by
+      # current_turn in the variable. Not sure what's the best design here.
+      king_coordinate = chessboard.king_coordinate(color)
+      opponent_covered_squares = covered_squares_of_color(color == :white ? :black : :white, chessboard)
+      current_turn_covered_squares = covered_squares_of_color(color, chessboard)
+      current_turn_covered_squares.map do |current_turn_square|
+        current_turn_square unless current_turn_square == opponent_covered_squares.any?(king_coordinate)
+      end
+    end
+
+    def in_check?(color, chessboard)
+      # color parameter is usually the current turn. Might be confusing what it means by
+      # current_turn in the variable. Not sure what's the best design here.
+      # Use chessboard parameter to validate duplicate board or real board
+      king_coordinate = chessboard.king_coordinate(color)
+      opponent_covered_squares = covered_squares_of_color(color == :white ? :black : :white, chessboard)
+      opponent_covered_squares.any? { |coordinate| coordinate == king_coordinate }
+    end
+
+    def move_avoids_check?(source, dest, color)
+      board_duplicate = Marshal.load(Marshal.dump(@chessboard))
+      move_piece(source, dest, board_duplicate)
+
+      # if the king is still in check (true), then move does not avoid the check (false)
+      in_check?(color, board_duplicate) ? false : true
+    end
+
+    def refresh_en_passantable_pawn
+      file = 'a'
+      # if current color is white, it means a turn has passed without the opponent capturing the en passant, thus a reset
+      rank = (current_turn_color == :white ? '5' : '4')
+      until file == 'i'
+        coordinate = "#{file}#{rank}".to_sym
+        file = (file.ord + 1).chr
+        piece = chessboard.find_piece_by_coordinate(coordinate)
+        piece.en_passant = false if piece.instance_of?(::Pawn) && piece.en_passant == true
+      end
+    end
+
+    def current_turn_color
+      @current_turn.color
+    end
+
+    def current_turn_name
+      @current_turn.name
+    end
+
+    def other_turn_color
+      @current_turn == @player_white ? :black : :white
+    end
+
+    private
+
+    attr_accessor :current_turn
+
+    def determine_move_action(source, dest, chessboard)
+      castling_notations = %w[e1g1 e1c1 e8g8 e8c8]
+
+      piece = chessboard.find_piece_by_coordinate(source)
+
+      if castling_notations.include?(source.to_s + dest.to_s)
+        piece.castle(dest, chessboard)
+      else
+        piece.move(dest, chessboard)
+      end
+    end
+
+    def piece_belongs_to_current_player?(source)
+      piece = chessboard.find_piece_by_coordinate(source)
+      piece && piece.color == current_turn.color
+    end
+
+    def piece_can_move_to?(source, dest)
+      piece = chessboard.find_piece_by_coordinate(source)
+      piece && piece.can_move_to?(dest, chessboard)
+    end
   end
 end

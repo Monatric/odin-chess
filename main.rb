@@ -77,6 +77,6 @@ end
 magnus = Player.new('Magnus', :white)
 hikaru = Player.new('Hikaru', :black)
 chessboard = Chessboard.new
-game = Game.new(chessboard)
+game = Chess::Game.new(chessboard)
 
 start(game)
