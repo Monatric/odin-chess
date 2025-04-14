@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative '../helpers/convertable'
 # class for pieces of chess
 class Piece
   include Convertable
