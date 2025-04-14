@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # class for Game that facilitates the chess game
 class Game
   attr_reader :chessboard, :player_white, :player_black, :fen

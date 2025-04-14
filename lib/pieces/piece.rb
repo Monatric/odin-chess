@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # class for pieces of chess
 class Piece
   include Convertable
