@@ -46,11 +46,10 @@ class FEN
     result = nil
     # check all files of the given rank to find out if a pawn is en passantable
     ('a'..'h').each do |file|
-      6.downto(3).each do |rank|
+      5.downto(4).each do |rank|
         coordinate = "#{file}#{rank}".to_sym
-        # coordinate_file = coordinate[0]
         piece = @chessboard.find_piece_by_coordinate(coordinate)
-        en_passantable_square = piece&.en_passantable_square(@chessboard) if piece.respond_to?(:en_passant)
+        en_passantable_square = piece&.en_passantable_square(@chessboard) if piece.respond_to?(:en_passant_signal)
         result = en_passantable_square unless en_passantable_square.nil?
       end
     end

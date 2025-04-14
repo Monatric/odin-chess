@@ -16,6 +16,7 @@ class Piece
   end
 
   def move(dest, chessboard)
+    refresh_en_passant(chessboard) # a player's move will reset the en passant signallers
     source = chessboard.current_coordinate(self)
     chessboard.remove_piece(source)
     chessboard.add_piece(dest, self)
@@ -49,6 +50,16 @@ class Piece
   end
 
   private
+
+  def refresh_en_passant(chessboard)
+    ('a'..'h').each do |file|
+      5.downto(4).each do |rank|
+        coordinate = "#{file}#{rank}".to_sym
+        piece = chessboard.find_piece_by_coordinate(coordinate)
+        piece&.en_passant_signaller = false if piece.respond_to?(:en_passant_signaller)
+      end
+    end
+  end
 
   def add_moves(file, rank, possible_moves, chessboard)
     self.class::MOVE_OPTIONS.each do |option|
