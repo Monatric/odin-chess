@@ -1,5 +1,6 @@
 # class for pieces of chess
 class Piece
+  include Convertable
   attr_reader :color
 
   def initialize(color = nil)
