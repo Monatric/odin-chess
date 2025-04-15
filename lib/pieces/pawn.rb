@@ -25,12 +25,7 @@ class Pawn < Piece
   def move(dest, chessboard)
     @en_passant_signaller = false if @en_passant_signaller
     signal_en_passant(dest, chessboard) if self_is_en_passantable?(dest, chessboard)
-    if dest == en_passantable_square(chessboard)
-      # if dest is 3, this means white pawn is captured at fourth rank
-      # else it would be 6, captured black pawn at fifth rank
-      opponent_pawn_coordinate = (dest[1] == '3' ? "#{dest[0]}4".to_sym : "#{dest[0]}5".to_sym)
-      chessboard.remove_piece(opponent_pawn_coordinate)
-    end
+    remove_en_passanted_pawn(dest, chessboard) if en_passantable_square(chessboard)
     self.moved = true
     super(dest, chessboard)
   end
@@ -59,6 +54,16 @@ class Pawn < Piece
   end
 
   private
+
+  def remove_en_passanted_pawn(dest, chessboard)
+    # if dest is 3, this means white pawn is captured at fourth rank
+    # else it would be 6, captured black pawn at fifth rank
+    rank = dest[0]
+    en_passanted_color = (rank == '6' ? :black : :white)
+    rank_offset = (en_passanted_color == :white ? -1 : 1)
+    opponent_pawn_coordinate = coordinate_string_to_symbol(dest, rank_offset: rank_offset)
+    chessboard.remove_piece(opponent_pawn_coordinate)
+  end
 
   def en_passantable_square_finder(adjacent_arr, chessboard)
     coordinate_behind_pawn = nil
