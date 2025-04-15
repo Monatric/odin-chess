@@ -63,7 +63,7 @@ class Pawn < Piece
   def en_passantable_square_finder(adjacent_arr, chessboard)
     coordinate_behind_pawn = nil
     adjacent_arr.each do |adjacent|
-      next unless chessboard.coordinate_exist?(adjacent)
+      # next unless chessboard.coordinate_exist?(adjacent)
 
       piece = chessboard.find_piece_by_coordinate(adjacent)
 
