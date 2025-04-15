@@ -66,6 +66,8 @@ class Chessboard
   end
 
   def find_piece_by_coordinate(coordinate)
+    return nil unless coordinate_exist?(coordinate)
+
     board[coordinate][:piece]
   end
 
