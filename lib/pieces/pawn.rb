@@ -93,20 +93,18 @@ class Pawn < Piece
     end
   end
 
-  def adjacent_is_opponent_pawn?(dest, chessboard, color)
-    left_adjacent = ((dest.to_s.ord - 1).chr + dest[1]).to_sym
-    right_adjacent = ((dest.to_s.ord + 1).chr + dest[1]).to_sym
+  def adjacent_is_opponent_pawn?(dest, chessboard, opponent_color)
+    left_adjacent = coordinate_string_to_symbol(dest, file_offset: -1)
+    right_adjacent = coordinate_string_to_symbol(dest, file_offset: 1)
 
-    # default to dest which is the pawn's new position if coordinate is invalid
-    # This avoids error and won't mess up the evaluation because it only
-    # evaluates the opposing color. Dest would always be the opposite of opposing color,
-    # such as white if color is black
-    left_adjacent = dest unless chessboard.coordinate_exist?(left_adjacent)
-    right_adjacent = dest unless chessboard.coordinate_exist?(right_adjacent)
+    result = false
+    [left_adjacent, right_adjacent].each do |adjacent|
+      next unless chessboard.coordinate_exist?(adjacent)
 
-    left_adjacent_piece = chessboard.find_piece_by_coordinate(left_adjacent)
-    right_adjacent_piece = chessboard.find_piece_by_coordinate(right_adjacent)
-    (left_adjacent_piece&.color == color) || (right_adjacent_piece&.color == color)
+      piece = chessboard.find_piece_by_coordinate(adjacent)
+      result = piece&.color == opponent_color
+    end
+    result
   end
 
   def generate_possible_moves(chessboard)
