@@ -12,7 +12,6 @@ class Pawn < Piece
     @moved = moved
     @en_passant_signal = en_passant_signal
     @en_passant_signaller = en_passant_signaller
-    # @possible_moves = []
   end
 
   def notation
@@ -107,69 +106,57 @@ class Pawn < Piece
 
   def generate_possible_moves(chessboard)
     possible_moves = []
-    file = chessboard.current_coordinate(self)[0]
-    rank = chessboard.current_coordinate(self)[1].to_i
-    add_white_moves(file, rank, possible_moves, chessboard) if color == :white
-    add_black_moves(file, rank, possible_moves, chessboard) if color == :black
+    add_moves(possible_moves, chessboard)
     possible_moves << en_passantable_square(chessboard) if @en_passant_signal
 
     possible_moves
   end
 
-  def add_white_moves(file, rank, possible_moves, chessboard)
-    add_white_forward_moves(file, rank, possible_moves, chessboard)
-    add_white_capture_moves(file, rank, possible_moves, chessboard)
+  def add_moves(possible_moves, chessboard)
+    current_coordinate = chessboard.current_coordinate(self)
+
+    add_forward_moves(possible_moves, current_coordinate, chessboard)
+    add_capture_moves(possible_moves, current_coordinate, chessboard)
   end
 
-  def add_black_moves(file, rank, possible_moves, chessboard)
-    add_black_forward_moves(file, rank, possible_moves, chessboard)
-    add_black_capture_moves(file, rank, possible_moves, chessboard)
-  end
+  def add_forward_moves(possible_moves, current_coordinate, chessboard)
+    one_step_white = 1
+    one_step_black = -1
+    two_steps_white = 2
+    two_steps_black = -2
 
-  def add_black_forward_moves(file, rank, possible_moves, chessboard)
-    one_step = (file + (rank - 1).to_s).to_sym
-    two_steps = (file + (rank - 2).to_s).to_sym
+    one_step_rank_offset = (@color == :white ? one_step_white : one_step_black)
+    two_steps_rank_offset = (@color == :white ? two_steps_white : two_steps_black)
+
+    one_step = coordinate_string_to_symbol(current_coordinate, rank_offset: one_step_rank_offset)
+    two_steps = coordinate_string_to_symbol(current_coordinate, rank_offset: two_steps_rank_offset)
 
     possible_moves << one_step if chessboard.find_piece_by_coordinate(one_step).nil?
-    return unless !moved &&
-                  chessboard.find_piece_by_coordinate(one_step).nil? &&
-                  chessboard.find_piece_by_coordinate(two_steps).nil?
-
-    possible_moves << two_steps
+    possible_moves << two_steps if eligible_for_two_steps(chessboard, one_step, two_steps)
   end
 
-  def add_black_capture_moves(file, rank, possible_moves, chessboard)
-    left_capture = calculate_square(file, rank - 1, -1)
-    right_capture = calculate_square(file, rank - 1, 1)
-
-    down_left = chessboard.find_piece_by_coordinate(left_capture) if chessboard.coordinate_exist?(left_capture)
-    down_right = chessboard.find_piece_by_coordinate(right_capture) if chessboard.coordinate_exist?(right_capture)
-
-    possible_moves << left_capture if capturable_by_black?(down_left)
-    possible_moves << right_capture if capturable_by_black?(down_right)
+  # pawn cannot move two steps if there is a piece or has moved
+  def eligible_for_two_steps(chessboard, one_step, two_steps)
+    !moved &&
+      chessboard.find_piece_by_coordinate(one_step).nil? &&
+      chessboard.find_piece_by_coordinate(two_steps).nil?
   end
 
-  def add_white_forward_moves(file, rank, possible_moves, chessboard)
-    one_step = (file + (rank + 1).to_s).to_sym
-    two_steps = (file + (rank + 2).to_s).to_sym
+  def add_capture_moves(possible_moves, current_coordinate, chessboard)
+    offset = { up_and_right: 1, down_and_left: -1 }
+    white_rank_offset = offset[:up_and_right]
+    black_rank_offset = offset[:down_and_left]
+    rank_offset = (@color == :white ? white_rank_offset : black_rank_offset)
 
-    possible_moves << one_step if chessboard.find_piece_by_coordinate(one_step).nil?
-    # pawn cannot move two steps if there is a piece or has moved
-    return unless !moved &&
-                  chessboard.find_piece_by_coordinate(one_step).nil? &&
-                  chessboard.find_piece_by_coordinate(two_steps).nil?
+    diag_left_capture = coordinate_string_to_symbol(current_coordinate, file_offset: offset[:down_and_left],
+                                                                        rank_offset: rank_offset)
+    diag_right_capture = coordinate_string_to_symbol(current_coordinate, file_offset: offset[:up_and_right],
+                                                                         rank_offset: rank_offset)
 
-    possible_moves << two_steps
-  end
+    diag_left_piece = chessboard.find_piece_by_coordinate(diag_left_capture)
+    diag_right_piece = chessboard.find_piece_by_coordinate(diag_right_capture)
 
-  def add_white_capture_moves(file, rank, possible_moves, chessboard)
-    left_capture = calculate_square(file, rank + 1, -1)
-    right_capture = calculate_square(file, rank + 1, 1)
-
-    up_left = chessboard.find_piece_by_coordinate(left_capture) if chessboard.coordinate_exist?(left_capture)
-    up_right = chessboard.find_piece_by_coordinate(right_capture) if chessboard.coordinate_exist?(right_capture)
-
-    possible_moves << left_capture if capturable_by_white?(up_left)
-    possible_moves << right_capture if capturable_by_white?(up_right)
+    possible_moves << diag_left_capture if capturable?(diag_left_piece, @color)
+    possible_moves << diag_right_capture if capturable?(diag_right_piece, @color)
   end
 end
