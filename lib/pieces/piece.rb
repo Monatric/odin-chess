@@ -25,16 +25,9 @@ class Piece
     chessboard.add_piece(dest, self)
   end
 
-  def calculate_square(file, rank, file_offset)
-    ((file.ord + file_offset).chr + rank.to_s).to_sym
-  end
-
-  def capturable_by_white?(square)
-    !square.nil? && square.color == :black
-  end
-
-  def capturable_by_black?(square)
-    !square.nil? && square.color == :white
+  def capturable?(piece, color)
+    opposite_color = (color == :white ? :black : :white)
+    piece&.color == opposite_color
   end
 
   def same_color_in_coordinate?(coordinate, chessboard)
