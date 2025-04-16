@@ -72,7 +72,7 @@ class FEN
     result = (result.nil? ? no_en_passant_square : result) # default hyphen, no en passant square
   end
 
-  def fifth_field
+  def halfmove_clock_field
     coordinate_iterator(file: 'a', rank: '8') do |coordinate|
       # p coordinate
       @chessboard.find_piece_by_coordinate(coordinate)
