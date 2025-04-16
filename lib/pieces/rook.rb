@@ -30,4 +30,8 @@ class Rook < Piece
   def symbol
     @color == :white ? '♖' : '♜'
   end
+
+  # def castleable?
+  #   !@moved
+  # end
 end

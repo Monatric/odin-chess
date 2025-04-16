@@ -30,6 +30,12 @@ class Piece
     piece&.color == opposite_color
   end
 
+  def castleable?
+    return false unless [King, Rook].include?(self.class)
+
+    !moved
+  end
+
   def same_color_in_coordinate?(coordinate, chessboard)
     piece = chessboard.find_piece_by_coordinate(coordinate)
     return false if piece.nil?

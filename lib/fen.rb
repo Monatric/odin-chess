@@ -2,6 +2,23 @@
 
 # class for generating, saving, loading, or getting/setting data for a valid chess position
 class FEN
+  CASTLING_DICTIONARY = {
+    white: {
+      king: { coordinate: :e1, notation: 'K' },
+      a_rook: { coordinate: :a1 },
+      h_rook: { coordinate: :h1 },
+      rook: { coordinate: %i[a1 h1] },
+      queen: { notation: 'Q' }
+    },
+    black: {
+      king: { coordinate: :e8, notation: 'k' },
+      a_rook: { coordinate: :a8 },
+      h_rook: { coordinate: :h8 },
+      rook: { coordinate: %i[a8 h8] },
+      queen: { notation: 'q' }
+    }
+  }.freeze
+
   def initialize(game = Game.new, chessboard = Chessboard.new)
     @game = game
     @chessboard = chessboard
@@ -34,8 +51,7 @@ class FEN
 
   def castling_availability_field
     field_string = []
-    add_white_castling_availability(field_string)
-    add_black_castling_availability(field_string)
+    add_castling_availability(field_string)
     result = field_string.join('')
     result << '-' if result.empty?
     result
@@ -63,30 +79,21 @@ class FEN
     end
   end
 
-  def add_white_castling_availability(field_string)
-    h1_piece = @chessboard.find_piece_by_coordinate(:h1)
-    a1_piece = @chessboard.find_piece_by_coordinate(:a1)
-    return if king_moved?(:white)
+  def add_castling_availability(field_string)
+    CASTLING_DICTIONARY.map do |_color, pieces|
+      king_coordinate = pieces[:king][:coordinate]
+      king = @chessboard.find_piece_by_coordinate(king_coordinate)
+      next unless king&.castleable?
 
-    field_string << 'K' if h1_piece.instance_of?(::Rook) && !h1_piece.moved
-    field_string << 'Q' if a1_piece.instance_of?(::Rook) && !a1_piece.moved
-    field_string
-  end
+      a_rook_coordinate = pieces[:a_rook][:coordinate]
+      a_rook = @chessboard.find_piece_by_coordinate(a_rook_coordinate)
 
-  def add_black_castling_availability(field_string)
-    h8_piece = @chessboard.find_piece_by_coordinate(:h8)
-    a8_piece = @chessboard.find_piece_by_coordinate(:a8)
-    return if king_moved?(:black)
+      h_rook_coordinate = pieces[:h_rook][:coordinate]
+      h_rook = @chessboard.find_piece_by_coordinate(h_rook_coordinate)
 
-    field_string << 'k' if h8_piece.instance_of?(::Rook) && !h8_piece.moved
-    field_string << 'q' if a8_piece.instance_of?(::Rook) && !a8_piece.moved
-    field_string
-  end
-
-  def king_moved?(color)
-    king_coordinate = @chessboard.king_coordinate(color)
-    king = @chessboard.find_piece_by_coordinate(king_coordinate)
-    king.moved
+      field_string << pieces[:king][:notation] if h_rook&.castleable?
+      field_string << pieces[:queen][:notation] if a_rook&.castleable?
+    end
   end
 
   def add_piece_placement_field(space, piece_placement_field_array)

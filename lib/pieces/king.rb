@@ -51,6 +51,10 @@ class King < Piece
     @color == :white ? '♔' : '♚'
   end
 
+  # def castleable?
+  #   !@moved
+  # end
+
   private
 
   def add_moves(file, rank, possible_moves, chessboard)
