@@ -16,6 +16,10 @@ class Game
     p @fen.generate_fen
   end
 
+  def update_fen
+    @fen.generate_fen
+  end
+
   def move_piece(source, dest, chessboard)
     determine_move_action(source, dest, chessboard)
   end

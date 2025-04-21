@@ -6,6 +6,7 @@ def start(game)
     game.chessboard.show
     puts "(#{game.current_turn_color}) #{game.current_turn_name} move."
     get_player_choice(game)
+    game.update_fen
     game.switch_player!
   end
 end
