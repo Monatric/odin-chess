@@ -28,7 +28,7 @@ class FEN
 
   def generate_fen
     @fen_strings = []
-    @fen_strings << piece_placement_field
+    @fen_strings << PiecePlacementField.generate(@chessboard)
     @fen_strings << active_color_field
     @fen_strings << castling_availability_field
     @fen_strings << en_passant_field
@@ -39,13 +39,6 @@ class FEN
   private
 
   attr_accessor :fen_strings
-
-  def piece_placement_field
-    space = 0
-    piece_placement_field_array = []
-    add_piece_placement_field(space, piece_placement_field_array)
-    piece_placement_field_array.join('')
-  end
 
   def active_color_field
     @game.current_turn_color == :white ? 'w' : 'b'
@@ -85,7 +78,7 @@ class FEN
         temp_halfmove_clock_tracker[:pawn_coordinates] << coordinate if piece.is_a? Pawn
       end
     end
-    temp_halfmove_clock_tracker[:prev_piece_placement_field] = piece_placement_field
+    temp_halfmove_clock_tracker[:prev_piece_placement_field] = PiecePlacementField.generate(@chessboard)
 
     temp_piece_count = temp_halfmove_clock_tracker[:piece_count]
     temp_pawn_coordinates = temp_halfmove_clock_tracker[:pawn_coordinates]
@@ -139,30 +132,6 @@ class FEN
 
       field_string << pieces[:king][:notation] if h_rook&.castleable?
       field_string << pieces[:queen][:notation] if a_rook&.castleable?
-    end
-  end
-
-  def add_piece_placement_field(space, piece_placement_field_array)
-    8.downto(1) do |rank|
-      ('a'..'h').each do |file|
-        coordinate = (file + rank.to_s).to_sym
-        piece = @chessboard.find_piece_by_coordinate(coordinate)
-
-        space = add_space_between_piece(piece, space, piece_placement_field_array)
-      end
-      piece_placement_field_array << space.to_s unless space.zero?
-      piece_placement_field_array << '/'
-      space = 0
-    end
-  end
-
-  def add_space_between_piece(piece, space, piece_placement_field_array)
-    if piece.nil?
-      space + 1
-    else
-      piece_placement_field_array << space.to_s unless space.zero?
-      piece_placement_field_array << piece.notation
-      0
     end
   end
 end
