@@ -29,7 +29,7 @@ class FEN
   def generate_fen
     @fen_strings = []
     @fen_strings << PiecePlacementField.generate(@chessboard)
-    @fen_strings << active_color_field
+    @fen_strings << ActiveColorField.generate(@game)
     @fen_strings << castling_availability_field
     @fen_strings << en_passant_field
     @fen_strings << halfmove_clock_field
@@ -39,10 +39,6 @@ class FEN
   private
 
   attr_accessor :fen_strings
-
-  def active_color_field
-    @game.current_turn_color == :white ? 'w' : 'b'
-  end
 
   def castling_availability_field
     field_string = []
