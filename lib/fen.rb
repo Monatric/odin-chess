@@ -14,7 +14,7 @@ class FEN
     @fen_strings << PiecePlacementField.generate(@chessboard)
     @fen_strings << ActiveColorField.generate(@game)
     @fen_strings << CastlingAvailabilityField.generate(@chessboard)
-    @fen_strings << en_passant_field
+    @fen_strings << EnPassantField.generate(@chessboard)
     @fen_strings << halfmove_clock_field
     @fen_strings.join(' ')
   end
@@ -22,21 +22,6 @@ class FEN
   private
 
   attr_accessor :fen_strings
-
-  def en_passant_field
-    no_en_passant_square = '-'
-    result = nil
-    # check all files of the given rank to find out if a pawn is en passantable
-    ('a'..'h').each do |file|
-      5.downto(4).each do |rank|
-        coordinate = "#{file}#{rank}".to_sym
-        piece = @chessboard.find_piece_by_coordinate(coordinate)
-        en_passantable_square = piece&.en_passantable_square(@chessboard) if piece.respond_to?(:en_passant_signal)
-        result = en_passantable_square unless en_passantable_square.nil?
-      end
-    end
-    result = (result.nil? ? no_en_passant_square : result) # default hyphen, no en passant square
-  end
 
   def halfmove_clock_field
     temp_halfmove_clock_tracker = { piece_count: 0, pawn_coordinates: [], prev_piece_placement_field: '' }
