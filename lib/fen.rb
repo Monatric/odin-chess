@@ -2,10 +2,10 @@
 
 # class for generating, saving, loading, or getting/setting data for a valid chess position
 class FEN
-  def initialize(game = Game.new, chessboard = Chessboard.new)
+  def initialize(game = Game.new, chessboard = Chessboard.new, halfmove_clock = HalfmoveClockField.new(chessboard))
     @game = game
     @chessboard = chessboard
-    @halfmove_clock = HalfmoveClockField.new(@chessboard)
+    @halfmove_clock = halfmove_clock
   end
 
   def generate_fen
