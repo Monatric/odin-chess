@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# class for generating the second field of FEN, responsible for showing the current turn (color)
+# class for generating the third field of FEN, responsible for showing which sides are able to perform castling
 class CastlingAvailabilityField
   CASTLING_DICTIONARY = {
     white: {
