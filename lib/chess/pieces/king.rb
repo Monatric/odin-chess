@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
 require_relative '../piece'
+require_relative 'advanced_piece_movement/king_castling'
 
 module Chess
+  ROOK_COORDINATES_AFTER_CASTLING = {
+    g1: %i[h1 f1],
+    c1: %i[a1 d1],
+    g8: %i[h8 f8],
+    c8: %i[a8 d8]
+  }.freeze
   # class for the King piece
   class King < Piece
     KING_OPTIONS = [
@@ -32,16 +39,8 @@ module Chess
       self.moved = true
 
       source = chessboard.current_coordinate(self)
-
-      chessboard.remove_piece(source)
-      chessboard.add_piece(dest, self)
-
-      rook = chessboard.find_piece_by_coordinate(chessboard.castling_rook_coordinate[dest][0])
-      rook_coordinate = chessboard.current_coordinate(rook)
-      chessboard.remove_piece(rook_coordinate)
-
-      rook_new_coordinate = chessboard.castling_rook_coordinate[dest][1]
-      chessboard.add_piece(rook_new_coordinate, rook)
+      castling_king_move(source, dest, chessboard)
+      castling_rook_move(dest, chessboard)
     end
 
     def notation
@@ -52,17 +51,27 @@ module Chess
       @color == :white ? '♔' : '♚'
     end
 
-    # def castleable?
-    #   !@moved
-    # end
-
     private
+
+    def castling_king_move(source, dest, chessboard)
+      chessboard.remove_piece(source)
+      chessboard.add_piece(dest, self)
+    end
+
+    def castling_rook_move(dest, chessboard)
+      rook_coordinate_after_castling = ROOK_COORDINATES_AFTER_CASTLING[dest][0]
+      rook = chessboard.find_piece_by_coordinate(rook_coordinate_after_castling)
+
+      rook_coordinate = chessboard.current_coordinate(rook)
+      chessboard.remove_piece(rook_coordinate)
+
+      rook_new_coordinate = ROOK_COORDINATES_AFTER_CASTLING[dest][1]
+      chessboard.add_piece(rook_new_coordinate, rook)
+    end
 
     def add_moves(file, rank, possible_moves, chessboard)
       add_basic_moves(file, rank, possible_moves, chessboard)
-      add_castling_moves(possible_moves, chessboard)
-
-      # later on, consider about checks/pins
+      KingCastling.add_castling_moves(possible_moves, chessboard, self)
     end
 
     def add_basic_moves(file, rank, possible_moves, chessboard)
@@ -76,47 +85,6 @@ module Chess
         elsif chessboard.find_piece_by_coordinate(coordinate).color != color
           possible_moves << coordinate
         end
-      end
-    end
-
-    def add_castling_moves(possible_moves, chessboard)
-      # check if king has moved
-      return if moved
-
-      valid_castle_coordinates(chessboard).each { |coordinate| possible_moves << coordinate }
-    end
-
-    def valid_castle_coordinates(chessboard) # rubocop:disable Metrics/MethodLength
-      castle_paths = {
-        white: {
-          g1: %i[f1 g1],
-          c1: %i[d1 c1 b1]
-        },
-        black: {
-          g8: %i[f8 g8],
-          c8: %i[d8 c8 b8]
-        }
-      }
-      results = []
-      castle_paths[color].each_pair do |castle_coordinate, path|
-        next if rook_moved?(castle_coordinate, chessboard)
-
-        results << castle_coordinate if castle_path_empty?(path, chessboard)
-      end
-      results
-    end
-
-    def rook_moved?(castle_coordinate, chessboard)
-      # false if the chosen castle_coordinate is not a rook
-      return false unless chessboard.castling_rook_coordinate[castle_coordinate].is_a?(Rook)
-
-      # if the rook has moved
-      chessboard.castling_rook_coordinate[castle_coordinate].moved
-    end
-
-    def castle_path_empty?(path, chessboard)
-      path.all? do |coordinate|
-        chessboard.find_piece_by_coordinate(coordinate).nil?
       end
     end
   end
