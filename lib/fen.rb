@@ -2,10 +2,14 @@
 
 # class for generating, saving, loading, or getting/setting data for a valid chess position
 class FEN
-  def initialize(game = Game.new, chessboard = Chessboard.new, halfmove_clock = HalfmoveClockField.new(chessboard))
+  def initialize(game = Game.new, # rubocop:disable Metrics/ParameterLists
+                 chessboard = Chessboard.new,
+                 halfmove_clock = HalfmoveClockField.new(chessboard),
+                 fullmove_number = FullmoveNumberField.new(game))
     @game = game
     @chessboard = chessboard
     @halfmove_clock = halfmove_clock
+    @fullmove_number = fullmove_number
   end
 
   def generate_fen
@@ -15,6 +19,7 @@ class FEN
     @fen_strings << CastlingAvailabilityField.generate(@chessboard)
     @fen_strings << EnPassantField.generate(@chessboard)
     @fen_strings << @halfmove_clock.generate
+    @fen_strings << @fullmove_number.generate
     @fen_strings.join(' ')
   end
 
