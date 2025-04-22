@@ -20,16 +20,19 @@ class FullmoveNumberField
   private
 
   def add_fullmove_number
+    # if the array looks like [...'b', 'w'], that means a full turn has passed
+    return @fullmove_number unless full_turn_complete?
+
+    @fullmove_number += 1
+    @move_log_with_colors = [] # reset
+  end
+
+  def full_turn_complete?
     black_notation = 'w'
     white_notation = 'b'
 
     # if the array looks like [...'b', 'w'], that means a full turn has passed
-    unless @move_log_with_colors[-1] == black_notation && @move_log_with_colors[-2] == white_notation
-      return @fullmove_number
-    end
-
-    @fullmove_number += 1
-    @move_log_with_colors = [] # reset
+    @move_log_with_colors[-1] == black_notation && @move_log_with_colors[-2] == white_notation
   end
 
   attr_writer :fullmove_number
