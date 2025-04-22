@@ -13,17 +13,13 @@ class FEN
   end
 
   def generate_fen
-    @fen_strings = []
-    @fen_strings << PiecePlacementField.generate(@chessboard)
-    @fen_strings << ActiveColorField.generate(@game)
-    @fen_strings << CastlingAvailabilityField.generate(@chessboard)
-    @fen_strings << EnPassantField.generate(@chessboard)
-    @fen_strings << @halfmove_clock.generate
-    @fen_strings << @fullmove_number.generate
-    @fen_strings.join(' ')
+    fen_strings = []
+    fen_strings << PiecePlacementField.generate(@chessboard)
+    fen_strings << ActiveColorField.generate(@game)
+    fen_strings << CastlingAvailabilityField.generate(@chessboard)
+    fen_strings << EnPassantField.generate(@chessboard)
+    fen_strings << @halfmove_clock.generate
+    fen_strings << @fullmove_number.generate
+    fen_strings.join(' ')
   end
-
-  private
-
-  attr_accessor :fen_strings
 end
