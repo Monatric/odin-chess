@@ -3,6 +3,7 @@
 # namespace for chess classes
 module Chess
   require_relative 'chess/fen'
+  require_relative 'chess/game'
 
   RANK_ORDINALS = {
     first: '1',
