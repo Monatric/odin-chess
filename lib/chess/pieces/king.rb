@@ -3,7 +3,7 @@
 require_relative '../piece'
 
 module Chess
-  # class for the Bishop
+  # class for the King piece
   class King < Piece
     KING_OPTIONS = [
       [0, 1], # forward
