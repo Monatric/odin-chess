@@ -8,6 +8,7 @@ module Chess
   Dir['chess/*.rb'].sort.each { |file| require_relative file }
   Dir['chess/fen/*.rb'].sort.each { |file| require_relative file }
   Dir['chess/pieces/*.rb'].sort.each { |file| require_relative file }
+  Dir['chess/pieces/advanced_piece_movement/*.rb'].sort.each { |file| require_relative file }
 
   RANK_ORDINALS = {
     first: '1',
