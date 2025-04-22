@@ -59,6 +59,12 @@ class HalfmoveClockField
 
   def temp_halfmove_clock_tracker
     temp_halfmove_clock_tracker = { piece_count: 0, pawn_coordinates: [], prev_piece_placement_field: '' }
+    add_info_in_temp_tracker(temp_halfmove_clock_tracker)
+    temp_halfmove_clock_tracker[:prev_piece_placement_field] = PiecePlacementField.generate(@chessboard)
+    temp_halfmove_clock_tracker
+  end
+
+  def add_info_in_temp_tracker(temp_halfmove_clock_tracker)
     ('a'..'h').each do |file|
       8.downto(1).each do |rank|
         coordinate = "#{file}#{rank}".to_sym
@@ -68,7 +74,5 @@ class HalfmoveClockField
         temp_halfmove_clock_tracker[:pawn_coordinates] << coordinate if piece.is_a? Pawn
       end
     end
-    temp_halfmove_clock_tracker[:prev_piece_placement_field] = PiecePlacementField.generate(@chessboard)
-    temp_halfmove_clock_tracker
   end
 end
