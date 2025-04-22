@@ -4,6 +4,10 @@
 module Chess
   require_relative 'chess/fen'
   require_relative 'chess/game'
+  require_relative 'chess/chessboard'
+  Dir['chess/*.rb'].sort.each { |file| require_relative file }
+  Dir['chess/fen/*.rb'].sort.each { |file| require_relative file }
+  Dir['chess/pieces/*.rb'].sort.each { |file| require_relative file }
 
   RANK_ORDINALS = {
     first: '1',

@@ -1,5 +1,10 @@
-require 'require_all'
-require_all 'lib'
+# require 'require_all'
+# require_all 'lib'
+Dir['lib/*.rb'].sort.each { |file| require_relative file }
+Dir['lib/chess/*.rb'].sort.each { |file| require_relative file }
+Dir['lib/chess/pieces/*.rb'].sort.each { |file| require_relative file }
+Dir['lib/chess/fen/*.rb'].sort.each { |file| require_relative file }
+Dir['lib/helpers/*.rb'].sort.each { |file| require_relative file }
 
 def start(game)
   loop do
@@ -76,7 +81,7 @@ end
 
 magnus = Player.new('Magnus', :white)
 hikaru = Player.new('Hikaru', :black)
-chessboard = Chessboard.new
+chessboard = Chess::Chessboard.new
 game = Chess::Game.new(chessboard)
 
 start(game)
