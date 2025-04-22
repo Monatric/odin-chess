@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'piece'
 
 # class for the Bishop
@@ -48,6 +50,10 @@ class King < Piece
   def symbol
     @color == :white ? '♔' : '♚'
   end
+
+  # def castleable?
+  #   !@moved
+  # end
 
   private
 

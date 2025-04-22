@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
+require_relative '../helpers/convertable'
 # class for pieces of chess
 class Piece
+  include Convertable
   attr_reader :color
 
   def initialize(color = nil)
@@ -15,21 +19,21 @@ class Piece
   end
 
   def move(dest, chessboard)
+    refresh_en_passant(chessboard) # a player's move will reset the en passant signallers
     source = chessboard.current_coordinate(self)
     chessboard.remove_piece(source)
     chessboard.add_piece(dest, self)
   end
 
-  def calculate_square(file, rank, file_offset)
-    ((file.ord + file_offset).chr + rank.to_s).to_sym
+  def capturable?(piece, color)
+    opposite_color = (color == :white ? :black : :white)
+    piece&.color == opposite_color
   end
 
-  def capturable_by_white?(square)
-    !square.nil? && square.color == :black
-  end
+  def castleable?
+    return false unless [King, Rook].include?(self.class)
 
-  def capturable_by_black?(square)
-    !square.nil? && square.color == :white
+    !moved
   end
 
   def same_color_in_coordinate?(coordinate, chessboard)
@@ -48,6 +52,16 @@ class Piece
   end
 
   private
+
+  def refresh_en_passant(chessboard)
+    ('a'..'h').each do |file|
+      5.downto(4).each do |rank|
+        coordinate = "#{file}#{rank}".to_sym
+        piece = chessboard.find_piece_by_coordinate(coordinate)
+        piece&.en_passant_signaller = false if piece.respond_to?(:en_passant_signaller)
+      end
+    end
+  end
 
   def add_moves(file, rank, possible_moves, chessboard)
     self.class::MOVE_OPTIONS.each do |option|

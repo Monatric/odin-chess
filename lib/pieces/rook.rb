@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'piece'
 
 # class for the Rook
@@ -28,4 +30,8 @@ class Rook < Piece
   def symbol
     @color == :white ? '♖' : '♜'
   end
+
+  # def castleable?
+  #   !@moved
+  # end
 end
