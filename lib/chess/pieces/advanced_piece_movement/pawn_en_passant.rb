@@ -6,6 +6,7 @@ module Chess
   # class for the pawn
   class PawnEnPassant
     include Convertable
+    extend Convertable
 
     def initialize(pawn: nil, dest: nil, chessboard: nil)
       @pawn = pawn
@@ -28,15 +29,15 @@ module Chess
       end
     end
 
-    def en_passantable_square(chessboard)
-      return unless en_passant_signal
+    # def en_passantable_square(chessboard)
+    #   return unless en_passant_signal
 
-      source = chessboard.current_coordinate(self)
-      left_adjacent = coordinate_string_to_symbol(source, file_offset: -1)
-      right_adjacent = coordinate_string_to_symbol(source, file_offset: 1)
+    #   source = chessboard.current_coordinate(self)
+    #   left_adjacent = coordinate_string_to_symbol(source, file_offset: -1)
+    #   right_adjacent = coordinate_string_to_symbol(source, file_offset: 1)
 
-      en_passantable_square_finder([left_adjacent, right_adjacent], chessboard)
-    end
+    #   en_passantable_square_finder([left_adjacent, right_adjacent], chessboard)
+    # end
 
     def remove_en_passanted_pawn(dest, chessboard)
       # if dest is 3, this means white pawn is captured at fourth rank
@@ -48,9 +49,7 @@ module Chess
       chessboard.remove_piece(opponent_pawn_coordinate)
     end
 
-    private
-
-    def en_passantable_square_finder(adjacent_arr, chessboard)
+    def self.en_passantable_square_finder(adjacent_arr, chessboard, color)
       coordinate_behind_pawn = nil
       adjacent_arr.each do |adjacent|
         # next unless chessboard.coordinate_exist?(adjacent)
@@ -63,11 +62,13 @@ module Chess
         # look for the square behind the black pawny
         rank_behind_white_pawn = -1
         rank_behind_black_pawn = 1
-        rank_offset = (@color == :white ? rank_behind_black_pawn : rank_behind_white_pawn)
+        rank_offset = (color == :white ? rank_behind_black_pawn : rank_behind_white_pawn)
         coordinate_behind_pawn = coordinate_string_to_symbol(adjacent, rank_offset: rank_offset)
       end
       coordinate_behind_pawn
     end
+
+    private
 
     def en_passantable?
       source = @chessboard.current_coordinate(@pawn)

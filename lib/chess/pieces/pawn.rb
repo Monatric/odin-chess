@@ -50,7 +50,7 @@ module Chess
       left_adjacent = coordinate_string_to_symbol(source, file_offset: -1)
       right_adjacent = coordinate_string_to_symbol(source, file_offset: 1)
 
-      en_passantable_square_finder([left_adjacent, right_adjacent], chessboard)
+      PawnEnPassant.en_passantable_square_finder([left_adjacent, right_adjacent], chessboard, @color)
     end
 
     private
