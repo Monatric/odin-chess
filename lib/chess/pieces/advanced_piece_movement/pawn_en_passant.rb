@@ -38,8 +38,6 @@ module Chess
       en_passantable_square_finder([left_adjacent, right_adjacent], chessboard)
     end
 
-    private
-
     def remove_en_passanted_pawn(dest, chessboard)
       # if dest is 3, this means white pawn is captured at fourth rank
       # else it would be 6, captured black pawn at fifth rank
@@ -49,6 +47,8 @@ module Chess
       opponent_pawn_coordinate = coordinate_string_to_symbol(dest, rank_offset: rank_offset)
       chessboard.remove_piece(opponent_pawn_coordinate)
     end
+
+    private
 
     def en_passantable_square_finder(adjacent_arr, chessboard)
       coordinate_behind_pawn = nil
