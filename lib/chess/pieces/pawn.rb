@@ -25,10 +25,7 @@ module Chess
     end
 
     def move(dest, chessboard)
-      @en_passant_signaller = false if @en_passant_signaller
-      # signal_en_passant(dest, chessboard) if self_is_en_passantable?(dest, chessboard)
-      PawnEnPassant.new(pawn: self, dest: dest, chessboard: chessboard).signal_en_passant
-      remove_en_passanted_pawn(dest, chessboard) if en_passantable_square(chessboard)
+      update_en_passant_status(dest, chessboard)
       self.moved = true
       super(dest, chessboard)
     end
@@ -57,6 +54,15 @@ module Chess
     end
 
     private
+
+    def update_en_passant_status(dest, chessboard)
+      @en_passant_signaller = false if @en_passant_signaller
+      en_passant_movement = PawnEnPassant.new(pawn: self, dest: dest, chessboard: chessboard)
+
+      # signal_en_passant(dest, chessboard) if self_is_en_passantable?(dest, chessboard)
+      en_passant_movement.signal_en_passant
+      en_passant_movement.remove_en_passanted_pawn(dest, chessboard) if en_passantable_square(chessboard)
+    end
 
     def remove_en_passanted_pawn(dest, chessboard)
       # if dest is 3, this means white pawn is captured at fourth rank
