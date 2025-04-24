@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../piece'
+require_relative 'advanced_piece_movement/pawn_en_passant'
 
 module Chess
   # class for the pawn
@@ -25,7 +26,8 @@ module Chess
 
     def move(dest, chessboard)
       @en_passant_signaller = false if @en_passant_signaller
-      signal_en_passant(dest, chessboard) if self_is_en_passantable?(dest, chessboard)
+      # signal_en_passant(dest, chessboard) if self_is_en_passantable?(dest, chessboard)
+      PawnEnPassant.new(pawn: self, dest: dest, chessboard: chessboard).signal_en_passant
       remove_en_passanted_pawn(dest, chessboard) if en_passantable_square(chessboard)
       self.moved = true
       super(dest, chessboard)
