@@ -5,7 +5,6 @@
 module Chess
   # class for the pawn
   class PawnEnPassant
-    include Convertable
     extend Convertable
 
     def initialize(pawn: nil, dest: nil, chessboard: nil)
@@ -17,8 +16,8 @@ module Chess
     def signal_en_passant
       return unless en_passantable?
 
-      left_adjacent = coordinate_string_to_symbol(@dest, file_offset: -1)
-      right_adjacent = coordinate_string_to_symbol(@dest, file_offset: 1)
+      left_adjacent = self.class.coordinate_string_to_symbol(@dest, file_offset: -1)
+      right_adjacent = self.class.coordinate_string_to_symbol(@dest, file_offset: 1)
 
       [left_adjacent, right_adjacent].each do |adjacent|
         next unless @chessboard.coordinate_exist?(adjacent)
@@ -29,23 +28,13 @@ module Chess
       end
     end
 
-    # def en_passantable_square(chessboard)
-    #   return unless en_passant_signal
-
-    #   source = chessboard.current_coordinate(self)
-    #   left_adjacent = coordinate_string_to_symbol(source, file_offset: -1)
-    #   right_adjacent = coordinate_string_to_symbol(source, file_offset: 1)
-
-    #   en_passantable_square_finder([left_adjacent, right_adjacent], chessboard)
-    # end
-
     def remove_en_passanted_pawn(dest, chessboard)
       # if dest is 3, this means white pawn is captured at fourth rank
       # else it would be 6, captured black pawn at fifth rank
       rank = dest[0]
       en_passanted_color = (rank == '6' ? :black : :white)
       rank_offset = (en_passanted_color == :white ? -1 : 1)
-      opponent_pawn_coordinate = coordinate_string_to_symbol(dest, rank_offset: rank_offset)
+      opponent_pawn_coordinate = self.class.coordinate_string_to_symbol(dest, rank_offset: rank_offset)
       chessboard.remove_piece(opponent_pawn_coordinate)
     end
 
@@ -80,8 +69,8 @@ module Chess
     end
 
     def adjacent_is_opponent_pawn?(opponent_color)
-      left_adjacent = coordinate_string_to_symbol(@dest, file_offset: -1)
-      right_adjacent = coordinate_string_to_symbol(@dest, file_offset: 1)
+      left_adjacent = self.class.coordinate_string_to_symbol(@dest, file_offset: -1)
+      right_adjacent = self.class.coordinate_string_to_symbol(@dest, file_offset: 1)
 
       result = false
       [left_adjacent, right_adjacent].each do |adjacent|
