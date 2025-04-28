@@ -6,9 +6,9 @@ module Chess
   class Chessboard
     include Displayable
 
-    def initialize(board = create)
+    def initialize(board: create, fen_first_field: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/')
       @board = board
-      assemble
+      assemble(fen_first_field)
     end
 
     def create
