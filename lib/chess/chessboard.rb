@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../displayable'
 require_relative 'pieces/king'
 
@@ -113,7 +115,7 @@ module Chess
         if notation.match(/[0-9]/)
           add_nil_pieces(file, rank, coordinate, notation)
         else
-          @board[coordinate][:piece] = piece_notation_equivalent[notation]
+          @board[coordinate][:piece] = PieceNotation.notation_to_piece(notation)
         end
       end
     end
@@ -123,23 +125,6 @@ module Chess
         @board[coordinate][:piece] = nil
         coordinate = (file + rank).to_sym
       end
-    end
-
-    def piece_notation_equivalent
-      {
-        'r' => Rook.new(:black),
-        'n' => Knight.new(:black),
-        'b' => Bishop.new(:black),
-        'q' => Queen.new(:black),
-        'k' => King.new(:black),
-        'p' => Pawn.new(:black),
-        'R' => Rook.new(:white),
-        'N' => Knight.new(:white),
-        'B' => Bishop.new(:white),
-        'Q' => Queen.new(:white),
-        'K' => King.new(:white),
-        'P' => Pawn.new(:white)
-      }
     end
   end
 end
