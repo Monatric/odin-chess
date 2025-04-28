@@ -112,16 +112,6 @@ module Chess
       end
     end
 
-    # keys are King destination by player, the values are the rook's current and new coordinate
-    def castling_rook_coordinate
-      {
-        g1: %i[h1 f1],
-        c1: %i[a1 d1],
-        g8: %i[h8 f8],
-        c8: %i[a8 d8]
-      }
-    end
-
     private
 
     attr_reader :board
