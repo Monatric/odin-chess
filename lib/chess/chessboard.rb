@@ -50,20 +50,7 @@ module Chess
       rank_data = fen_first_field.split('/')
       rank_data.each_with_index do |piece_placement_data, current_rank|
         rank = (max_rank - current_rank).to_s
-        piece_placement_data.chars.each_with_index do |notation, char|
-          file = (first_file.ord + char).chr
-          coordinate = (file + rank).to_sym
-
-          # if the char is a number, this must be space. Use it as how many spaces (nil) must be placed
-          if notation.match(/[0-9]/)
-            notation.to_i.times do
-              @board[coordinate][:piece] = nil
-              coordinate = (file + rank).to_sym
-            end
-          else
-            @board[coordinate][:piece] = piece_notation_equivalent[notation]
-          end
-        end
+        add_pieces_by_piece_placement_data(first_file, rank, piece_placement_data)
       end
     end
 
@@ -116,25 +103,25 @@ module Chess
 
     attr_reader :board
 
-    def add_pieces_by_piece_placement_data(file, rank, piece_placement_data)
+    def add_pieces_by_piece_placement_data(first_file, rank, piece_placement_data)
       # convert to chars to get individual chars into array
-      piece_placement_data.chars.each do |notation|
+      piece_placement_data.chars.each_with_index do |notation, char|
+        file = (first_file.ord + char).chr
         coordinate = (file + rank).to_sym
 
         # if the char is a number, this must be space. Use it as how many spaces (nil) must be placed
         if notation.match(/[0-9]/)
-          notation.to_i.times do
-            break if file == 'i'
-
-            @board[coordinate][:piece] = nil
-
-            file = (file.ord + 1).chr
-            coordinate = (file + rank).to_sym
-          end
+          add_nil_pieces(file, rank, coordinate, notation)
         else
           @board[coordinate][:piece] = piece_notation_equivalent[notation]
-          file = (file.ord + 1).chr
         end
+      end
+    end
+
+    def add_nil_pieces(file, rank, coordinate, notation)
+      notation.to_i.times do
+        @board[coordinate][:piece] = nil
+        coordinate = (file + rank).to_sym
       end
     end
 
