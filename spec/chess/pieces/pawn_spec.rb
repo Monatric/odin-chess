@@ -11,7 +11,7 @@ describe Chess::Pawn do
 
     context 'when the pieces are at the starting position' do
       context 'when the white pawn is at e2' do
-        pawn = chessboard.find_coordinate_by_position(:e2)
+        pawn = chessboard.find_piece_by_coordinate(:e2)
         two_squares_forward = :e4
 
         it 'can move two steps forward if the next two squares are empty' do
