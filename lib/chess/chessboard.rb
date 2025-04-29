@@ -6,6 +6,7 @@ require_relative 'pieces/king'
 module Chess
   # class for the chess board and its states
   class Chessboard
+    include Convertable
     include Displayable
 
     def initialize(board: create, fen_first_field: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/')
@@ -115,7 +116,7 @@ module Chess
         if notation.match(/[0-9]/)
           add_nil_pieces(file, rank, coordinate, notation)
         else
-          @board[coordinate][:piece] = PieceNotation.notation_to_piece(notation)
+          @board[coordinate][:piece] = notation_to_piece(notation)
         end
       end
     end
