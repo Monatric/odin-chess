@@ -1,14 +1,17 @@
+# frozen_string_literal: true
+
 require_relative '../displayable'
 require_relative 'pieces/king'
 
 module Chess
   # class for the chess board and its states
   class Chessboard
+    include Convertable
     include Displayable
 
-    def initialize(board = create)
+    def initialize(board: create, fen_first_field: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/')
       @board = board
-      assemble
+      assemble(fen_first_field)
     end
 
     def create
@@ -50,20 +53,7 @@ module Chess
       rank_data = fen_first_field.split('/')
       rank_data.each_with_index do |piece_placement_data, current_rank|
         rank = (max_rank - current_rank).to_s
-        piece_placement_data.chars.each_with_index do |notation, char|
-          file = (first_file.ord + char).chr
-          coordinate = (file + rank).to_sym
-
-          # if the char is a number, this must be space. Use it as how many spaces (nil) must be placed
-          if notation.match(/[0-9]/)
-            notation.to_i.times do
-              @board[coordinate][:piece] = nil
-              coordinate = (file + rank).to_sym
-            end
-          else
-            @board[coordinate][:piece] = piece_notation_equivalent[notation]
-          end
-        end
+        add_pieces_by_piece_placement_data(first_file, rank, piece_placement_data)
       end
     end
 
@@ -112,57 +102,30 @@ module Chess
       end
     end
 
-    # keys are King destination by player, the values are the rook's current and new coordinate
-    def castling_rook_coordinate
-      {
-        g1: %i[h1 f1],
-        c1: %i[a1 d1],
-        g8: %i[h8 f8],
-        c8: %i[a8 d8]
-      }
-    end
-
     private
 
     attr_reader :board
 
-    def add_pieces_by_piece_placement_data(file, rank, piece_placement_data)
+    def add_pieces_by_piece_placement_data(first_file, rank, piece_placement_data)
       # convert to chars to get individual chars into array
-      piece_placement_data.chars.each do |notation|
+      piece_placement_data.chars.each_with_index do |notation, char|
+        file = (first_file.ord + char).chr
         coordinate = (file + rank).to_sym
 
         # if the char is a number, this must be space. Use it as how many spaces (nil) must be placed
         if notation.match(/[0-9]/)
-          notation.to_i.times do
-            break if file == 'i'
-
-            @board[coordinate][:piece] = nil
-
-            file = (file.ord + 1).chr
-            coordinate = (file + rank).to_sym
-          end
+          add_nil_pieces(file, rank, coordinate, notation)
         else
-          @board[coordinate][:piece] = piece_notation_equivalent[notation]
-          file = (file.ord + 1).chr
+          @board[coordinate][:piece] = notation_to_piece(notation)
         end
       end
     end
 
-    def piece_notation_equivalent
-      {
-        'r' => Rook.new(:black),
-        'n' => Knight.new(:black),
-        'b' => Bishop.new(:black),
-        'q' => Queen.new(:black),
-        'k' => King.new(:black),
-        'p' => Pawn.new(:black),
-        'R' => Rook.new(:white),
-        'N' => Knight.new(:white),
-        'B' => Bishop.new(:white),
-        'Q' => Queen.new(:white),
-        'K' => King.new(:white),
-        'P' => Pawn.new(:white)
-      }
+    def add_nil_pieces(file, rank, coordinate, notation)
+      notation.to_i.times do
+        @board[coordinate][:piece] = nil
+        coordinate = (file + rank).to_sym
+      end
     end
   end
 end
