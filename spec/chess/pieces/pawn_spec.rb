@@ -3,11 +3,10 @@
 require_relative '../../../lib/chess/pieces/pawn'
 
 describe Chess::Pawn do
-  subject(:game) { Game.new }
-
   describe '#can_move_to?' do
     let(:fen_starting_position) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1' }
-    subject(:chessboard) { Chessboard.new(fen_first_field: :fen_starting_position) }
+    let(:chessboard) { Chessboard.new(fen_first_field: :fen_starting_position) }
+    let(:game) { Game.new(chessboard) }
 
     context 'when the pieces are at the starting position' do
       context 'when the white pawn is at e2' do
