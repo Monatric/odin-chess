@@ -369,3 +369,9 @@ Notes for later:
   4. Pinned pieces can move
   5. Third field returns value that indicates castling availability even after the king
       has moved. This happens when the king moved away from e1 and came back ✔️
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+For loading with FEN:
+  1. Make it optional in Game, but the default is the FEN starting position
+  2. Since we now have the default FEN, we should set up the states of the Game and Chessboard with the FEN
+  3. This can help with loading up the FEN, which is needed later for testing and saving.
