@@ -2,6 +2,7 @@
 
 require_relative '../piece'
 require_relative 'advanced_piece_movement/pawn_en_passant'
+require_relative 'advanced_piece_movement/pawn_promotion'
 
 module Chess
   # class for the pawn
