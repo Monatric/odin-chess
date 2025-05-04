@@ -14,7 +14,7 @@ module Chess
       @player_white = player_white
       @player_black = player_black
       @current_turn = current_turn
-      @fen = (fen ? FEN.new(notation: fen) : FEN.new(game: self, chessboard: @chessboard))
+      @fen = FEN.new(game: self, chessboard: @chessboard, notation: fen)
     end
 
     def update_fen
