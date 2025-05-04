@@ -17,6 +17,13 @@ describe 'Pawn functionality' do
       let(:chessboard) { Chess::Chessboard.new(fen_first_field: fen_starting_position) }
       let(:game) { Chess::Game.new(chessboard) }
 
+      it 'can move one step forward if the next square are empty' do
+        pawn = chessboard.find_piece_by_coordinate(:e2)
+        one_square_forward = :e3
+
+        expect(pawn.can_move_to?(one_square_forward, chessboard)).to be true
+      end
+
       it 'can move two steps forward if the next two squares are empty' do
         pawn = chessboard.find_piece_by_coordinate(:e2)
         two_squares_forward = :e4
