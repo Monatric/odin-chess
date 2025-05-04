@@ -75,18 +75,6 @@ module Chess
       in_check?(color, board_duplicate) ? false : true
     end
 
-    def refresh_en_passantable_pawn
-      file = 'a'
-      # if current color is white, it means a turn has passed without the opponent capturing the en passant, thus a reset
-      rank = (current_turn_color == :white ? '5' : '4')
-      until file == 'i'
-        coordinate = "#{file}#{rank}".to_sym
-        file = (file.ord + 1).chr
-        piece = chessboard.find_piece_by_coordinate(coordinate)
-        piece.en_passant = false if piece.instance_of?(::Pawn) && piece.en_passant == true
-      end
-    end
-
     def current_turn_color
       @current_turn.color
     end
