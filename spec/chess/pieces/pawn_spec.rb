@@ -30,6 +30,13 @@ describe 'Pawn functionality' do
 
         expect(pawn.can_move_to?(two_squares_forward, chessboard)).to be true
       end
+
+      it 'cannot move more than two steps forward' do
+        pawn = chessboard.find_piece_by_coordinate(:e2)
+        three_squares_forward = :e5
+
+        expect(pawn.can_move_to?(three_squares_forward, chessboard)).to be false
+      end
     end
   end
 end
