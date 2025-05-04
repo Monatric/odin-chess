@@ -22,7 +22,7 @@ def move(game, player_choice)
   source = player_choice.slice(0, 2).to_sym
   dest = player_choice.slice(2, 3).to_sym
 
-  if game.in_check?(game.current_turn_color, game.chessboard)
+  if Chess::ThreatAnalyzer.in_check?(game.current_turn_color, game.chessboard)
     handle_move_in_check(source, dest, game)
   else
     game.move_piece(source, dest, game.chessboard)
@@ -35,7 +35,8 @@ def invalid_move_error(game)
 end
 
 def handle_move_in_check(source, dest, game)
-  if game.move_avoids_check?(source, dest, game.current_turn_color)
+  move_avoids_check_result = Chess::ThreatAnalyzer.move_avoids_check?(source, dest, game)
+  if move_avoids_check_result
     game.move_piece(source, dest, game.chessboard)
   else
     puts 'Your king is in check. Try again.'
