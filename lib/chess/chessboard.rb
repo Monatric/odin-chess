@@ -9,7 +9,7 @@ module Chess
     include Convertable
     include Displayable
 
-    def initialize(board: create, fen_first_field: 'rnbqkbnr/pppp1ppp/8/8/4p3/8/PPPPPPPP/RNBQKBNR/')
+    def initialize(board: create, fen_first_field: 'r1b1k1n1/pppp1p1p/3bq2r/P1n3p1/NQ2p1B1/8/1PPPPPPP/2KR1BNR')
       @board = board
       assemble(fen_first_field)
     end
@@ -105,23 +105,29 @@ module Chess
     attr_reader :board
 
     def add_pieces_by_piece_placement_data(first_file, rank, piece_placement_data)
+      space = 0
       # convert to chars to get individual chars into array
       piece_placement_data.chars.each_with_index do |notation, char|
-        file = (first_file.ord + char).chr
+        file = (first_file.ord + space).chr
         coordinate = (file + rank).to_sym
 
         # if the char is a number, this must be space. Use it as how many spaces (nil) must be placed
         if notation.match(/[0-9]/)
-          add_nil_pieces(file, rank, coordinate, notation)
+          add_nil_pieces(file, rank, coordinate, notation, space)
+          space += notation.to_i
+          puts "from notation #{space}"
         else
           @board[coordinate][:piece] = notation_to_piece(notation)
+          space += 1
         end
+        puts space
       end
     end
 
-    def add_nil_pieces(file, rank, coordinate, notation)
+    def add_nil_pieces(file, rank, coordinate, notation, space)
       notation.to_i.times do
         @board[coordinate][:piece] = nil
+        file = (file.ord + 1).chr
         coordinate = (file + rank).to_sym
       end
     end
