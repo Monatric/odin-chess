@@ -9,7 +9,7 @@ module Chess
     include Convertable
     include Displayable
 
-    def initialize(board: create, fen_first_field: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/')
+    def initialize(board: create, fen_first_field: 'rnbqkbnr/pppp1ppp/8/8/4p3/8/PPPPPPPP/RNBQKBNR/')
       @board = board
       assemble(fen_first_field)
     end
@@ -47,13 +47,11 @@ module Chess
       coordinate_exist?(source) && coordinate_exist?(dest)
     end
 
-    def assemble(fen_first_field = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/')
-      max_rank = 8
-      first_file = 'a'
+    def assemble(fen_first_field)
       rank_data = fen_first_field.split('/')
       rank_data.each_with_index do |piece_placement_data, current_rank|
-        rank = (max_rank - current_rank).to_s
-        add_pieces_by_piece_placement_data(first_file, rank, piece_placement_data)
+        rank = (RANK_ORDINALS[:eighth] - current_rank).to_s
+        add_pieces_by_piece_placement_data(FILE_ORDINALS[:first], rank, piece_placement_data)
       end
     end
 
