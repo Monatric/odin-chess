@@ -9,7 +9,7 @@ module Chess
     include Convertable
     include Displayable
 
-    def initialize(board: create, fen_first_field: 'r1b1k1n1/pppp1p1p/3bq2r/P1n3p1/NQ2p1B1/8/1PPPPPPP/2KR1BNR')
+    def initialize(board: create, fen_first_field: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
       @board = board
       assemble(fen_first_field)
     end
