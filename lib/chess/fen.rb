@@ -18,6 +18,10 @@ module Chess
       generate_fen
     end
 
+    def self.parse_piece_placement_field(fen)
+      fen.split(' ')[0]
+    end
+
     def generate_fen
       fen_strings = []
       fen_strings << PiecePlacementField.generate(@chessboard)
