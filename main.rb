@@ -81,7 +81,7 @@ def start
   puts "Select a number:\n\t1: New Game\n\t2: Load Game"
   player_choice = prompt_game_choice
   start_new_game if player_choice == '1'
-  nil unless player_choice == '2'
+  start_load_game if player_choice == '2'
 end
 
 def start_new_game
@@ -90,6 +90,13 @@ def start_new_game
   chessboard = Chess::Chessboard.new
   game = Chess::Game.new(chessboard: chessboard)
 
+  new_game(game)
+end
+
+def start_load_game
+  # start with default just to test
+  default_fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1'
+  game = Chess::Game.load(default_fen)
   new_game(game)
 end
 
