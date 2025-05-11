@@ -9,5 +9,3 @@ gem 'rubocop', '~> 1.67'
 gem 'colorize', '~> 1.1'
 
 gem 'rspec', '~> 3.13'
-
-gem 'require_all', '~> 3.0'
