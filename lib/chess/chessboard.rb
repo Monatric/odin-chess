@@ -14,6 +14,11 @@ module Chess
       assemble(fen_first_field)
     end
 
+    def self.from_fen(fen_string)
+      first_field = FEN.parse_piece_placement_field(fen_string)
+      new(fen_first_field: first_field)
+    end
+
     def create
       cells = {}
       rank_counter = 0
