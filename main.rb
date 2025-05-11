@@ -11,8 +11,8 @@ def new_game(game)
     game.chessboard.show
     puts "(#{game.current_turn_color}) #{game.current_turn_name} move."
     get_player_move(game)
-    game.update_fen
     game.switch_player!
+    game.update_fen
   end
 end
 
@@ -48,7 +48,7 @@ def get_player_move(game)
   show_options
   print 'Your move: '
   player_choice = gets.chomp
-  if player_choice.match?(/\A[1-9]+\z/)
+  if player_choice.match?(/\A[0-9]+\z/)
     run_selected_option(game, player_choice)
   else
     move(game, player_choice)
@@ -57,6 +57,11 @@ end
 
 def run_selected_option(game, player_choice)
   case player_choice.to_i
+  when 0 # Save game
+    puts 'Saving your game...'
+    game.save_game
+    puts 'Done! See you again.'
+    exit
   when 1
     puts game.fen.generate_fen
   when 2
@@ -68,6 +73,7 @@ def run_selected_option(game, player_choice)
 end
 
 def show_options
+  puts "\t0: Save game"
   puts "\t1: Show FEN"
 
   # temporary. For testing
