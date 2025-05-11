@@ -22,6 +22,10 @@ module Chess
       fen.split(' ')[0]
     end
 
+    def self.parse_active_color_field(fen)
+      fen.split(' ')[1]
+    end
+
     def generate_fen
       fen_strings = []
       fen_strings << PiecePlacementField.generate(@chessboard)
