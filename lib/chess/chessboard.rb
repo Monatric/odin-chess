@@ -9,14 +9,14 @@ module Chess
     include Convertable
     include Displayable
 
-    def initialize(board: create, fen_first_field: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+    def initialize(board: create, piece_placement_field: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
       @board = board
-      assemble(fen_first_field)
+      assemble(piece_placement_field)
     end
 
     def self.from_fen(fen_string)
-      first_field = FEN.parse_piece_placement_field(fen_string)
-      new(fen_first_field: first_field)
+      piece_placement_field = FEN.parse_piece_placement_field(fen_string)
+      new(piece_placement_field: piece_placement_field)
     end
 
     def create
