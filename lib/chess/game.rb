@@ -17,6 +17,11 @@ module Chess
       @fen = FEN.new(game: self, chessboard: @chessboard, notation: fen)
     end
 
+    def self.load(fen_string)
+      piece_placement_field = FEN.parse_piece_placement_field(fen_string)
+      new(chessboard: Chessboard.from_fen(piece_placement_field), fen: fen_string)
+    end
+
     def update_fen
       @fen.generate_fen
     end
