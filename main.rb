@@ -6,11 +6,11 @@ Dir['lib/chess/pieces/*.rb'].sort.each { |file| require_relative file }
 Dir['lib/chess/fen/*.rb'].sort.each { |file| require_relative file }
 Dir['lib/helpers/*.rb'].sort.each { |file| require_relative file }
 
-def start(game)
+def new_game(game)
   loop do
     game.chessboard.show
     puts "(#{game.current_turn_color}) #{game.current_turn_name} move."
-    get_player_choice(game)
+    get_player_move(game)
     game.update_fen
     game.switch_player!
   end
@@ -31,7 +31,7 @@ end
 
 def invalid_move_error(game)
   puts 'Invalid move! Try again.'
-  get_player_choice(game)
+  get_player_move(game)
 end
 
 def handle_move_in_check(source, dest, game)
@@ -40,11 +40,11 @@ def handle_move_in_check(source, dest, game)
     game.move_piece(source, dest, game.chessboard)
   else
     puts 'Your king is in check. Try again.'
-    get_player_choice(game)
+    get_player_move(game)
   end
 end
 
-def get_player_choice(game)
+def get_player_move(game)
   show_options
   print 'Your move: '
   player_choice = gets.chomp
@@ -64,7 +64,7 @@ def run_selected_option(game, player_choice)
   when 3
     puts game.in_check?(game.current_turn_color)
   end
-  get_player_choice(game)
+  get_player_move(game)
 end
 
 def show_options
@@ -76,13 +76,36 @@ def show_options
   puts "\t3: Show if current player in check"
 end
 
+def start
+  puts 'Welcome to Chess! Would you like to play a new game or load your last saved game?'
+  puts "Select a number:\n\t1: New Game\n\t2: Load Game"
+  player_choice = prompt_game_choice
+  start_new_game if player_choice == '1'
+  nil unless player_choice == '2'
+end
+
+def start_new_game
+  # magnus = Player.new('Magnus', :white)
+  # hikaru = Player.new('Hikaru', :black)
+  chessboard = Chess::Chessboard.new
+  game = Chess::Game.new(chessboard: chessboard)
+
+  new_game(game)
+end
+
+def prompt_game_choice
+  choice = gets.chomp
+  valid_choices = %w[1 2]
+  until valid_choices.any?(choice)
+    puts 'Invalid choice. Try again.'
+    choice = gets.chomp
+  end
+  choice
+end
+
 def show_fen
   puts fen.print_fen(game.chessboard, game)
 end
 
-magnus = Player.new('Magnus', :white)
-hikaru = Player.new('Hikaru', :black)
-chessboard = Chess::Chessboard.new
-game = Chess::Game.new(chessboard: chessboard)
-
-start(game)
+# Start the program
+start
