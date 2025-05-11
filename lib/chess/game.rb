@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'yaml'
+
 module Chess
   # class for Game that facilitates the chess game
   class Game
@@ -17,9 +19,39 @@ module Chess
       @fen = FEN.new(game: self, chessboard: @chessboard, notation: fen)
     end
 
-    def self.load(fen_string)
-      piece_placement_field = FEN.parse_piece_placement_field(fen_string)
-      new(chessboard: Chessboard.from_fen(piece_placement_field), fen: fen_string)
+    def self.load(fen_string = nil)
+      saved_game = YAML.load_file('saved_game.yml', permitted_classes: [Player, FEN, Symbol])
+      data = saved_game_data_to_hash(saved_game)
+      chessboard = Chessboard.from_fen(data[:piece_placement_field])
+      new(chessboard: chessboard,
+          player_white: data[:player_white],
+          player_black: data[:player_black],
+          current_turn: data[:current_turn],
+          fen: data[:fen])
+    end
+
+    def self.saved_game_data_to_hash(saved_game) # rubocop:disable Metrics/MethodLength
+      fen = saved_game[:fen]
+
+      piece_placement_field = FEN.parse_piece_placement_field(fen)
+      active_color_field = FEN.parse_active_color_field(fen)
+
+      player_white = saved_game[:player_white]
+      player_black = saved_game[:player_black]
+      current_turn = (active_color_field == 'w' ? player_white : player_black)
+      {
+        piece_placement_field: piece_placement_field,
+        player_white: player_white,
+        player_black: player_black,
+        current_turn: current_turn,
+        fen: fen
+      }
+    end
+
+    def save_game
+      players = { player_white: @player_white, player_black: @player_black, fen: @fen.notation }
+      yaml_string = YAML.dump(players)
+      File.write('saved_game.yml', yaml_string)
     end
 
     def update_fen
@@ -75,7 +107,7 @@ module Chess
 
     def piece_belongs_to_current_player?(source)
       piece = chessboard.find_piece_by_coordinate(source)
-      piece && piece.color == current_turn.color
+      piece && piece.color == current_turn_color
     end
 
     def piece_can_move_to?(source, dest)
