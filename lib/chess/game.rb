@@ -22,7 +22,7 @@ module Chess
     def self.load(fen_string = nil)
       saved_game = YAML.load_file('saved_game.yml', permitted_classes: [Player, FEN, Symbol])
       data = saved_game_data_to_hash(saved_game)
-      chessboard = Chessboard.from_fen(data[:piece_placement_field])
+      chessboard = Chessboard.from_fen(data[:fen])
       new(chessboard: chessboard,
           player_white: data[:player_white],
           player_black: data[:player_black],
