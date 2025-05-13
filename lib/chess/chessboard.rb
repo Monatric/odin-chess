@@ -112,7 +112,7 @@ module Chess
     attr_reader :board
 
     def add_pieces_by_piece_placement_data(first_file, rank, piece_placement_data, fen_string)
-      castling_availability = FEN.parse_castling_availability_field(fen_string).split('')
+      # castling_availability = FEN.parse_castling_availability_field(fen_string).split('')
       space = 0
       # convert to chars to get individual chars into array
       piece_placement_data.chars.each do |notation|
@@ -127,34 +127,50 @@ module Chess
           piece = notation_to_piece(notation)
           @board[coordinate][:piece] = piece
 
-          if %w[K R].include?(notation)
-            white_castling_availability = castling_availability.select { |char| char == char.upcase }
-            # if empty then they have moved. Since this only checks for K and R, pawns wouldn't be an issue here for #moved
-            p white_castling_availability
-            piece.moved = true if white_castling_availability.empty?
+          king_and_rook_notations = (piece.color == :white ? %w[K R] : %w[k r])
+          modify_castling_rights(notation, coordinate, fen_string, piece) if king_and_rook_notations.include?(notation)
 
-            if notation == 'R' && coordinate == :a1
-              piece.moved = true unless white_castling_availability.include?('Q')
-            elsif notation == 'R' && coordinate == :h1
-              piece.moved = true unless white_castling_availability.include?('K')
-            end
-          end
-
-          if %w[k r].include?(notation)
-            black_castling_availability = castling_availability.select { |char| char == char.downcase }
-            # if empty then they have moved. Since this only checks for K and R, pawns wouldn't be an issue here for #moved
-            p black_castling_availability
-            piece.moved = true if black_castling_availability.empty?
-
-            if notation == 'r' && coordinate == :a8
-              piece.moved = true unless black_castling_availability.include?('q')
-            elsif notation == 'r' && coordinate == :h8
-              piece.moved = true unless black_castling_availability.include?('k')
-            end
-          end
           space += 1
         end
       end
+    end
+
+    def modify_castling_rights(piece_placement_data_notation, coordinate, fen_string, piece)
+      castling_availability = FEN.parse_castling_availability_field(fen_string).split('')
+
+      colored_castling_availability = castling_availability.select do |char|
+        char == (piece.color == :white ? char.upcase : char.downcase)
+      end
+      piece.moved = true if colored_castling_availability.empty?
+
+      modify_a1_rook_castling_rights(piece_placement_data_notation, coordinate, piece, colored_castling_availability)
+      modify_h1_rook_castling_rights(piece_placement_data_notation, coordinate, piece, colored_castling_availability)
+      modify_a8_rook_castling_rights(piece_placement_data_notation, coordinate, piece, colored_castling_availability)
+      modify_h8_rook_castling_rights(piece_placement_data_notation, coordinate, piece, colored_castling_availability)
+    end
+
+    def modify_a1_rook_castling_rights(notation, coordinate, piece, colored_castling_availability)
+      return unless notation == 'R' && coordinate == :a1
+
+      piece.moved = true unless colored_castling_availability.include?('Q')
+    end
+
+    def modify_h1_rook_castling_rights(notation, coordinate, piece, colored_castling_availability)
+      return unless notation == 'R' && coordinate == :h1
+
+      piece.moved = true unless colored_castling_availability.include?('K')
+    end
+
+    def modify_a8_rook_castling_rights(notation, coordinate, piece, colored_castling_availability)
+      return unless notation == 'r' && coordinate == :a8
+
+      piece.moved = true unless colored_castling_availability.include?('q')
+    end
+
+    def modify_h8_rook_castling_rights(notation, coordinate, piece, colored_castling_availability)
+      return unless notation == 'r' && coordinate == :h8
+
+      piece.moved = true unless colored_castling_availability.include?('k')
     end
 
     def add_nil_pieces(file, rank, coordinate, notation)
