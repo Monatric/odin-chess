@@ -9,7 +9,7 @@ module Chess
     include Convertable
     include Displayable
 
-    def initialize(board: create, fen_string: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+    def initialize(board: create, fen_string: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1')
       @board = board
       assemble(fen_string)
     end
@@ -58,7 +58,7 @@ module Chess
 
       rank_data.each_with_index do |piece_placement_data, current_rank|
         rank = (RANK_ORDINALS[:eighth] - current_rank).to_s
-        add_pieces_by_piece_placement_data(FILE_ORDINALS[:first], rank, piece_placement_data)
+        add_pieces_by_piece_placement_data(FILE_ORDINALS[:first], rank, piece_placement_data, fen_string)
       end
     end
 
@@ -111,7 +111,8 @@ module Chess
 
     attr_reader :board
 
-    def add_pieces_by_piece_placement_data(first_file, rank, piece_placement_data)
+    def add_pieces_by_piece_placement_data(first_file, rank, piece_placement_data, fen_string)
+      castling_availability = FEN.parse_castling_availability_field(fen_string).split('')
       space = 0
       # convert to chars to get individual chars into array
       piece_placement_data.chars.each do |notation|
@@ -123,7 +124,34 @@ module Chess
           add_nil_pieces(file, rank, coordinate, notation)
           space += notation.to_i
         else
-          @board[coordinate][:piece] = notation_to_piece(notation)
+          piece = notation_to_piece(notation)
+          @board[coordinate][:piece] = piece
+
+          if %w[K R].include?(notation)
+            white_castling_availability = castling_availability.select { |char| char == char.upcase }
+            # if empty then they have moved. Since this only checks for K and R, pawns wouldn't be an issue here for #moved
+            p white_castling_availability
+            piece.moved = true if white_castling_availability.empty?
+
+            if notation == 'R' && coordinate == :a1
+              piece.moved = true unless white_castling_availability.include?('Q')
+            elsif notation == 'R' && coordinate == :h1
+              piece.moved = true unless white_castling_availability.include?('K')
+            end
+          end
+
+          if %w[k r].include?(notation)
+            black_castling_availability = castling_availability.select { |char| char == char.downcase }
+            # if empty then they have moved. Since this only checks for K and R, pawns wouldn't be an issue here for #moved
+            p black_castling_availability
+            piece.moved = true if black_castling_availability.empty?
+
+            if notation == 'r' && coordinate == :a8
+              piece.moved = true unless black_castling_availability.include?('q')
+            elsif notation == 'r' && coordinate == :h8
+              piece.moved = true unless black_castling_availability.include?('k')
+            end
+          end
           space += 1
         end
       end
