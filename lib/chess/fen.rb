@@ -26,6 +26,22 @@ module Chess
       fen.split(' ')[1]
     end
 
+    def self.parse_castling_availability_field(fen)
+      fen.split(' ')[2]
+    end
+
+    def self.parse_en_passant_field(fen)
+      fen.split(' ')[3]
+    end
+
+    def self.parse_halfmove_clock_field(fen)
+      fen.split(' ')[4]
+    end
+
+    def self.parse_fullmove_number_field(fen)
+      fen.split(' ')[5]
+    end
+
     def generate_fen
       fen_strings = []
       fen_strings << PiecePlacementField.generate(@chessboard)
