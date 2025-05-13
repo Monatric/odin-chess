@@ -67,12 +67,14 @@ module Chess
     end
 
     def valid_move?(move)
+      castling_notations = %w[e1g1 e1c1 e8g8 e8c8]
       source = move.slice(0, 2).to_sym
       dest = move.slice(2, 3).to_sym
 
       return false unless @chessboard.valid_source_and_dest?(source, dest)
       return false unless piece_belongs_to_current_player?(source)
       return false unless piece_can_move_to?(source, dest)
+      return false if castling_notations.include?(source.to_s + dest.to_s) && !valid_castling?(source, dest)
 
       true
     end
@@ -95,7 +97,6 @@ module Chess
 
     def determine_move_action(source, dest, chessboard)
       castling_notations = %w[e1g1 e1c1 e8g8 e8c8]
-
       piece = chessboard.find_piece_by_coordinate(source)
 
       if castling_notations.include?(source.to_s + dest.to_s)
@@ -103,6 +104,14 @@ module Chess
       else
         piece.move(dest, chessboard)
       end
+    end
+
+    def valid_castling?(source, dest)
+      dest_to_rook_coord = { c1: :a1, g1: :h1, c8: :a8, g8: :h8 }
+      rook_coord = dest_to_rook_coord[dest]
+      king = chessboard.find_piece_by_coordinate(source)
+      rook = chessboard.find_piece_by_coordinate(rook_coord)
+      king.castleable? && rook&.castleable?
     end
 
     def piece_belongs_to_current_player?(source)
