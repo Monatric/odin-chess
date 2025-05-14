@@ -31,19 +31,6 @@ module Chess
       super(dest, chessboard)
     end
 
-    def signal_en_passant(dest, chessboard)
-      left_adjacent = coordinate_string_to_symbol(dest, file_offset: -1)
-      right_adjacent = coordinate_string_to_symbol(dest, file_offset: 1)
-
-      [left_adjacent, right_adjacent].each do |adjacent|
-        next unless chessboard.coordinate_exist?(adjacent)
-
-        piece = chessboard.find_piece_by_coordinate(adjacent)
-        piece.en_passant_signal = true if piece.respond_to?(:en_passant_signal)
-        @en_passant_signaller = true
-      end
-    end
-
     def en_passantable_square(chessboard)
       return unless en_passant_signal
 
