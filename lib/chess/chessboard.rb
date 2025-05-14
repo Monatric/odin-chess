@@ -60,6 +60,8 @@ module Chess
         rank = (RANK_ORDINALS[:eighth] - current_rank).to_s
         add_pieces_by_piece_placement_data(FILE_ORDINALS[:first], rank, piece_placement_data, fen_string)
       end
+
+      modify_en_passant_signal(fen_string)
     end
 
     def find_piece_by_coordinate(coordinate)
@@ -129,10 +131,29 @@ module Chess
 
           king_and_rook_notations = (piece.color == :white ? %w[K R] : %w[k r])
           modify_castling_rights(notation, coordinate, fen_string, piece) if king_and_rook_notations.include?(notation)
-
           space += 1
         end
       end
+    end
+
+    def modify_en_passant_signal(fen_string)
+      en_passantable_square = FEN.parse_en_passant_field(fen_string)
+      return if en_passantable_square == '-' # hyphen means no en passant
+
+      en_passantable_square_rank = en_passantable_square[1].to_i
+      en_passantable_square_file = en_passantable_square[0]
+      rank_offset = (en_passantable_square_rank == RANK_ORDINALS[:sixth] ? -1 : 1)
+
+      # add/subtract the rank of en passant field and turn into string
+      rank = (en_passantable_square_rank + rank_offset).to_s
+      en_passantable_pawn_coordinate = (en_passantable_square_file + rank).to_sym
+      piece = find_piece_by_coordinate(en_passantable_pawn_coordinate)
+
+      en_passant_movement = PawnEnPassant.new(pawn: piece, dest: en_passantable_pawn_coordinate, chessboard: self)
+
+      source_offset = (piece.color == :white ? -2 : 2)
+      source = coordinate_string_to_symbol(en_passantable_pawn_coordinate, rank_offset: source_offset)
+      en_passant_movement.signal_en_passant(source)
     end
 
     def modify_castling_rights(piece_placement_data_notation, coordinate, fen_string, piece)
