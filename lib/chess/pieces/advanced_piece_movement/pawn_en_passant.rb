@@ -75,6 +75,7 @@ module Chess
       result = false
       [left_adjacent, right_adjacent].each do |adjacent|
         next unless @chessboard.coordinate_exist?(adjacent)
+        next if result == true
 
         piece = @chessboard.find_piece_by_coordinate(adjacent)
         result = piece&.color == opponent_color
