@@ -13,8 +13,8 @@ module Chess
       @chessboard = chessboard
     end
 
-    def signal_en_passant
-      return unless en_passantable?
+    def signal_en_passant(source = nil)
+      return unless en_passantable?(source)
 
       left_adjacent = self.class.coordinate_string_to_symbol(@dest, file_offset: -1)
       right_adjacent = self.class.coordinate_string_to_symbol(@dest, file_offset: 1)
@@ -59,8 +59,8 @@ module Chess
 
     private
 
-    def en_passantable?
-      source = @chessboard.current_coordinate(@pawn)
+    def en_passantable?(source)
+      source = @chessboard.current_coordinate(@pawn) if source.nil?
       if source[1] == '2' && @dest[1] == '4'
         adjacent_is_opponent_pawn?(:black)
       elsif source[1] == '7' && @dest[1] == '5'
