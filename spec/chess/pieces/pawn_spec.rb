@@ -80,5 +80,21 @@ describe 'Pawn functionality' do
         expect(pawn.can_move_to?(one_square_down_right, chessboard)).to be false
       end
     end
+
+    context 'when the white pawn is at e4, facing a black pawn diagonally' do
+      let(:fen_capturable_black_pieces) { 'rn1qkbnr/ppp1pppp/8/3p1b2/4P3/P7/1PPP1PPP/RNBQKBNR w KQkq - 1 3' }
+      let(:chessboard) { Chess::Chessboard.new(fen_string: fen_capturable_black_pieces) }
+      let(:pawn) { chessboard.find_piece_by_coordinate(:e4) }
+
+      it 'can capture up left' do
+        one_square_up_left = :d5
+        expect(pawn.can_move_to?(one_square_up_left, chessboard)).to be true
+      end
+
+      it 'can move up right' do
+        one_square_up_right = :f5
+        expect(pawn.can_move_to?(one_square_up_right, chessboard)).to be true
+      end
+    end
   end
 end
