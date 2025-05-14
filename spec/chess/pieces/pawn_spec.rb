@@ -97,6 +97,28 @@ describe 'Pawn functionality' do
           expect(pawn.can_move_to?(one_square_up_right, chessboard)).to be true
         end
       end
+
+      context 'when the pawn is at e5 with an en passantable black pawn on d5' do
+        let(:fen_en_passantable_black_pawn) { 'rnbqkbnr/1pp1pppp/p7/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3' }
+        let(:chessboard) { Chess::Chessboard.new(fen_string: fen_en_passantable_black_pawn) }
+        let(:pawn) { chessboard.find_piece_by_coordinate(:e5) }
+
+        it 'can capture black pawn on d5' do
+          en_passantable_square = :d6
+          expect(pawn.can_move_to?(en_passantable_square, chessboard)).to be true
+        end
+      end
+
+      context 'when the pawn is at a5 with an en passantable black pawn on b5' do
+        let(:fen_en_passantable_black_pawn) { 'rnbqkbnr/p1ppppp1/7p/Pp6/8/8/1PPPPPPP/RNBQKBNR w KQkq b6 0 3' }
+        let(:chessboard) { Chess::Chessboard.new(fen_string: fen_en_passantable_black_pawn) }
+        let(:pawn) { chessboard.find_piece_by_coordinate(:a5) }
+
+        it 'can capture black pawn on d5' do
+          en_passantable_square = :b6
+          expect(pawn.can_move_to?(en_passantable_square, chessboard)).to be true
+        end
+      end
     end
   end
 end
