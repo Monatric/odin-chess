@@ -8,14 +8,15 @@ require_relative '../../../lib/chess/pieces/king'
 require_relative '../../../lib/chess/pieces/queen'
 
 # Dir['../../../lib/chess/pieces/*.rb'].sort.each { |file| require_relative file }
+require_relative '../../../lib/chess/chessboard/chessboard_assembler'
 require_relative '../../../lib/chess/chessboard'
+require_relative '../../../lib/chess'
 
 describe 'Pawn functionality' do
   describe '#can_move_to?' do
     context 'when the white pawn is at e2' do
-      let(:fen_starting_position) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/' }
-      let(:chessboard) { Chess::Chessboard.new(fen_first_field: fen_starting_position) }
-      let(:game) { Chess::Game.new(chessboard) }
+      let(:fen_starting_position) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1' }
+      let(:chessboard) { Chess::Chessboard.new(fen_string: fen_starting_position) }
 
       it 'can move one step forward if the next square are empty' do
         pawn = chessboard.find_piece_by_coordinate(:e2)
