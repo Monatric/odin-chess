@@ -114,7 +114,7 @@ describe 'Pawn functionality' do
         let(:chessboard) { Chess::Chessboard.new(fen_string: fen_en_passantable_black_pawn) }
         let(:pawn) { chessboard.find_piece_by_coordinate(:a5) }
 
-        it 'can capture black pawn on d5' do
+        it 'can capture black pawn on b5' do
           en_passantable_square = :b6
           expect(pawn.can_move_to?(en_passantable_square, chessboard)).to be true
         end
