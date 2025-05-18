@@ -23,17 +23,20 @@ describe 'Pawn functionality' do
 
         it 'can move one step forward if the next square are empty' do
           one_square_forward = :e3
-          expect(pawn.can_move_to?(one_square_forward, chessboard)).to be true
+          result = pawn.can_move_to?(one_square_forward, chessboard)
+          expect(result).to be true
         end
 
         it 'can move two steps forward if the next two squares are empty' do
           two_squares_forward = :e4
-          expect(pawn.can_move_to?(two_squares_forward, chessboard)).to be true
+          result = pawn.can_move_to?(two_squares_forward, chessboard)
+          expect(result).to be true
         end
 
         it 'cannot move more than two steps forward' do
           three_squares_forward = :e5
-          expect(pawn.can_move_to?(three_squares_forward, chessboard)).to be false
+          result = pawn.can_move_to?(three_squares_forward, chessboard)
+          expect(result).to be false
         end
       end
 
@@ -44,42 +47,50 @@ describe 'Pawn functionality' do
 
         it 'cannot move forward' do
           one_square_forward = :e5
-          expect(pawn.can_move_to?(one_square_forward, chessboard)).to be false
+          result = pawn.can_move_to?(one_square_forward, chessboard)
+          expect(result).to be false
         end
 
         it 'cannot move backward' do
           one_square_backward = :e3
-          expect(pawn.can_move_to?(one_square_backward, chessboard)).to be false
+          result = pawn.can_move_to?(one_square_backward, chessboard)
+          expect(result).to be false
         end
 
         it 'cannot move left' do
           one_square_left = :d4
-          expect(pawn.can_move_to?(one_square_left, chessboard)).to be false
+          result = pawn.can_move_to?(one_square_left, chessboard)
+          expect(result).to be false
         end
 
         it 'cannot move right' do
           one_square_right = :f4
-          expect(pawn.can_move_to?(one_square_right, chessboard)).to be false
+          result = pawn.can_move_to?(one_square_right, chessboard)
+          expect(result).to be false
         end
 
         it 'cannot move up left' do
           one_square_up_left = :d5
-          expect(pawn.can_move_to?(one_square_up_left, chessboard)).to be false
+          result = pawn.can_move_to?(one_square_up_left, chessboard)
+          expect(result).to be false
         end
 
         it 'cannot move up right' do
           one_square_up_right = :f5
-          expect(pawn.can_move_to?(one_square_up_right, chessboard)).to be false
+          result = pawn.can_move_to?(one_square_up_right, chessboard)
+          expect(result).to be false
         end
 
         it 'cannot move down left' do
           one_square_down_left = :d3
-          expect(pawn.can_move_to?(one_square_down_left, chessboard)).to be false
+          result = pawn.can_move_to?(one_square_down_left, chessboard)
+          expect(result).to be false
         end
 
         it 'cannot move down right' do
           one_square_down_right = :f3
-          expect(pawn.can_move_to?(one_square_down_right, chessboard)).to be false
+          result = pawn.can_move_to?(one_square_down_right, chessboard)
+          expect(result).to be false
         end
       end
 
@@ -90,12 +101,14 @@ describe 'Pawn functionality' do
 
         it 'can capture up left' do
           one_square_up_left = :d5
-          expect(pawn.can_move_to?(one_square_up_left, chessboard)).to be true
+          result = pawn.can_move_to?(one_square_up_left, chessboard)
+          expect(result).to be true
         end
 
         it 'can move up right' do
           one_square_up_right = :f5
-          expect(pawn.can_move_to?(one_square_up_right, chessboard)).to be true
+          result = pawn.can_move_to?(one_square_up_right, chessboard)
+          expect(result).to be true
         end
       end
 
@@ -106,7 +119,8 @@ describe 'Pawn functionality' do
 
         it 'can capture black pawn on d5' do
           en_passantable_square = :d6
-          expect(pawn.can_move_to?(en_passantable_square, chessboard)).to be true
+          result = pawn.can_move_to?(en_passantable_square, chessboard)
+          expect(result).to be true
         end
       end
 
@@ -117,7 +131,8 @@ describe 'Pawn functionality' do
 
         it 'can capture black pawn on b5' do
           en_passantable_square = :b6
-          expect(pawn.can_move_to?(en_passantable_square, chessboard)).to be true
+          result = pawn.can_move_to?(en_passantable_square, chessboard)
+          expect(result).to be true
         end
       end
 
