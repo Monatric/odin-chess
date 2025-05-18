@@ -10,6 +10,7 @@ require_relative '../../../lib/chess/pieces/queen'
 # Dir['../../../lib/chess/pieces/*.rb'].sort.each { |file| require_relative file }
 require_relative '../../../lib/chess/chessboard/chessboard_assembler'
 require_relative '../../../lib/chess/chessboard'
+require_relative '../../../lib/helpers/threat_analyzer'
 require_relative '../../../lib/chess'
 
 describe 'Pawn functionality' do
@@ -117,6 +118,17 @@ describe 'Pawn functionality' do
         it 'can capture black pawn on b5' do
           en_passantable_square = :b6
           expect(pawn.can_move_to?(en_passantable_square, chessboard)).to be true
+        end
+      end
+
+      context 'when the pawn checks the black king' do
+        let(:fen_checked_black_king) { '8/3k4/4P3/8/8/8/8/4K3 b - - 0 1' }
+        let(:chessboard) { Chess::Chessboard.new(fen_string: fen_checked_black_king) }
+        let(:pawn) { chessboard.find_piece_by_coordinate(:e6) }
+
+        it 'checks the black king' do
+          result = Chess::ThreatAnalyzer.in_check?(:black, chessboard)
+          expect(result).to be true
         end
       end
     end
