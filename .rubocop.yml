@@ -11,6 +11,8 @@
 Metrics/BlockLength:
   Exclude:
     - "spec/*"
+    - "spec/chess/*"
+    - "spec/chess/pieces/*"
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: always
