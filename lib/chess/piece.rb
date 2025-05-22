@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../helpers/convertable'
+require_relative '../helpers/move'
 module Chess
   # class for pieces of chess
   class Piece
@@ -44,12 +45,20 @@ module Chess
       piece.color == color
     end
 
-    def possible_moves(chessboard)
-      generate_possible_moves(chessboard)
+    def generate_possible_moves(chessboard)
+      possible_moves = []
+      position = chessboard.current_position(self)
+      return possible_moves if chessboard.find_coordinate_by_position(position).nil? # possibly useless?
+
+      file = position[0]
+      rank = position[1]
+      add_moves(file, rank, possible_moves, chessboard)
+
+      possible_moves
     end
 
     def can_move_to?(dest, chessboard)
-      possible_moves(chessboard).include?(dest)
+      Move.generate_list_from(self, chessboard).include?(dest)
     end
 
     private
@@ -87,18 +96,6 @@ module Chess
           break
         end
       end
-    end
-
-    def generate_possible_moves(chessboard)
-      possible_moves = []
-      position = chessboard.current_position(self)
-      return possible_moves if chessboard.find_coordinate_by_position(position).nil? # possibly useless?
-
-      file = position[0]
-      rank = position[1]
-      add_moves(file, rank, possible_moves, chessboard)
-
-      possible_moves
     end
   end
 end
