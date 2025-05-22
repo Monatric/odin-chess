@@ -101,9 +101,7 @@ def start_new_game
 end
 
 def start_load_game
-  # start with default just to test
-  default_fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1'
-  game = Chess::Game.load(default_fen)
+  game = Chess::Game.load
   new_game(game)
 end
 

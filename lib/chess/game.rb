@@ -19,7 +19,7 @@ module Chess
       @fen = FEN.new(game: self, chessboard: @chessboard, notation: fen)
     end
 
-    def self.load(fen_string = nil)
+    def self.load
       saved_game = YAML.load_file('saved_game.yml', permitted_classes: [Player, FEN, Symbol])
       data = saved_game_data_to_hash(saved_game)
       chessboard = Chessboard.from_fen(data[:fen])
