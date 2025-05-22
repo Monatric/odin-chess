@@ -40,7 +40,7 @@ describe 'Pawn functionality' do
         end
       end
 
-      context 'when the pawn is at e4, facing a black pawn at e5' do
+      context 'when the pawn is at e4, facing a black piece diagonally' do
         let(:fen_two_opposing_pawns) { 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2' }
         let(:chessboard) { Chess::Chessboard.new(fen_string: fen_two_opposing_pawns) }
         let(:pawn) { chessboard.find_piece_by_coordinate(:e4) }
@@ -105,7 +105,7 @@ describe 'Pawn functionality' do
           expect(result).to be true
         end
 
-        it 'can move up right' do
+        it 'can capture up right' do
           one_square_up_right = :f5
           result = pawn.can_move_to?(one_square_up_right, chessboard)
           expect(result).to be true
@@ -202,43 +202,43 @@ describe 'Pawn functionality' do
           expect(result).to be false
         end
 
-        it 'cannot capture diagonally up-left' do
+        it 'cannot move up left' do
           diag_up_left = :d6
           result = pawn.can_move_to?(diag_up_left, chessboard)
           expect(result).to be false
         end
 
-        it 'cannot capture diagonally up-right' do
+        it 'cannot move up right' do
           diag_up_right = :f6
           result = pawn.can_move_to?(diag_up_right, chessboard)
           expect(result).to be false
         end
 
-        it 'cannot move diagonally down-left without capture' do
+        it 'cannot move down left' do
           diag_down_left = :d4
           result = pawn.can_move_to?(diag_down_left, chessboard)
           expect(result).to be false
         end
 
-        it 'cannot move diagonally down-right without capture' do
+        it 'cannot move down right' do
           diag_down_right = :f4
           result = pawn.can_move_to?(diag_down_right, chessboard)
           expect(result).to be false
         end
       end
 
-      context 'when the pawn is at e5, facing a white pawn diagonally' do
+      context 'when the pawn is at e5, facing a white piece diagonally' do
         let(:fen_capturable_white_pieces) { 'rnbqkbnr/ppp1pppp/8/3p4/2P1P3/8/PP1P1PPP/RNBQKBNR b KQkq - 0 2' }
         let(:chessboard) { Chess::Chessboard.new(fen_string: fen_capturable_white_pieces) }
         let(:pawn) { chessboard.find_piece_by_coordinate(:d5) }
 
-        it 'can capture down-left' do
+        it 'can capture down left' do
           one_square_down_left = :c4
           result = pawn.can_move_to?(one_square_down_left, chessboard)
           expect(result).to be true
         end
 
-        it 'can capture down-right' do
+        it 'can capture down right' do
           one_square_down_right = :e4
           result = pawn.can_move_to?(one_square_down_right, chessboard)
           expect(result).to be true
