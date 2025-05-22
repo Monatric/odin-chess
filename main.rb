@@ -66,7 +66,7 @@ def run_selected_option(game, player_choice)
   when 1
     puts game.fen.generate_fen
   when 2
-    puts game.legal_squares_of_color(game.current_turn_color, game.chessboard)
+    puts Chess::MoveList.legal_squares_of_color(game.current_turn_color, game.chessboard)
   when 3
     puts game.in_check?(game.current_turn_color)
   end

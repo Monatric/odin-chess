@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../helpers/convertable'
-require_relative '../helpers/move'
+require_relative '../helpers/move_list'
 module Chess
   # class for pieces of chess
   class Piece
@@ -58,7 +58,7 @@ module Chess
     end
 
     def can_move_to?(dest, chessboard)
-      Move.generate_list_from(self, chessboard).include?(dest)
+      MoveList.generate_list_from(self, chessboard).include?(dest)
     end
 
     private
