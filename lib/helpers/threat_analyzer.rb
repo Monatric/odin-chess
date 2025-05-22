@@ -6,7 +6,7 @@ module Chess
     def self.covered_squares_of_color(color, chessboard)
       squares_with_pieces = chessboard.find_squares_with_pieces_by_color(color)
       squares_with_pieces.map do |_, info|
-        info[:piece].possible_moves(chessboard)
+        info[:piece].generate_possible_moves(chessboard)
       end.flatten
     end
 
