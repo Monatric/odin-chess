@@ -20,6 +20,14 @@ module Chess
       raise NotImplementedError, 'subclasses must have this method'
     end
 
+    def white?
+      @color == :white
+    end
+
+    def black?
+      @color == :black
+    end
+
     def move(dest, chessboard)
       refresh_en_passant(chessboard) # a player's move will reset the en passant signallers
       source = chessboard.current_coordinate(self)
