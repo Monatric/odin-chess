@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../helpers/convertable'
+require_relative '../helpers/move_list'
 module Chess
   # class for pieces of chess
   class Piece
@@ -19,11 +20,23 @@ module Chess
       raise NotImplementedError, 'subclasses must have this method'
     end
 
-    def move(dest, chessboard)
+    def white?
+      @color == :white
+    end
+
+    def black?
+      @color == :black
+    end
+
+    def move(dest, chessboard, promotion_piece = nil)
       refresh_en_passant(chessboard) # a player's move will reset the en passant signallers
       source = chessboard.current_coordinate(self)
       chessboard.remove_piece(source)
-      chessboard.add_piece(dest, self)
+      if promotion_piece.nil?
+        chessboard.add_piece(dest, self)
+      else
+        chessboard.add_piece(dest, promotion_piece)
+      end
     end
 
     def capturable?(piece, color)
@@ -44,12 +57,20 @@ module Chess
       piece.color == color
     end
 
-    def possible_moves(chessboard)
-      generate_possible_moves(chessboard)
+    def generate_possible_moves(chessboard)
+      possible_moves = []
+      position = chessboard.current_position(self)
+      return possible_moves if chessboard.find_coordinate_by_position(position).nil? # possibly useless?
+
+      file = position[0]
+      rank = position[1]
+      add_moves(file, rank, possible_moves, chessboard)
+
+      possible_moves
     end
 
     def can_move_to?(dest, chessboard)
-      possible_moves(chessboard).include?(dest)
+      MoveList.generate_list_from(self, chessboard).include?(dest)
     end
 
     private
@@ -87,18 +108,6 @@ module Chess
           break
         end
       end
-    end
-
-    def generate_possible_moves(chessboard)
-      possible_moves = []
-      position = chessboard.current_position(self)
-      return possible_moves if chessboard.find_coordinate_by_position(position).nil? # possibly useless?
-
-      file = position[0]
-      rank = position[1]
-      add_moves(file, rank, possible_moves, chessboard)
-
-      possible_moves
     end
   end
 end

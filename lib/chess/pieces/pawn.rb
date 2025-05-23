@@ -27,8 +27,9 @@ module Chess
 
     def move(dest, chessboard)
       update_en_passant_status(dest, chessboard)
+      promotion_piece = PawnPromotion.promote(self) if PawnPromotion.promotion_square?(self, dest)
       self.moved = true
-      super(dest, chessboard)
+      super(dest, chessboard, promotion_piece)
     end
 
     def en_passantable_square(chessboard)
@@ -39,6 +40,14 @@ module Chess
       right_adjacent = coordinate_string_to_symbol(source, file_offset: 1)
 
       PawnEnPassant.en_passantable_square_finder([left_adjacent, right_adjacent], chessboard, @color)
+    end
+
+    def generate_possible_moves(chessboard)
+      possible_moves = []
+      add_moves(possible_moves, chessboard)
+      possible_moves << en_passantable_square(chessboard) if @en_passant_signal
+
+      possible_moves
     end
 
     private
@@ -69,14 +78,6 @@ module Chess
         coordinate_behind_pawn = coordinate_string_to_symbol(adjacent, rank_offset: rank_offset)
       end
       coordinate_behind_pawn
-    end
-
-    def generate_possible_moves(chessboard)
-      possible_moves = []
-      add_moves(possible_moves, chessboard)
-      possible_moves << en_passantable_square(chessboard) if @en_passant_signal
-
-      possible_moves
     end
 
     def add_moves(possible_moves, chessboard)
