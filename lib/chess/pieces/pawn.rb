@@ -27,8 +27,9 @@ module Chess
 
     def move(dest, chessboard)
       update_en_passant_status(dest, chessboard)
+      promotion_piece = PawnPromotion.promote(self) if PawnPromotion.promotion_square?(self, dest)
       self.moved = true
-      super(dest, chessboard)
+      super(dest, chessboard, promotion_piece)
     end
 
     def en_passantable_square(chessboard)

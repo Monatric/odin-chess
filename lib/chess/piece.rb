@@ -28,11 +28,15 @@ module Chess
       @color == :black
     end
 
-    def move(dest, chessboard)
+    def move(dest, chessboard, promotion_piece = nil)
       refresh_en_passant(chessboard) # a player's move will reset the en passant signallers
       source = chessboard.current_coordinate(self)
       chessboard.remove_piece(source)
-      chessboard.add_piece(dest, self)
+      if promotion_piece.nil?
+        chessboard.add_piece(dest, self)
+      else
+        chessboard.add_piece(dest, promotion_piece)
+      end
     end
 
     def capturable?(piece, color)
