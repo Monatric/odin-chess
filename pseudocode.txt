@@ -375,3 +375,11 @@ For loading with FEN:
   1. Make it optional in Game, but the default is the FEN starting position
   2. Since we now have the default FEN, we should set up the states of the Game and Chessboard with the FEN
   3. This can help with loading up the FEN, which is needed later for testing and saving.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+For checkmate:
+  1. After the game has switched player, check for ThreatAnalyzer#checkmate?
+  2. First, refactor MoveList#legal_squares_of_color to iterate through the mapped coordinates
+  3. Each coordinate there has to call ThreatAnalyzer#move_avoids_check?, which will be mapped as well to generate all
+     the actual legal moves of a player
+  4. Only then #checkmate? will be made, as it will call #legal_squares_of_color, and if it is empty, then declare checkmate
