@@ -109,7 +109,7 @@ module Chess
 
     def find_squares_with_pieces_by_color(color)
       board.select do |_, info|
-        !info[:piece].nil? && info[:piece].color == color
+        info if !info[:piece].nil? && info[:piece].color == color
       end
     end
 
