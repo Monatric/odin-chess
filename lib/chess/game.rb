@@ -75,6 +75,7 @@ module Chess
       return false unless piece_belongs_to_current_player?(source)
       return false unless piece_can_move_to?(source, dest)
       return false if castling_notations.include?(source.to_s + dest.to_s) && !valid_castling?(source, dest)
+      return false unless Chess::ThreatAnalyzer.move_avoids_check?(source, dest, self)
 
       true
     end
