@@ -107,22 +107,16 @@ describe 'Pawn functionality' do
         let(:chessboard) { Chess::Chessboard.new(fen_string: fen_starting_position) }
         let(:pawn) { chessboard.find_piece_by_coordinate(:e7) }
 
-        it 'can move one step forward (down) if the next square is empty' do
-          one_square_forward = :e6
-          result = pawn.can_move_to?(one_square_forward, chessboard)
-          expect(result).to be true
-        end
+        moves = {
+          e6: true,
+          e5: true,
+          e4: false
+        }
 
-        it 'can move two steps forward (down) if the next two squares are empty' do
-          two_squares_forward = :e5
-          result = pawn.can_move_to?(two_squares_forward, chessboard)
-          expect(result).to be true
-        end
-
-        it 'cannot move more than two steps forward' do
-          three_squares_forward = :e4
-          result = pawn.can_move_to?(three_squares_forward, chessboard)
-          expect(result).to be false
+        moves.each do |coordinate, allowed|
+          it "#{allowed ? 'allows' : 'disallows'} movement to #{coordinate}" do
+            expect(pawn.can_move_to?(coordinate, chessboard)).to be allowed
+          end
         end
       end
 
