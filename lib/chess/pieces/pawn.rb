@@ -25,11 +25,18 @@ module Chess
       @color == :white ? '♙' : '♟'
     end
 
+    def promote(dest, chessboard, dup: false)
+      promotion_piece = PawnPromotion.select_promotion_piece(@color, dup: dup)
+      refresh_en_passant(chessboard) # a player's move will reset the en passant signallers
+      source = chessboard.current_coordinate(self)
+      chessboard.remove_piece(source)
+      chessboard.add_piece(dest, promotion_piece)
+    end
+
     def move(dest, chessboard)
       update_en_passant_status(dest, chessboard)
-      promotion_piece = PawnPromotion.promote(self) if PawnPromotion.promotion_square?(self, dest)
       self.moved = true
-      super(dest, chessboard, promotion_piece)
+      super(dest, chessboard)
     end
 
     def en_passantable_square(chessboard)
