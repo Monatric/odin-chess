@@ -16,28 +16,21 @@ require_relative '../../../lib/chess'
 
 describe 'Pawn functionality' do
   describe '#can_move_to?' do
-    context 'when the pawn is white' do
-      context 'when the pawn has not moved (at e2)' do
-        let(:fen_starting_position) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1' }
-        let(:chessboard) { Chess::Chessboard.new(fen_string: fen_starting_position) }
-        let(:pawn) { chessboard.find_piece_by_coordinate(:e2) }
+    context 'when the pawn is white at starting position (e2)' do
+      let(:fen_starting_position) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1' }
+      let(:chessboard) { Chess::Chessboard.new(fen_string: fen_starting_position) }
+      let(:pawn) { chessboard.find_piece_by_coordinate(:e2) }
 
-        it 'can move one step forward if the next square are empty' do
-          one_square_forward = :e3
-          result = pawn.can_move_to?(one_square_forward, chessboard)
-          expect(result).to be true
-        end
+      # expected outcome
+      moves = {
+        e3: true, # one square
+        e4: true, # two squares
+        e5: false # too far
+      }
 
-        it 'can move two steps forward if the next two squares are empty' do
-          two_squares_forward = :e4
-          result = pawn.can_move_to?(two_squares_forward, chessboard)
-          expect(result).to be true
-        end
-
-        it 'cannot move more than two steps forward' do
-          three_squares_forward = :e5
-          result = pawn.can_move_to?(three_squares_forward, chessboard)
-          expect(result).to be false
+      moves.each do |coordinate, allowed|
+        it "#{allowed ? 'allows' : 'disallows'} movement to #{coordinate}" do
+          expect(pawn.can_move_to?(coordinate, chessboard)).to be allowed
         end
       end
 
