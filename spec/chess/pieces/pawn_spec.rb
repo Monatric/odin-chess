@@ -125,52 +125,10 @@ describe 'Pawn functionality' do
         let(:chessboard) { Chess::Chessboard.new(fen_string: fen_two_opposing_pawns) }
         let(:pawn) { chessboard.find_piece_by_coordinate(:e5) }
 
-        it 'cannot move forward (down) into occupied square' do
-          one_square_forward = :e4
-          result = pawn.can_move_to?(one_square_forward, chessboard)
-          expect(result).to be false
-        end
-
-        it 'cannot move backward (up)' do
-          one_square_backward = :e6
-          result = pawn.can_move_to?(one_square_backward, chessboard)
-          expect(result).to be false
-        end
-
-        it 'cannot move left' do
-          one_square_left = :d5
-          result = pawn.can_move_to?(one_square_left, chessboard)
-          expect(result).to be false
-        end
-
-        it 'cannot move right' do
-          one_square_right = :f5
-          result = pawn.can_move_to?(one_square_right, chessboard)
-          expect(result).to be false
-        end
-
-        it 'cannot move up left' do
-          diag_up_left = :d6
-          result = pawn.can_move_to?(diag_up_left, chessboard)
-          expect(result).to be false
-        end
-
-        it 'cannot move up right' do
-          diag_up_right = :f6
-          result = pawn.can_move_to?(diag_up_right, chessboard)
-          expect(result).to be false
-        end
-
-        it 'cannot move down left' do
-          diag_down_left = :d4
-          result = pawn.can_move_to?(diag_down_left, chessboard)
-          expect(result).to be false
-        end
-
-        it 'cannot move down right' do
-          diag_down_right = :f4
-          result = pawn.can_move_to?(diag_down_right, chessboard)
-          expect(result).to be false
+        %i[e4 e6 d5 f5 d6 f6 d4 f4].each do |coordinate|
+          it "disallows movement to #{coordinate}" do
+            expect(pawn.can_move_to?(coordinate, chessboard)).to be false
+          end
         end
       end
 
