@@ -23,14 +23,26 @@ describe 'Knight functionality' do
         let(:chessboard) { Chess::Chessboard.new(fen_string: fen) }
         let(:knight) { chessboard.find_piece_by_coordinate(:c4) }
 
-        moves = {
+        legal_moves = {
           a3: true, b2: true, d2: true, e3: true,
           e5: true, d6: true, b6: true, a5: true
         }
 
-        moves.each do |coordinate, allowed|
-          it "can move to #{coordinate}" do
+        illegal_moves = {
+          b3: false, c3: false, d3: false,
+          b4: false, d4: false, b5: false,
+          c5: false, d5: false
+        }
+
+        legal_moves.each do |coordinate, allowed|
+          it "can move like an L shape (#{coordinate})" do
             expect(knight.can_move_to?(coordinate, chessboard)).to be allowed
+          end
+        end
+
+        illegal_moves.each do |coordinate, disallowed|
+          it "cannot move to adjacent squares (#{coordinate})" do
+            expect(knight.can_move_to?(coordinate, chessboard)).to be disallowed
           end
         end
       end
