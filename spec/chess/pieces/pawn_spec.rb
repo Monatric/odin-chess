@@ -137,16 +137,15 @@ describe 'Pawn functionality' do
         let(:chessboard) { Chess::Chessboard.new(fen_string: fen_capturable_white_pieces) }
         let(:pawn) { chessboard.find_piece_by_coordinate(:d5) }
 
-        it 'can capture down left' do
-          one_square_down_left = :c4
-          result = pawn.can_move_to?(one_square_down_left, chessboard)
-          expect(result).to be true
-        end
+        captures = {
+          c4: true,
+          e4: true
+        }
 
-        it 'can capture down right' do
-          one_square_down_right = :e4
-          result = pawn.can_move_to?(one_square_down_right, chessboard)
-          expect(result).to be true
+        captures.each do |coordinate, allowed|
+          it "can capture diagonally (#{coordinate})" do
+            expect(pawn.can_move_to?(coordinate, chessboard)).to be allowed
+          end
         end
       end
 
