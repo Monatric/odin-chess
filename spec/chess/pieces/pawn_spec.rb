@@ -102,7 +102,7 @@ describe 'Pawn functionality' do
     end
 
     context 'when the pawn is black' do
-      context 'when the pawn has not moved (at e7)' do
+      context 'when the pawn is at starting position (e7)' do
         let(:fen_starting_position) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1' }
         let(:chessboard) { Chess::Chessboard.new(fen_string: fen_starting_position) }
         let(:pawn) { chessboard.find_piece_by_coordinate(:e7) }
