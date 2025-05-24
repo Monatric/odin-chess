@@ -14,26 +14,25 @@ require_relative '../../../lib/helpers/threat_analyzer'
 require_relative '../../../lib/helpers/move_list'
 require_relative '../../../lib/chess'
 
+RSpec.shared_examples 'pawn forward moves' do |current_coordinate, moves_hash|
+  let(:fen) { fen_string }
+  let(:chessboard) { Chess::Chessboard.new(fen_string: fen) }
+  let(:pawn) { chessboard.find_piece_by_coordinate(current_coordinate) }
+
+  moves_hash.each do |coordinate, allowed|
+    it "#{allowed ? 'allows' : 'disallows'} movement to #{coordinate}" do
+      expect(pawn.can_move_to?(coordinate, chessboard)).to eq(allowed)
+    end
+  end
+end
+
 describe 'Pawn functionality' do
   describe '#can_move_to?' do
     context 'when the pawn is white' do
       context 'when the pawn is at starting position (e2)' do
-        let(:fen_starting_position) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1' }
-        let(:chessboard) { Chess::Chessboard.new(fen_string: fen_starting_position) }
-        let(:pawn) { chessboard.find_piece_by_coordinate(:e2) }
+        let(:fen_string) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1' }
 
-        # expected outcome
-        moves = {
-          e3: true, # one square
-          e4: true, # two squares
-          e5: false # too far
-        }
-
-        moves.each do |coordinate, allowed|
-          it "#{allowed ? 'allows' : 'disallows'} movement to #{coordinate}" do
-            expect(pawn.can_move_to?(coordinate, chessboard)).to be allowed
-          end
-        end
+        include_examples 'pawn forward moves', :e2, { e3: true, e4: true, e5: false }
       end
 
       context 'when the pawn faces a black piece in front (at e4)' do
@@ -103,21 +102,9 @@ describe 'Pawn functionality' do
 
     context 'when the pawn is black' do
       context 'when the pawn is at starting position (e7)' do
-        let(:fen_starting_position) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1' }
-        let(:chessboard) { Chess::Chessboard.new(fen_string: fen_starting_position) }
-        let(:pawn) { chessboard.find_piece_by_coordinate(:e7) }
+        let(:fen_string) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1' }
 
-        moves = {
-          e6: true,
-          e5: true,
-          e4: false
-        }
-
-        moves.each do |coordinate, allowed|
-          it "#{allowed ? 'allows' : 'disallows'} movement to #{coordinate}" do
-            expect(pawn.can_move_to?(coordinate, chessboard)).to be allowed
-          end
-        end
+        include_examples 'pawn forward moves', :e7, { e6: true, e5: true, e4: false }
       end
 
       context 'when the pawn faces a white piece in front (at e5)' do
