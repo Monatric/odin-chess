@@ -5,6 +5,10 @@ require_relative '../helpers/move_list'
 module Chess
   # class for analyzing threats and move legalities
   class ThreatAnalyzer
+    def self.checkmate?
+      MoveList.legal_squares_of_color
+    end
+
     def self.in_check?(color, chessboard)
       # color parameter is usually the current turn. Might be confusing what it means by
       # current_turn in the variable. Not sure what's the best design here.
@@ -18,7 +22,7 @@ module Chess
       current_turn_color = game.current_turn_color
       chessboard = game.chessboard
       board_duplicate = Marshal.load(Marshal.dump(chessboard))
-      game.move_piece(source, dest, board_duplicate)
+      game.move_piece(source, dest, board_duplicate, dup: true)
 
       # if the king is still in check (true), then move does not avoid the check (false)
       in_check?(current_turn_color, board_duplicate) ? false : true

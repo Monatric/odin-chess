@@ -17,20 +17,22 @@ module Chess
         end
       end
 
-      def promote(pawn)
+      def select_promotion_piece(color, dup: false)
+        return Chess::Queen.new(color) if dup
+
         puts 'Choose a number to select a piece:'
         puts "\t1: Queen\n\t2: Knight\n\t3: Rook\n\t4: Bishop"
         number_selected = select_number
 
         case number_selected
         when 1
-          Chess::Queen.new(pawn.color)
+          Chess::Queen.new(color)
         when 2
-          Chess::Knight.new(pawn.color)
+          Chess::Knight.new(color)
         when 3
-          Chess::Rook.new(pawn.color, true)
+          Chess::Rook.new(color, true)
         when 4
-          Chess::Bishop.new(pawn.color)
+          Chess::Bishop.new(color)
         end
       end
 
