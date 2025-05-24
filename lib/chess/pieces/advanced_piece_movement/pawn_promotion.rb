@@ -25,14 +25,10 @@ module Chess
         number_selected = select_number
 
         case number_selected
-        when 1
-          Chess::Queen.new(color)
-        when 2
-          Chess::Knight.new(color)
-        when 3
-          Chess::Rook.new(color, true)
-        when 4
-          Chess::Bishop.new(color)
+        when 1 then Chess::Queen.new(color)
+        when 2 then Chess::Knight.new(color)
+        when 3 then Chess::Rook.new(color, true)
+        when 4 then Chess::Bishop.new(color)
         end
       end
 
