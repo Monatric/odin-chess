@@ -187,7 +187,7 @@ describe 'Pawn functionality' do
   end
 
   describe '#promote' do
-    context 'when the pawn promotes' do
+    context 'when the white pawn promotes' do
       let(:fen_pawn_promoting) { '5k2/3P4/8/8/8/8/8/3K4 w - - 0 1' }
       let(:chessboard) { Chess::Chessboard.new(fen_string: fen_pawn_promoting) }
       let(:pawn) { chessboard.find_piece_by_coordinate(:d7) }
@@ -212,6 +212,34 @@ describe 'Pawn functionality' do
 
         expect(chessboard).to have_received(:remove_piece).with(:d7)
         expect(chessboard).to have_received(:add_piece).with(:d8, promotion_piece)
+      end
+    end
+
+    context 'when the black pawn promotes' do
+      let(:fen_pawn_promoting) { '5k2/8/8/8/8/8/3p4/6K1 b - - 1 1' }
+      let(:chessboard) { Chess::Chessboard.new(fen_string: fen_pawn_promoting) }
+      let(:pawn) { chessboard.find_piece_by_coordinate(:d2) }
+      let(:promotion_piece) { instance_double(Chess::Queen, color: :black) }
+
+      before do
+        allow(Chess::PawnPromotion)
+          .to receive(:select_promotion_piece)
+          .with(pawn.color, dup: false)
+          .and_return(promotion_piece)
+
+        allow(chessboard).to receive(:remove_piece)
+        allow(chessboard).to receive(:add_piece)
+      end
+
+      it 'asks PawnPromotion for the correct piece and then replaces the pawn' do
+        pawn.promote(:d1, chessboard, dup: false)
+
+        expect(Chess::PawnPromotion)
+          .to have_received(:select_promotion_piece)
+          .with(pawn.color, dup: false)
+
+        expect(chessboard).to have_received(:remove_piece).with(:d2)
+        expect(chessboard).to have_received(:add_piece).with(:d1, promotion_piece)
       end
     end
   end
