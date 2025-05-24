@@ -58,8 +58,8 @@ module Chess
       @fen.generate_fen
     end
 
-    def move_piece(source, dest, chessboard)
-      determine_move_action(source, dest, chessboard)
+    def move_piece(source, dest, chessboard, dup: false)
+      determine_move_action(source, dest, chessboard, dup: dup)
     end
 
     def switch_player!
@@ -96,12 +96,14 @@ module Chess
 
     attr_accessor :current_turn
 
-    def determine_move_action(source, dest, chessboard)
+    def determine_move_action(source, dest, chessboard, dup: false)
       castling_notations = %w[e1g1 e1c1 e8g8 e8c8]
       piece = chessboard.find_piece_by_coordinate(source)
 
       if castling_notations.include?(source.to_s + dest.to_s)
         piece.castle(dest, chessboard)
+      elsif piece.is_a?(Pawn) && PawnPromotion.promotion_square?(piece, dest)
+        piece.promote(dest, chessboard, dup: dup)
       else
         piece.move(dest, chessboard)
       end
