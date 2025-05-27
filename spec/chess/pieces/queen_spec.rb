@@ -18,7 +18,7 @@ require_relative '../../../lib/chess'
 describe 'Queen functionality' do
   describe '#can_move_to?' do
     context 'when the white queen is at the center with capturable black pieces' do
-      let(:fen) { '5k2/8/4r3/8/2Q2p2/8/8/6K1 w - - 0 1' }
+      let(:fen) { '5k2/2b5/4r3/8/2Q2p2/8/8/6K1 w - - 0 1' }
       let(:chessboard) { Chess::Chessboard.new(fen_string: fen) }
       let(:queen) { chessboard.find_piece_by_coordinate(:c4) }
 
