@@ -64,7 +64,7 @@ describe 'King functionality' do
       end
 
       context 'when enemy pieces cross the castling lane' do
-        let(:fen) { 'r3k2r/pppppppp/8/8/3r4/8/PPP1PPPP/R3K2R w KQkq - 0 1' }
+        let(:fen) { '4k3/8/8/3r1r2/8/8/PPP1P1PP/R3K2R w KQ - 0 1' }
         let(:chessboard) { Chess::Chessboard.new(fen_string: fen) }
 
         it 'cannot castle to queen side' do
