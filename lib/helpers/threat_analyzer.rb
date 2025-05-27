@@ -5,8 +5,8 @@ require_relative '../helpers/move_list'
 module Chess
   # class for analyzing threats and move legalities
   class ThreatAnalyzer
-    def self.checkmate?
-      MoveList.legal_squares_of_color
+    def self.checkmate?(color, chessboard, game)
+      MoveList.legal_squares_of_color(color, chessboard, game).empty?
     end
 
     def self.in_check?(color, chessboard)
