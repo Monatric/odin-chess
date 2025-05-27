@@ -47,5 +47,34 @@ describe 'King functionality' do
         end
       end
     end
+
+    context 'when the white king has not moved yet' do
+      let(:fen) { 'r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1' }
+      let(:chessboard) { Chess::Chessboard.new(fen_string: fen) }
+      let(:king) { chessboard.find_piece_by_coordinate(:e1) }
+      let(:king_side_castling) { :g1 }
+      let(:queen_side_castling) { :c1 }
+
+      it 'can castle to king side' do
+        expect(king.can_move_to?(king_side_castling, chessboard)).to be true
+      end
+
+      it 'can castle to queen side' do
+        expect(king.can_move_to?(queen_side_castling, chessboard)).to be true
+      end
+
+      context 'when enemy pieces cross the castling lane' do
+        let(:fen) { 'r3k2r/pppppppp/8/8/3r4/8/PPP1PPPP/R3K2R w KQkq - 0 1' }
+        let(:chessboard) { Chess::Chessboard.new(fen_string: fen) }
+
+        it 'cannot castle to queen side' do
+          expect(king.can_move_to?(queen_side_castling, chessboard)).to be false
+        end
+
+        it 'can castle to king side' do
+          expect(king.can_move_to?(king_side_castling, chessboard)).to be false
+        end
+      end
+    end
   end
 end
