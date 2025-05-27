@@ -15,12 +15,12 @@ require_relative '../../../lib/helpers/threat_analyzer'
 require_relative '../../../lib/helpers/move_list'
 require_relative '../../../lib/chess'
 
-describe 'Queen functionality' do
+describe 'Rook functionality' do
   describe '#can_move_to?' do
-    context 'when the white queen is at the center with capturable black pieces' do
+    context 'when the white rook is at the center with capturable black pieces' do
       let(:fen) { '5k2/2b5/4r3/8/2R2p2/8/8/6K1 w - - 0 1' }
       let(:chessboard) { Chess::Chessboard.new(fen_string: fen) }
-      let(:queen) { chessboard.find_piece_by_coordinate(:c4) }
+      let(:rook) { chessboard.find_piece_by_coordinate(:c4) }
 
       illegal_moves = {
         a3: false, b2: false, d2: false, e3: false,
@@ -42,30 +42,30 @@ describe 'Queen functionality' do
 
       illegal_moves.each do |coordinate, disallowed|
         it "cannot move to adjacent squares (#{coordinate})" do
-          expect(queen.can_move_to?(coordinate, chessboard)).to be disallowed
+          expect(rook.can_move_to?(coordinate, chessboard)).to be disallowed
         end
       end
 
-      context 'when the queen wants to move horizontally' do
+      context 'when the rook wants to move horizontally' do
         legal_horizontal_moves.each do |coordinate, allowed|
           it "can move horizontally (#{coordinate})" do
-            expect(queen.can_move_to?(coordinate, chessboard)).to be allowed
+            expect(rook.can_move_to?(coordinate, chessboard)).to be allowed
           end
         end
       end
 
-      context 'when the queen wants to move vertically' do
+      context 'when the rook wants to move vertically' do
         legal_vertical_moves.each do |coordinate, allowed|
           it "can move vertically (#{coordinate})" do
-            expect(queen.can_move_to?(coordinate, chessboard)).to be allowed
+            expect(rook.can_move_to?(coordinate, chessboard)).to be allowed
           end
         end
       end
 
-      context 'when the queen wants to move diagonally' do
+      context 'when the rook wants to move diagonally' do
         illegal_diagonal_moves.each do |coordinate, allowed|
           it "cannot move diagonally (#{coordinate})" do
-            expect(queen.can_move_to?(coordinate, chessboard)).to be allowed
+            expect(rook.can_move_to?(coordinate, chessboard)).to be allowed
           end
         end
       end
