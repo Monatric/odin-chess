@@ -17,7 +17,7 @@ require_relative '../../../lib/chess'
 
 describe 'Bishop functionality' do
   describe '#can_move_to?' do
-    context 'when the white bishop is at the center with capturable black pieces' do
+    context 'when the white bishop is at the center (c4) with capturable black pieces' do
       let(:fen) { '5k2/2b5/4r3/8/2B2p2/8/8/6K1 w - - 0 1' }
       let(:chessboard) { Chess::Chessboard.new(fen_string: fen) }
       let(:bishop) { chessboard.find_piece_by_coordinate(:c4) }
