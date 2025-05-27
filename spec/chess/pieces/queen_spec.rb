@@ -35,6 +35,11 @@ describe 'Queen functionality' do
         c1: true, c2: true, c3: true, c5: true, c6: true, c7: true
       }
 
+      legal_diagonal_moves = {
+        a2: true, b3: true, d5: true, e6: true,
+        a6: true, b5: true, d3: true, e2: true
+      }
+
       illegal_moves.each do |coordinate, disallowed|
         it "cannot move to adjacent squares (#{coordinate})" do
           expect(queen.can_move_to?(coordinate, chessboard)).to be disallowed
@@ -52,6 +57,14 @@ describe 'Queen functionality' do
       context 'when the queen wants to move vertically' do
         legal_vertical_moves.each do |coordinate, allowed|
           it "can move vertically (#{coordinate})" do
+            expect(queen.can_move_to?(coordinate, chessboard)).to be allowed
+          end
+        end
+      end
+
+      context 'when the queen wants to move diagonally' do
+        legal_diagonal_moves.each do |coordinate, allowed|
+          it "can move diagonally (#{coordinate})" do
             expect(queen.can_move_to?(coordinate, chessboard)).to be allowed
           end
         end
