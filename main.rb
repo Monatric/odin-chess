@@ -13,6 +13,7 @@ def new_game(game)
     puts "(#{game.current_turn_color}) #{game.current_turn_name} move."
     get_player_move(game)
     game.switch_player!
+    end_game(game) if Chess::ThreatAnalyzer.checkmate?(game.current_turn_color, game.chessboard, game)
     game.update_fen
   end
 end
@@ -66,9 +67,11 @@ def run_selected_option(game, player_choice)
   when 1
     puts game.fen.generate_fen
   when 2
-    puts Chess::MoveList.legal_squares_of_color(game.current_turn_color, game.chessboard)
+    puts Chess::MoveList.legal_squares_of_color(game.current_turn_color, game.chessboard, game)
   when 3
     puts game.in_check?(game.current_turn_color)
+  when 4
+    p Chess::MoveList.covered_squares_of_color_with_source(game.current_turn_color, game.chessboard)
   end
   get_player_move(game)
 end
@@ -103,6 +106,11 @@ end
 def start_load_game
   game = Chess::Game.load
   new_game(game)
+end
+
+def end_game(game)
+  puts "Winner is #{game.other_turn_color}"
+  exit
 end
 
 def prompt_game_choice
