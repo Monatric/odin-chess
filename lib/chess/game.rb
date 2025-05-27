@@ -112,9 +112,13 @@ module Chess
     def valid_castling?(source, dest)
       dest_to_rook_coord = { c1: :a1, g1: :h1, c8: :a8, g8: :h8 }
       rook_coord = dest_to_rook_coord[dest]
+      castling_first_square = { c1: :d1, g1: :f1 }
+      first_square_before_castling = castling_first_square[dest]
+      check_result = ThreatAnalyzer.move_avoids_check?(source, first_square_before_castling, self)
+
       king = chessboard.find_piece_by_coordinate(source)
       rook = chessboard.find_piece_by_coordinate(rook_coord)
-      king.castleable? && rook&.castleable?
+      king.castleable? && rook&.castleable? && check_result
     end
 
     def piece_belongs_to_current_player?(source)
