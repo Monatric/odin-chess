@@ -14,10 +14,11 @@ def new_game(game)
 end
 
 def move(game, player_choice)
-  return invalid_move_error(game) unless game.valid_move?(player_choice)
-
   source = player_choice.slice(0, 2).to_sym
   dest = player_choice.slice(2, 3).to_sym
+  move_validator = Chess::MoveValidator.new(source: source, dest: dest, game: game)
+
+  return invalid_move_error(game) unless move_validator.valid_move?
 
   if Chess::ThreatAnalyzer.in_check?(game.current_turn_color, game.chessboard)
     handle_move_in_check(source, dest, game)
