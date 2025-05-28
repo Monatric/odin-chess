@@ -35,6 +35,7 @@ require_relative '../lib/chess/chessboard/chessboard_assembler'
 require_relative '../lib/chess/chessboard'
 require_relative '../lib/helpers/threat_analyzer'
 require_relative '../lib/helpers/move_list'
+require_relative '../lib/helpers/move_validator'
 require_relative '../lib/chess'
 
 RSpec.configure do |config|
