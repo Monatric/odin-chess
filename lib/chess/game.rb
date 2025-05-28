@@ -67,6 +67,8 @@ module Chess
     end
 
     def valid_move?(move)
+      return false if move.length != 4
+
       castling_notations = %w[e1g1 e1c1 e8g8 e8c8]
       source = move.slice(0, 2).to_sym
       dest = move.slice(2, 3).to_sym
