@@ -81,4 +81,39 @@ describe Chess::Game do
       end
     end
   end
+
+  describe '#switch_player!' do
+    let(:player_one) { double('Player white') }
+    let(:player_two) { double('Player black') }
+
+    context 'when the player is white' do
+      subject(:game_switch_turn) do
+        described_class.new(player_white: player_one, player_black: player_two, current_turn: player_one, fen: fen)
+      end
+
+      before do
+        allow(player_one).to receive(:color)
+      end
+
+      it 'switches the player to black' do
+        player = game_switch_turn.switch_player!
+        expect(player).to eq player_two
+      end
+    end
+
+    context 'when the player is black' do
+      subject(:game_switch_turn) do
+        described_class.new(player_white: player_one, player_black: player_two, current_turn: player_two, fen: fen)
+      end
+
+      before do
+        allow(player_two).to receive(:color)
+      end
+
+      it 'switches the player to black' do
+        player = game_switch_turn.switch_player!
+        expect(player).to eq player_one
+      end
+    end
+  end
 end
