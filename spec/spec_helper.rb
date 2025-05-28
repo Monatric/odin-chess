@@ -16,6 +16,27 @@
 
 Dir['../lib/**/*.rb'].sort.each { |file| require_relative file }
 
+require_relative '../lib/chess/pieces/pawn'
+require_relative '../lib/chess/pieces/rook'
+require_relative '../lib/chess/pieces/knight'
+require_relative '../lib/chess/pieces/bishop'
+require_relative '../lib/chess/pieces/king'
+require_relative '../lib/chess/pieces/queen'
+require_relative '../lib/chess/piece'
+require_relative '../lib/chess/fen'
+require_relative '../lib/chess/fen/active_color_field'
+require_relative '../lib/chess/fen/castling_availability_field'
+require_relative '../lib/chess/fen/en_passant_field'
+require_relative '../lib/chess/fen/fullmove_number_field'
+require_relative '../lib/chess/fen/halfmove_clock_field'
+require_relative '../lib/chess/fen/piece_placement_field'
+require_relative '../lib/player'
+require_relative '../lib/chess/chessboard/chessboard_assembler'
+require_relative '../lib/chess/chessboard'
+require_relative '../lib/helpers/threat_analyzer'
+require_relative '../lib/helpers/move_list'
+require_relative '../lib/chess'
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
