@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 describe Chess::Game do
-  let(:player_one) { instance_double(Player) }
-  let(:player_two) { instance_double(Player) }
+  let(:player_one) { instance_double(Player, color: :white) }
+  let(:player_two) { instance_double(Player, color: :black) }
   let(:chessboard) { instance_double(Chess::Chessboard) }
   let(:fen) { instance_double(Chess::FEN) }
-  subject(:game) { described_class.new }
+  subject(:game) { described_class.new(player_white: player_one, player_black: player_two, current_turn: player_one) }
 
   describe '#save_game' do
     # seems there's no need to test as it is well tested
@@ -136,6 +136,26 @@ describe Chess::Game do
       it 'returns :black' do
         color = game_player_color.current_turn_color
         expect(color).to eq :black
+      end
+    end
+  end
+
+  describe '#other_turn_color' do
+    context 'when the current turn is white' do
+      it 'returns :black' do
+        color = game.other_turn_color
+        expect(color).to eq :black
+      end
+    end
+
+    context 'when the current turn is black' do
+      subject(:game) do
+        described_class.new(player_white: player_one, player_black: player_two, current_turn: player_two)
+      end
+
+      it 'returns :white' do
+        color = game.other_turn_color
+        expect(color).to eq :white
       end
     end
   end
