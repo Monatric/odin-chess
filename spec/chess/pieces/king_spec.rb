@@ -1,20 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../../../lib/chess/pieces/pawn'
-require_relative '../../../lib/chess/pieces/rook'
-require_relative '../../../lib/chess/pieces/knight'
-require_relative '../../../lib/chess/pieces/bishop'
-require_relative '../../../lib/chess/pieces/king'
-require_relative '../../../lib/chess/pieces/queen'
-require_relative '../../../lib/chess/piece'
-
-require_relative '../../../lib/player'
-require_relative '../../../lib/chess/chessboard/chessboard_assembler'
-require_relative '../../../lib/chess/chessboard'
-require_relative '../../../lib/helpers/threat_analyzer'
-require_relative '../../../lib/helpers/move_list'
-require_relative '../../../lib/chess'
-
 describe 'King functionality' do
   describe '#can_move_to?' do
     context 'when the white king is at the center (c4)' do
