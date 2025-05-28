@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
-Dir['lib/*.rb'].sort.each { |file| require_relative file }
-Dir['lib/chess/*.rb'].sort.each { |file| require_relative file }
-Dir['lib/chess/pieces/*.rb'].sort.each { |file| require_relative file }
-Dir['lib/chess/fen/*.rb'].sort.each { |file| require_relative file }
-Dir['lib/chess/chessboard/*.rb'].sort.each { |file| require_relative file }
-Dir['lib/helpers/*.rb'].sort.each { |file| require_relative file }
+Dir['lib/**/*.rb'].sort.each { |file| require_relative file }
 
 def new_game(game)
   loop do
