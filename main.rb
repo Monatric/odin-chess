@@ -5,10 +5,10 @@ Dir['lib/**/*.rb'].sort.each { |file| require_relative file }
 def new_game(game)
   loop do
     game.chessboard.show
-    puts "(#{game.current_turn_color}) #{game.current_turn_name} move."
+    end_game(game) if Chess::ThreatAnalyzer.checkmate?(game.current_turn_color, game.chessboard, game)
+    puts "It is #{game.current_turn_color}'s turn.\t\t\t\tType \"i\" to see instructions."
     get_player_move(game)
     game.switch_player!
-    end_game(game) if Chess::ThreatAnalyzer.checkmate?(game.current_turn_color, game.chessboard, game)
     game.update_fen
   end
 end
@@ -24,6 +24,18 @@ def move(game, player_choice)
   else
     game.move_piece(source, dest, game.chessboard)
   end
+end
+
+def instructions
+  <<-HEREDOC
+    To move a piece, look at the files, which are letters a-h, and the ranks, which are 1-8.
+    Then, you must type the coordinate of the piece you want to move and its destination.
+    For example, I want to move the pawn from "e2" to "e4", thus you must enter "e2e4"
+    without spacing.
+
+    In summary, the format is source and destination coordinate, leading the file first
+    and then the rank, such as "a1a5", "c1f4", "g1f3".
+  HEREDOC
 end
 
 def invalid_move_error(game)
@@ -44,7 +56,13 @@ end
 def get_player_move(game)
   print 'Your move: '
   player_choice = gets.chomp
-  move(game, player_choice)
+
+  if player_choice == 'i'
+    puts instructions
+    get_player_move(game)
+  else
+    move(game, player_choice)
+  end
 end
 
 def start
@@ -70,7 +88,7 @@ def start_load_game
 end
 
 def end_game(game)
-  puts "Winner is #{game.other_turn_color}"
+  puts "Checkmate! The winner is #{game.other_turn_color}."
   exit
 end
 
