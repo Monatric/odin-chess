@@ -75,22 +75,6 @@ module Chess
       self.current_turn = (current_turn == player_white ? player_black : player_white)
     end
 
-    def valid_move?(move)
-      return false if move.length != 4
-
-      castling_notations = %w[e1g1 e1c1 e8g8 e8c8]
-      source = move.slice(0, 2).to_sym
-      dest = move.slice(2, 3).to_sym
-
-      return false unless @chessboard.valid_source_and_dest?(source, dest)
-      return false unless piece_belongs_to_current_player?(source)
-      return false unless piece_can_move_to?(source, dest)
-      return false if castling_notations.include?(source.to_s + dest.to_s) && !valid_castling?(source, dest)
-      return false unless Chess::ThreatAnalyzer.move_avoids_check?(source, dest, self)
-
-      true
-    end
-
     def current_turn_color
       @current_turn.color
     end
@@ -106,27 +90,5 @@ module Chess
     private
 
     attr_accessor :current_turn
-
-    def valid_castling?(source, dest)
-      dest_to_rook_coord = { c1: :a1, g1: :h1, c8: :a8, g8: :h8 }
-      rook_coord = dest_to_rook_coord[dest]
-      castling_first_square = { c1: :d1, g1: :f1 }
-      first_square_before_castling = castling_first_square[dest]
-      check_result = ThreatAnalyzer.move_avoids_check?(source, first_square_before_castling, self)
-
-      king = chessboard.find_piece_by_coordinate(source)
-      rook = chessboard.find_piece_by_coordinate(rook_coord)
-      king.castleable? && rook&.castleable? && check_result
-    end
-
-    def piece_belongs_to_current_player?(source)
-      piece = chessboard.find_piece_by_coordinate(source)
-      piece && piece.color == current_turn_color
-    end
-
-    def piece_can_move_to?(source, dest)
-      piece = chessboard.find_piece_by_coordinate(source)
-      piece && piece.can_move_to?(dest, chessboard)
-    end
   end
 end
