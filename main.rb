@@ -47,43 +47,9 @@ def handle_move_in_check(source, dest, game)
 end
 
 def get_player_move(game)
-  show_options
   print 'Your move: '
   player_choice = gets.chomp
-  if player_choice.match?(/\A[0-9]+\z/)
-    run_selected_option(game, player_choice)
-  else
-    move(game, player_choice)
-  end
-end
-
-def run_selected_option(game, player_choice)
-  case player_choice.to_i
-  when 0 # Save game
-    puts 'Saving your game...'
-    game.save_game
-    puts 'Done! See you again.'
-    exit
-  when 1
-    puts game.fen.generate_fen
-  when 2
-    puts Chess::MoveList.legal_squares_of_color(game.current_turn_color, game.chessboard, game)
-  when 3
-    puts game.in_check?(game.current_turn_color)
-  when 4
-    p Chess::MoveList.covered_squares_of_color_with_source(game.current_turn_color, game.chessboard)
-  end
-  get_player_move(game)
-end
-
-def show_options
-  puts "\t0: Save game"
-  puts "\t1: Show FEN"
-
-  # temporary. For testing
-  puts 'Testing purposes:'
-  puts "\t2: Show legal moves"
-  puts "\t3: Show if current player in check"
+  move(game, player_choice)
 end
 
 def start
