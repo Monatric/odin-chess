@@ -59,7 +59,16 @@ module Chess
     end
 
     def move_piece(source, dest, chessboard, dup: false)
-      determine_move_action(source, dest, chessboard, dup: dup)
+      piece = chessboard.find_piece_by_coordinate(source)
+      move_validator = MoveValidator.new(source: source, dest: dest, game: self)
+
+      if move_validator.move_is_castling?(source, dest)
+        piece.castle(dest, chessboard)
+      elsif move_validator.move_is_promotion?(piece, dest)
+        piece.promote(dest, chessboard, dup: dup)
+      else
+        piece.move(dest, chessboard)
+      end
     end
 
     def switch_player!
@@ -97,19 +106,6 @@ module Chess
     private
 
     attr_accessor :current_turn
-
-    def determine_move_action(source, dest, chessboard, dup: false)
-      castling_notations = %w[e1g1 e1c1 e8g8 e8c8]
-      piece = chessboard.find_piece_by_coordinate(source)
-
-      if castling_notations.include?(source.to_s + dest.to_s)
-        piece.castle(dest, chessboard)
-      elsif piece.is_a?(Pawn) && PawnPromotion.promotion_square?(piece, dest)
-        piece.promote(dest, chessboard, dup: dup)
-      else
-        piece.move(dest, chessboard)
-      end
-    end
 
     def valid_castling?(source, dest)
       dest_to_rook_coord = { c1: :a1, g1: :h1, c8: :a8, g8: :h8 }
