@@ -116,4 +116,27 @@ describe Chess::Game do
       end
     end
   end
+
+  describe '#current_turn_color' do
+    let(:player_one) { double('player one', color: :white) }
+    let(:player_two) { double('player_two', color: :black) }
+
+    context 'when the current turn is white' do
+      subject(:game_player_color) { described_class.new(current_turn: player_one) }
+
+      it 'returns :white' do
+        color = game_player_color.current_turn_color
+        expect(color).to eq :white
+      end
+    end
+
+    context 'when the current turn is black' do
+      subject(:game_player_color) { described_class.new(current_turn: player_two) }
+
+      it 'returns :black' do
+        color = game_player_color.current_turn_color
+        expect(color).to eq :black
+      end
+    end
+  end
 end
