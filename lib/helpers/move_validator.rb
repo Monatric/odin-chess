@@ -7,14 +7,15 @@ module Chess
     def initialize(source:, dest:, game: Game.new)
       @game = game
       @chessboard = game.chessboard
-      @source = source.slice(0, 2).to_sym
-      @dest = dest.slice(2, 3).to_sym
+      @source = source
+      @dest = dest
     end
 
     def valid_move?
+      return false if castling_attempt? && !valid_castling?
+
       valid_format? && valid_positions? &&
         piece_belongs_to_current_player? && piece_can_move_to? &&
-        castling_attempt? && valid_castling? &&
         ThreatAnalyzer.move_avoids_check?(@source, @dest, @game)
     end
 
@@ -27,7 +28,7 @@ module Chess
     end
 
     def valid_format?
-      @move.length == 4
+      (@source.to_s + @dest.to_s).length == 4
     end
 
     def valid_positions?
@@ -57,7 +58,7 @@ module Chess
 
     def piece_can_move_to?
       piece = @chessboard.find_piece_by_coordinate(@source)
-      piece && piece.can_move_to?(dest, @chessboard)
+      piece && piece.can_move_to?(@dest, @chessboard)
     end
   end
 end
