@@ -4,12 +4,11 @@ module Chess
   # This class helps validating a player's move which consists a lot of factors such as
   # format and moveability.
   class MoveValidator
-    def initialize(move:, game: Game.new)
-      @move = move
+    def initialize(source:, dest:, game: Game.new)
       @game = game
       @chessboard = game.chessboard
-      @source = move.slice(0, 2).to_sym
-      @dest = move.slice(2, 3).to_sym
+      @source = source.slice(0, 2).to_sym
+      @dest = dest.slice(2, 3).to_sym
     end
 
     def valid_move?
@@ -17,6 +16,14 @@ module Chess
         piece_belongs_to_current_player? && piece_can_move_to? &&
         castling_attempt? && valid_castling? &&
         ThreatAnalyzer.move_avoids_check?(@source, @dest, @game)
+    end
+
+    def move_is_castling?(source, dest)
+      %w[e1g1 e1c1 e8g8 e8c8].include?(source.to_s + dest.to_s)
+    end
+
+    def move_is_promotion?(piece, dest)
+      piece.is_a?(Pawn) && PawnPromotion.promotion_square?(piece, dest)
     end
 
     def valid_format?
