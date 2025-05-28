@@ -1,19 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../../../lib/chess/pieces/pawn'
-require_relative '../../../lib/chess/pieces/rook'
-require_relative '../../../lib/chess/pieces/knight'
-require_relative '../../../lib/chess/pieces/bishop'
-require_relative '../../../lib/chess/pieces/king'
-require_relative '../../../lib/chess/pieces/queen'
-
-# Dir['../../../lib/chess/pieces/*.rb'].sort.each { |file| require_relative file }
-require_relative '../../../lib/chess/chessboard/chessboard_assembler'
-require_relative '../../../lib/chess/chessboard'
-require_relative '../../../lib/helpers/threat_analyzer'
-require_relative '../../../lib/helpers/move_list'
-require_relative '../../../lib/chess'
-
 RSpec.shared_examples 'pawn forward moves' do |current_coordinate, moves_hash|
   let(:fen) { fen_string }
   let(:chessboard) { Chess::Chessboard.new(fen_string: fen) }
