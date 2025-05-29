@@ -7,6 +7,41 @@ describe Chess::Game do
   let(:fen) { instance_double(Chess::FEN) }
   subject(:game) { described_class.new(player_white: player_one, player_black: player_two, current_turn: player_one) }
 
+  describe '::load' do
+    context 'when the program wants to load the saved game' do
+      let(:saved_game) { double('saved_game.yml') }
+      let(:hash_data) do
+        { player_white: player_one, player_black: player_two, current_turn: player_one, fen: 'fen_string' }
+      end
+      let(:saved_chessboard) { double('chessboard') }
+
+      before do
+        allow(YAML).to receive(:load_file).and_return(saved_game)
+        allow(Chess::Game).to receive(:saved_game_data_to_hash).with(saved_game).and_return(hash_data)
+        allow(Chess::Chessboard).to receive(:from_fen).with(hash_data[:fen]).and_return(saved_chessboard)
+        allow(Chess::Game).to receive(:new)
+      end
+
+      it 'returns attributes required to initialize a game' do
+        data_player_white = hash_data[:player_white]
+        data_player_black = hash_data[:player_black]
+        data_current_turn = hash_data[:current_turn]
+        data_fen = hash_data[:fen]
+
+        Chess::Game.load
+        expect(YAML).to have_received(:load_file).with('saved_game.yml',
+                                                       permitted_classes: [Player, Chess::FEN, Symbol])
+        expect(Chess::Chessboard).to have_received(:from_fen).with(hash_data[:fen])
+        expect(Chess::Game).to have_received(:saved_game_data_to_hash).with(saved_game)
+        expect(Chess::Game).to have_received(:new).with(chessboard: saved_chessboard,
+                                                        player_white: data_player_white,
+                                                        player_black: data_player_black,
+                                                        current_turn: data_current_turn,
+                                                        fen: data_fen)
+      end
+    end
+  end
+
   describe '#save_game' do
     context 'when the program tries to save the game' do
       let(:yaml_string) { '---' }
