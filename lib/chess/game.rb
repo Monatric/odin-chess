@@ -49,8 +49,8 @@ module Chess
     end
 
     def save_game
-      players = { player_white: @player_white, player_black: @player_black, fen: @fen.notation }
-      yaml_string = YAML.dump(players)
+      data = { player_white: @player_white, player_black: @player_black, fen: @fen.notation }
+      yaml_string = YAML.dump(data)
       File.write('saved_game.yml', yaml_string)
     end
 
