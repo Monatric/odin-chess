@@ -8,7 +8,27 @@ describe Chess::Game do
   subject(:game) { described_class.new(player_white: player_one, player_black: player_two, current_turn: player_one) }
 
   describe '#save_game' do
-    # seems there's no need to test as it is well tested
+    context 'when the program tries to save the game' do
+      let(:yaml_string) { '---' }
+      let(:fen_string) { '---' }
+
+      before do
+        allow(game.fen).to receive(:notation).and_return(fen_string)
+        allow(YAML).to receive(:dump).and_return(yaml_string)
+        allow(File).to receive(:write)
+      end
+
+      it 'dumps data to YAML' do
+        game.save_game
+        expect(YAML).to have_received(:dump).with(
+          hash_including(
+            player_white: player_one,
+            player_black: player_two,
+            fen: fen_string
+          )
+        )
+      end
+    end
   end
 
   describe '#update_fen' do
