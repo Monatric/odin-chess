@@ -48,6 +48,8 @@ module Chess
       }
     end
 
+    private_class_method :saved_game_data_to_hash
+
     def save_game
       data = { player_white: @player_white, player_black: @player_black, fen: @fen.notation }
       yaml_string = YAML.dump(data)
