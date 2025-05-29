@@ -55,6 +55,7 @@ describe Chess::Game do
 
       it 'dumps data to YAML' do
         game.save_game
+        expect(game.fen).to have_received(:notation)
         expect(YAML).to have_received(:dump).with(
           hash_including(
             player_white: player_one,
