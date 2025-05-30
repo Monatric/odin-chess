@@ -6,11 +6,25 @@ def new_game(game)
   loop do
     game.chessboard.show
     end_game(game) if Chess::ThreatAnalyzer.checkmate?(game.current_turn_color, game.chessboard, game)
-    puts "It is #{game.current_turn_color}'s turn.\t\t\t\tType \"i\" to see instructions."
+    puts show_options
+    puts "It is #{game.current_turn_color}'s turn"
     get_player_move(game)
     game.switch_player!
     game.update_fen
   end
+end
+
+def show_options
+  <<~HEREDOC
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Additional options. Type the quoted option to use:
+        "i" => See instructions
+        "save" => Save game
+        "exit" => Exit game
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  HEREDOC
 end
 
 def move(game, player_choice)
@@ -28,14 +42,18 @@ def move(game, player_choice)
 end
 
 def instructions
-  <<-HEREDOC
-    To move a piece, look at the files, which are letters a-h, and the ranks, which are 1-8.
-    Then, you must type the coordinate of the piece you want to move and its destination.
-    For example, I want to move the pawn from "e2" to "e4", thus you must enter "e2e4"
-    without spacing.
+  <<~HEREDOC
 
-    In summary, the format is source and destination coordinate, leading the file first
-    and then the rank, such as "a1a5", "c1f4", "g1f3".
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      To move a piece, look at the files, which are letters a-h, and the ranks, which are 1-8.
+      Then, you must type the coordinate of the piece you want to move and its destination.
+      For example, I want to move the pawn from "e2" to "e4", thus you must enter "e2e4"
+      without spacing.
+
+      In summary, the format is source and destination coordinate, leading the file first
+      and then the rank, such as "a1a5", "c1f4", "g1f3".
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   HEREDOC
 end
 
@@ -58,11 +76,16 @@ def get_player_move(game)
   print 'Your move: '
   player_choice = gets.chomp
 
-  if player_choice == 'i'
+  case player_choice
+  when 'i'
     puts instructions
     get_player_move(game)
-  else
-    move(game, player_choice)
+  when 'save'
+    game.save_game
+    puts 'Saved successfully!'
+    get_player_move(game)
+  when 'exit' then exit
+  else move(game, player_choice)
   end
 end
 
