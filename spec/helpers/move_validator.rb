@@ -174,4 +174,8 @@ describe Chess::MoveValidator do
       end
     end
   end
+
+  describe '#valid_positions?' do
+    # an outgoing query method. No need to test
+  end
 end
