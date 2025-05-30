@@ -64,4 +64,88 @@ describe Chess::MoveValidator do
       end
     end
   end
+
+  describe '#move_is_promotion?' do
+    let(:source) { double }
+    let(:dest) { double }
+    let(:piece) { double }
+    subject(:move_validator) { described_class.new(source: source, dest: dest, game: game) }
+
+    before do
+      allow(game).to receive(:chessboard).and_return(chessboard)
+    end
+
+    context 'when the move is a white pawn for promotion' do
+      promotion_squares = %i[a8 b8 c8 d8 e8 f8 g8 h8]
+
+      before do
+        allow(piece).to receive(:is_a?).with(Chess::Pawn).and_return(true)
+
+        promotion_squares.each do |square|
+          allow(Chess::PawnPromotion)
+            .to receive(:promotion_square?)
+            .with(piece, square)
+            .and_return(true)
+        end
+      end
+
+      promotion_squares.each do |square|
+        it "returns true for promotion square #{square}" do
+          expect(move_validator.move_is_promotion?(piece, square)).to be true
+        end
+      end
+    end
+
+    context 'when the move is a black pawn for promotion' do
+      promotion_squares = %i[a1 b1 c1 d1 e1 f1 g1 h1]
+
+      before do
+        allow(piece).to receive(:is_a?).with(Chess::Pawn).and_return(true)
+
+        promotion_squares.each do |square|
+          allow(Chess::PawnPromotion)
+            .to receive(:promotion_square?)
+            .with(piece, square)
+            .and_return(true)
+        end
+      end
+
+      promotion_squares.each do |square|
+        it "returns true for promotion square #{square}" do
+          expect(move_validator.move_is_promotion?(piece, square)).to be true
+        end
+      end
+    end
+
+    context 'when the move is not for promotion' do
+      let(:non_promotion_square) { :e5 }
+      before do
+        allow(piece).to receive(:is_a?).with(Chess::Pawn).and_return(true)
+
+        allow(Chess::PawnPromotion)
+          .to receive(:promotion_square?)
+          .with(piece, non_promotion_square)
+          .and_return(false)
+      end
+
+      it 'returns false for non-promotion square' do
+        expect(move_validator.move_is_promotion?(piece, non_promotion_square)).to be false
+      end
+    end
+
+    context 'when the move is a promotion square but not a pawn' do
+      before do
+        allow(piece).to receive(:is_a?).with(Chess::Pawn).and_return(false)
+
+        allow(Chess::PawnPromotion)
+          .to receive(:promotion_square?)
+          .with(piece, dest)
+          .and_return(true)
+      end
+
+      it 'returns false' do
+        expect(move_validator.move_is_promotion?(piece, dest)).to be false
+      end
+    end
+  end
 end
