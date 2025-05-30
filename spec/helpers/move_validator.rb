@@ -148,4 +148,30 @@ describe Chess::MoveValidator do
       end
     end
   end
+
+  describe '#valid_format?' do
+    context 'when the source and destination have a total length of 4' do
+      subject(:move_validator) { described_class.new(source: :e2, dest: :e4, game: game) }
+
+      before do
+        allow(game).to receive(:chessboard).and_return(chessboard)
+      end
+
+      it 'returns true as it is valid' do
+        expect(move_validator.valid_format?).to be true
+      end
+    end
+
+    context 'when the source and destination does not have a total length of 4' do
+      subject(:move_validator) { described_class.new(source: :d51, dest: :a6, game: game) }
+
+      before do
+        allow(game).to receive(:chessboard).and_return(chessboard)
+      end
+
+      it 'returns false as it is invalid' do
+        expect(move_validator.valid_format?).to be false
+      end
+    end
+  end
 end
