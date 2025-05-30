@@ -68,5 +68,34 @@ describe Convertable do
         end
       end
     end
+
+    context 'when offsets are negative' do
+      context 'when a coordinate :e4 is passed with 0 file offset, -2 rank offset' do
+        it 'returns :e2' do
+          coordinate = :e4
+          rank_offset = -2
+          expect(converter.coordinate_string_to_symbol(coordinate, rank_offset: rank_offset)).to eq :e2
+        end
+      end
+
+      context 'when a coordinate :e5 is passed with -3 file offset, 0 rank offset' do
+        it 'returns :b5' do
+          coordinate = :e5
+          file_offset = -3
+          expect(converter.coordinate_string_to_symbol(coordinate, file_offset: file_offset)).to eq :b5
+        end
+      end
+
+      context 'when a coordinate :g6 is passed with -1 file offset, -5 rank offset' do
+        it 'returns :f1' do
+          coordinate = :g6
+          file_offset = -1
+          rank_offset = -5
+          expect(converter.coordinate_string_to_symbol(coordinate,
+                                                       file_offset: file_offset,
+                                                       rank_offset: rank_offset)).to eq :f1
+        end
+      end
+    end
   end
 end
