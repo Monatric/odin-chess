@@ -21,6 +21,8 @@ module Convertable
   end
 
   def coordinate_string_to_symbol(coordinate, file_offset: 0, rank_offset: 0)
+    return ArgumentError, 'coordinate should be a symbol' unless coordinate.is_a? Symbol
+
     file = coordinate[0]
     rank = coordinate[1]
 
