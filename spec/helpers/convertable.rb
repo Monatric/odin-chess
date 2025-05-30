@@ -144,5 +144,26 @@ describe Convertable do
         end
       end
     end
+
+    context 'when the coordinate is not a symbol' do
+      it 'returns "invalid coordinate"' do
+        result = converter.coordinate_string_to_symbol('e4')
+        expect(result).to eq 'invalid coordinate'
+      end
+    end
+
+    context 'when the coordinate is not exactly two characters' do
+      it 'returns "invalid coordinate"' do
+        result = converter.coordinate_string_to_symbol(:coordinate)
+        expect(result).to eq 'invalid coordinate'
+      end
+    end
+
+    context 'when the passed argument is not a coordinate of the chessboard' do
+      it 'returns "invalid coordinate"' do
+        result = converter.coordinate_string_to_symbol(:z9)
+        expect(result).to eq 'invalid coordinate'
+      end
+    end
   end
 end
