@@ -31,6 +31,11 @@ describe Convertable do
           expect(piece.color).to eq(expected_color)
         end
       end
+
+      it 'returns nil for invalid notations' do
+        nonexistent_piece = converter.notation_to_piece('x')
+        expect(nonexistent_piece).to be nil
+      end
     end
   end
 end
