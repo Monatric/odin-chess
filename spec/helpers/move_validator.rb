@@ -178,4 +178,8 @@ describe Chess::MoveValidator do
   describe '#valid_positions?' do
     # an outgoing query method. No need to test
   end
+
+  describe '#castling_attempt?' do
+    # duplicated method. Refactor later
+  end
 end
