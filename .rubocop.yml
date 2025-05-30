@@ -10,9 +10,7 @@
 # See https://docs.rubocop.org/rubocop/configuration
 Metrics/BlockLength:
   Exclude:
-    - "spec/*"
-    - "spec/chess/*"
-    - "spec/chess/pieces/*"
+    - "spec/**/*"
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: always
