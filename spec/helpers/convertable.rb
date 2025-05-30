@@ -38,4 +38,35 @@ describe Convertable do
       end
     end
   end
+
+  describe '#coordinate_string_to_symbol' do
+    context 'when the offsets are positive' do
+      context 'when a coordinate :e2 is passed with 0 file offset, 2 rank offsets' do
+        it 'returns :e4' do
+          coordinate = :e2
+          rank_offset = 2
+          expect(converter.coordinate_string_to_symbol(coordinate, rank_offset: rank_offset)).to eq :e4
+        end
+      end
+
+      context 'when a coordinate :b5 is passed with 3 file offsets, 0 rank offset' do
+        it 'returns :e5' do
+          coordinate = :b5
+          file_offset = 3
+          expect(converter.coordinate_string_to_symbol(coordinate, file_offset: file_offset)).to eq :e5
+        end
+      end
+
+      context 'when a coordinate :f1 is passed with 1 file offset, 5 rank offsets' do
+        it 'returns :g6' do
+          coordinate = :f1
+          file_offset = 1
+          rank_offset = 5
+          expect(converter.coordinate_string_to_symbol(coordinate,
+                                                       file_offset: file_offset,
+                                                       rank_offset: rank_offset)).to eq :g6
+        end
+      end
+    end
+  end
 end
