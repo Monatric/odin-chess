@@ -97,5 +97,52 @@ describe Convertable do
         end
       end
     end
+
+    context 'when offsets are mixed negative and positive' do
+      context 'when a coordinate :d4 is passed with +2 file offset, -2 rank offset' do
+        it 'returns :f2' do
+          coordinate   = :d4
+          file_offset  =  2
+          rank_offset  = -2
+          expect(
+            converter.coordinate_string_to_symbol(
+              coordinate,
+              file_offset: file_offset,
+              rank_offset: rank_offset
+            )
+          ).to eq :f2
+        end
+      end
+
+      context 'when a coordinate :h1 is passed with -7 file offset, +7 rank offset' do
+        it 'returns :a8' do
+          coordinate   = :h1
+          file_offset  = -7
+          rank_offset  =  7
+          expect(
+            converter.coordinate_string_to_symbol(
+              coordinate,
+              file_offset: file_offset,
+              rank_offset: rank_offset
+            )
+          ).to eq :a8
+        end
+      end
+
+      context 'when a coordinate :g3 is passed with -4 file offset, +1 rank offset' do
+        it 'returns :c4' do
+          coordinate   = :g3
+          file_offset  = -4
+          rank_offset = 1
+          expect(
+            converter.coordinate_string_to_symbol(
+              coordinate,
+              file_offset: file_offset,
+              rank_offset: rank_offset
+            )
+          ).to eq :c4
+        end
+      end
+    end
   end
 end
