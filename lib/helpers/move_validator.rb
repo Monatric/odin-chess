@@ -46,8 +46,8 @@ module Chess
       first_square_before_castling = castling_first_square[@dest]
       check_result = ThreatAnalyzer.move_avoids_check?(@source, first_square_before_castling, @game)
 
-      king = chessboard.find_piece_by_coordinate(@source)
-      rook = chessboard.find_piece_by_coordinate(rook_coord)
+      king = @chessboard.find_piece_by_coordinate(@source)
+      rook = @chessboard.find_piece_by_coordinate(rook_coord)
       king.castleable? && rook&.castleable? && check_result
     end
 
