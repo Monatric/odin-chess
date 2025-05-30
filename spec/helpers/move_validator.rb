@@ -21,5 +21,8 @@ describe Chess::MoveValidator do
         expect(result).to be false
       end
     end
+
+    # Feels like it adds no value to test for other methods that is being called
+    # in #valid_move? since it is all about returning true or false
   end
 end
