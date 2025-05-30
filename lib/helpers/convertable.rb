@@ -20,6 +20,9 @@ module Convertable
     piece_notation_objects[notation]
   end
 
+  # NOTE: just realized now the method name is not exactly what it is. It should be
+  # named into something like coordinate_offset_converter but it's a hassle to refactor now
+  # as many objects and tests use this name
   def coordinate_string_to_symbol(coordinate, file_offset: 0, rank_offset: 0)
     return 'invalid coordinate' unless valid_coordinate?(coordinate)
 
