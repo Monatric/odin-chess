@@ -182,4 +182,47 @@ describe Chess::MoveValidator do
   describe '#castling_attempt?' do
     # duplicated method. Refactor later
   end
+
+  describe '#valid_castling?' do
+    let(:king) { double('king') }
+    let(:rook) { double('rook') }
+    let(:source) { double }
+    let(:dest) { double }
+    subject(:move_validator) { described_class.new(source: source, dest: dest, game: game) }
+
+    context 'when the king and rook are castleable and avoids check' do
+      before do
+        allow(game).to receive(:chessboard).and_return(chessboard)
+        allow(Chess::ThreatAnalyzer).to receive(:move_avoids_check?).and_return(true)
+        allow(game.chessboard).to receive(:find_piece_by_coordinate).and_return(king)
+        allow(game.chessboard).to receive(:find_piece_by_coordinate).and_return(rook)
+        allow(king).to receive(:castleable?).and_return(true)
+        allow(rook).to receive(:castleable?).and_return(true)
+      end
+
+      it 'returns true as it is a valid castling' do
+        expect(move_validator.valid_castling?).to be true
+      end
+    end
+
+    context 'when only one of the piece is castleable' do
+      let(:source)     { :e1 } # must match king_coord
+      let(:dest)       { :c1 } # will map to rook_coord :a1 in hash
+      let(:king_coord) { :e1 }
+      let(:rook_coord) { :a1 }
+
+      before do
+        allow(game).to receive(:chessboard).and_return(chessboard)
+        allow(Chess::ThreatAnalyzer).to receive(:move_avoids_check?).and_return(true)
+        allow(chessboard).to receive(:find_piece_by_coordinate).with(king_coord).and_return(king)
+        allow(chessboard).to receive(:find_piece_by_coordinate).with(rook_coord).and_return(rook)
+        allow(king).to receive(:castleable?).and_return(false)
+        allow(rook).to receive(:castleable?).and_return(true)
+      end
+
+      it 'returns false as it is an invalid castling' do
+        expect(move_validator.valid_castling?).to be false
+      end
+    end
+  end
 end
