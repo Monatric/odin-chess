@@ -259,4 +259,36 @@ describe Chess::MoveValidator do
       end
     end
   end
+
+  describe '#piece_can_move_to?' do
+    let(:source) { double('source') }
+    let(:dest) { double('dest') }
+    let(:piece) { double('piece') }
+    subject(:move_validator) { described_class.new(source: source, dest: dest, game: game) }
+
+    before do
+      allow(game).to receive(:chessboard).and_return(chessboard)
+      allow(chessboard).to receive(:find_piece_by_coordinate).with(source).and_return(piece)
+    end
+
+    context 'when the piece can move to a dest' do
+      before do
+        allow(piece).to receive(:can_move_to?).with(dest, chessboard).and_return(true)
+      end
+
+      it 'returns true' do
+        expect(move_validator.piece_can_move_to?).to be true
+      end
+    end
+
+    context 'when the piece can move to a dest' do
+      before do
+        allow(piece).to receive(:can_move_to?).with(dest, chessboard).and_return(false)
+      end
+
+      it 'returns true' do
+        expect(move_validator.piece_can_move_to?).to be true
+      end
+    end
+  end
 end
