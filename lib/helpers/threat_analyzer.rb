@@ -14,7 +14,8 @@ module Chess
       # current_turn in the variable. Not sure what's the best design here.
       # Use chessboard parameter to validate duplicate board or real board
       king_coordinate = chessboard.king_coordinate(color)
-      opponent_covered_squares = MoveList.covered_squares_of_color(color == :white ? :black : :white, chessboard)
+      opponent_color =  color == :white ? :black : :white
+      opponent_covered_squares = MoveList.covered_squares_of_color(opponent_color, chessboard)
       opponent_covered_squares.any? { |coordinate| coordinate == king_coordinate }
     end
 
