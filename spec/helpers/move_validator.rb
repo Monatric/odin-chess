@@ -281,13 +281,13 @@ describe Chess::MoveValidator do
       end
     end
 
-    context 'when the piece can move to a dest' do
+    context 'when the piece cannot move to a dest' do
       before do
         allow(piece).to receive(:can_move_to?).with(dest, chessboard).and_return(false)
       end
 
-      it 'returns true' do
-        expect(move_validator.piece_can_move_to?).to be true
+      it 'returns false' do
+        expect(move_validator.piece_can_move_to?).to be false
       end
     end
   end
