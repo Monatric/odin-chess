@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# NOTE: I just realized that the methods here are probably better tested for integration test instead of unit testing.
+# Reason being is taht testing the true/false return value, especially for in_check? and move_avoids_check?
+# doesn't quite add value at all if it actually does scan for checks. If I would refactor this in the future,
+# I'd have to load a game here with an actual FEN. For now, the actual thing works in game.
 describe Chess::ThreatAnalyzer do
   let(:color) { double('color') }
   let(:chessboard) { double('chessboard') }
