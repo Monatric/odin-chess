@@ -60,4 +60,39 @@ describe Chess::ThreatAnalyzer do
       end
     end
   end
+
+  describe '::move_avoids_check?' do
+    let(:marshal_dump) { double('marshal dump') }
+    let(:board_dup) { double('board dup') }
+    let(:source) { double('source') }
+    let(:dest) { double('dest') }
+
+    before do
+      allow(game).to receive(:current_turn_color).and_return(color)
+      allow(game).to receive(:chessboard).and_return(chessboard)
+      allow(Marshal).to receive(:dump).with(chessboard).and_return(marshal_dump)
+      allow(Marshal).to receive(:load).with(marshal_dump).and_return(board_dup)
+      allow(game).to receive(:move_piece)
+    end
+
+    context 'when the move avoids check' do
+      before do
+        allow(threat_analyzer).to receive(:in_check?).and_return(true)
+      end
+
+      it 'returns true since it does not leave the king exposed' do
+        expect(threat_analyzer.move_avoids_check?(source, dest, game)).to be false
+      end
+    end
+
+    context 'when the move does not avoid check' do
+      before do
+        allow(threat_analyzer).to receive(:in_check?).and_return(false)
+      end
+
+      it 'returns false since it leaves the king exposed' do
+        expect(threat_analyzer.move_avoids_check?(source, dest, game)).to be true
+      end
+    end
+  end
 end
