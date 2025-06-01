@@ -34,6 +34,10 @@ describe Chess::ThreatAnalyzer do
     end
   end
 
+  describe '::stalemate?' do
+    # create tests for this when ready for integration test just like the other methods
+  end
+
   describe '::in_check?' do
     let(:color) { :white }
     let(:covered_squares) { %i[b4 c6 g8 e1 a2] }
