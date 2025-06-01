@@ -6,6 +6,7 @@ def new_game(game)
   loop do
     game.chessboard.show
     end_game(game) if Chess::ThreatAnalyzer.checkmate?(game.current_turn_color, game.chessboard, game)
+    # TODO: Draws. By repetition, stalemate, or 50 halfmoves
     puts show_options
     puts "It is #{game.current_turn_color}'s turn"
     get_player_move(game)

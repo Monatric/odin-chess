@@ -6,7 +6,11 @@ module Chess
   # class for analyzing threats and move legalities
   class ThreatAnalyzer
     def self.checkmate?(color, chessboard, game)
-      MoveList.legal_squares_of_color(color, chessboard, game).empty?
+      MoveList.legal_squares_of_color(color, chessboard, game).empty? && in_check?(color, chessboard)
+    end
+
+    def self.stalemate?(color, chessboard, game)
+      MoveList.legal_squares_of_color(color, chessboard, game).empty? && !in_check?(color, chessboard)
     end
 
     def self.in_check?(color, chessboard)
