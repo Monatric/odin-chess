@@ -14,6 +14,7 @@ describe Chess::ThreatAnalyzer do
     context 'when the legal squares of a player is empty' do
       before do
         allow(Chess::MoveList).to receive(:legal_squares_of_color).with(color, chessboard, game).and_return([])
+        allow(threat_analyzer).to receive(:in_check?).with(color, chessboard).and_return(true)
       end
 
       it 'returns true as the player has no legal moves' do
