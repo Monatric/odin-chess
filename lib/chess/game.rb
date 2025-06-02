@@ -89,6 +89,24 @@ module Chess
       @current_turn == @player_white ? :black : :white
     end
 
+    def draw_by_fifty_moves?
+      FEN.parse_halfmove_clock_field(@fen) == '50'
+    end
+
+    def game_over?
+      status[:result] != :ongoing
+    end
+
+    def status
+      if ThreatAnalyzer.checkmate?(current_turn_color, @chessboard, self)
+        { result: :checkmate, winner: other_turn_color }
+      elsif ThreatAnalyzer.stalemate?(current_turn_color, @chessboard, self) || draw_by_fifty_moves?
+        { result: :draw, winner: nil }
+      else
+        { result: :ongoing, winner: nil }
+      end
+    end
+
     private
 
     attr_accessor :current_turn
