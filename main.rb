@@ -5,8 +5,7 @@ Dir['lib/**/*.rb'].sort.each { |file| require_relative file }
 def new_game(game)
   loop do
     game.chessboard.show
-    end_game(game) if Chess::ThreatAnalyzer.checkmate?(game.current_turn_color, game.chessboard, game)
-    # TODO: Draws. By repetition, stalemate, or 50 halfmoves
+    end_game(game) if game.game_over?
     puts show_options
     puts "It is #{game.current_turn_color}'s turn"
     get_player_move(game)
@@ -113,7 +112,11 @@ def start_load_game
 end
 
 def end_game(game)
-  puts "Checkmate! The winner is #{game.other_turn_color}."
+  if game.status[:result] == :checkmate
+    puts "Checkmate! The winner is #{game.status[:winner]}."
+  elsif game.status[:result] == :draw
+    puts 'Game is drawn!'
+  end
   exit
 end
 
