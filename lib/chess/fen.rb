@@ -35,7 +35,7 @@ module Chess
     end
 
     def self.parse_halfmove_clock_field(fen)
-      fen.split(' ')[4]
+      fen.notation.split(' ')[4]
     end
 
     def self.parse_fullmove_number_field(fen)
