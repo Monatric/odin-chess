@@ -65,7 +65,7 @@ module Chess
       colored_castling_availability = castling_availability.select do |char|
         char == (piece.color == :white ? char.upcase : char.downcase)
       end
-      piece.moved = true if colored_castling_availability.empty?
+      piece.moved = true if colored_castling_availability.include?('-')
 
       modify_a1_rook_castling_rights(piece_placement_data_notation, coordinate, piece, colored_castling_availability)
       modify_h1_rook_castling_rights(piece_placement_data_notation, coordinate, piece, colored_castling_availability)
