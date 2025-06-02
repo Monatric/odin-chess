@@ -215,4 +215,6 @@ describe Chess::Game do
       end
     end
   end
+
+  # NOTE: new methods added that are not tested: status, game_over?, and draw_by_fifty_moves?
 end
