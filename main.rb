@@ -9,6 +9,7 @@ def new_game(game)
     puts show_options
     puts "It is #{game.current_turn_color}'s turn"
     get_player_move(game)
+    game.repetition_tracker.update
     game.switch_player!
     game.update_fen
   end
