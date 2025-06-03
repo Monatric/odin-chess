@@ -5,18 +5,19 @@ require 'yaml'
 module Chess
   # class for Game that facilitates the chess game
   class Game
-    attr_reader :chessboard, :player_white, :player_black, :fen
+    attr_reader :chessboard, :player_white, :player_black, :fen, :repetition_tracker
 
     def initialize(chessboard: Chessboard.new,
                    player_white: Player.new('Magnus', :white),
                    player_black: Player.new('Hikaru', :black),
-                   current_turn: player_white,
-                   fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1')
+                   fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1',
+                   repetition_tracker: nil)
       @chessboard = chessboard
       @player_white = player_white
       @player_black = player_black
-      @current_turn = current_turn
       @fen = FEN.new(game: self, chessboard: @chessboard, notation: fen)
+      @current_turn = FEN.parse_active_color_field(@fen.notation) == 'w' ? @player_white : @player_black
+      @repetition_tracker = repetition_tracker || ThreefoldRepetitionTracker.new(fen: @fen)
     end
 
     def self.load
@@ -26,8 +27,8 @@ module Chess
       new(chessboard: chessboard,
           player_white: data[:player_white],
           player_black: data[:player_black],
-          current_turn: data[:current_turn],
-          fen: data[:fen])
+          fen: data[:fen],
+          repetition_tracker: data[:repetition_tracker])
     end
 
     def self.saved_game_data_to_hash(saved_game) # rubocop:disable Metrics/MethodLength
@@ -38,13 +39,13 @@ module Chess
 
       player_white = saved_game[:player_white]
       player_black = saved_game[:player_black]
-      current_turn = (active_color_field == 'w' ? player_white : player_black)
+      repetition_tracker = saved_game[:repetition_tracker]
       {
         piece_placement_field: piece_placement_field,
         player_white: player_white,
         player_black: player_black,
-        current_turn: current_turn,
-        fen: fen
+        fen: fen,
+        repetition_tracker: repetition_tracker
       }
     end
 
@@ -89,18 +90,20 @@ module Chess
       @current_turn == @player_white ? :black : :white
     end
 
-    def draw_by_fifty_moves?
-      FEN.parse_halfmove_clock_field(@fen) == '50'
-    end
-
     def game_over?
       status[:result] != :ongoing
+    end
+
+    def draw?
+      ThreatAnalyzer.stalemate?(current_turn_color, @chessboard, self) ||
+        draw_by_fifty_moves? ||
+        draw_by_threefold_repetition?
     end
 
     def status
       if ThreatAnalyzer.checkmate?(current_turn_color, @chessboard, self)
         { result: :checkmate, winner: other_turn_color }
-      elsif ThreatAnalyzer.stalemate?(current_turn_color, @chessboard, self) || draw_by_fifty_moves?
+      elsif draw?
         { result: :draw, winner: nil }
       else
         { result: :ongoing, winner: nil }
@@ -110,5 +113,13 @@ module Chess
     private
 
     attr_accessor :current_turn
+
+    def draw_by_threefold_repetition?
+      @repetition_tracker.threefold_repetition?
+    end
+
+    def draw_by_fifty_moves?
+      FEN.parse_halfmove_clock_field(@fen) == '50'
+    end
   end
 end
