@@ -15,7 +15,6 @@ module Chess
       @halfmove_clock = halfmove_clock
       @fullmove_number = fullmove_number
       @notation = notation
-      generate_fen
     end
 
     def self.parse_piece_placement_field(fen)
