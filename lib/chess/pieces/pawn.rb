@@ -65,7 +65,7 @@ module Chess
 
       # signal_en_passant(dest, chessboard) if self_is_en_passantable?(dest, chessboard)
       en_passant_movement.signal_en_passant
-      en_passant_movement.remove_en_passanted_pawn(dest, chessboard) if en_passantable_square(chessboard)
+      en_passant_movement.remove_en_passanted_pawn(dest, chessboard) if en_passantable_square(chessboard) == dest
     end
 
     def en_passantable_square_finder(adjacent_arr, chessboard)
