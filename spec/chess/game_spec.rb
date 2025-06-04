@@ -72,24 +72,19 @@ describe Chess::Game do
   end
 
   describe '#update_fen' do
-    context 'when updating the string of FEN' do
-      let(:new_fen_string) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' }
+    let(:new_fen_string) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' }
+    let(:fen_spy) { instance_double(Chess::FEN) }
 
-      subject(:game_update_fen) do
-        described_class.new(chessboard: chessboard,
-                            player_white: player_one,
-                            player_black: player_two,
-                            current_turn: player_one,
-                            fen: new_fen_string)
-      end
-      before do
-        allow(Chess::FEN).to receive(:new).and_return(fen)
-      end
+    before do
+      allow(Chess::FEN).to receive(:new).and_return(fen_spy)
+      allow(fen_spy).to receive(:notation).and_return(new_fen_string)
+    end
 
-      it 'sends generate_fen to fen' do
-        expect(fen).to receive(:generate_fen).and_return(new_fen_string)
-        game_update_fen.update_fen
-      end
+    subject(:game_update_fen) { described_class.new }
+
+    it 'sends generate_fen to fen' do
+      expect(fen_spy).to receive(:generate_fen).and_return(new_fen_string)
+      game_update_fen.update_fen
     end
   end
 
