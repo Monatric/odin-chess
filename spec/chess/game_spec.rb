@@ -4,14 +4,18 @@ describe Chess::Game do
   let(:player_one) { instance_double(Player, color: :white) }
   let(:player_two) { instance_double(Player, color: :black) }
   let(:chessboard) { instance_double(Chess::Chessboard) }
+  let(:repetition_tracker) { instance_double(Chess::ThreefoldRepetitionTracker) }
   let(:fen) { instance_double(Chess::FEN) }
-  subject(:game) { described_class.new(player_white: player_one, player_black: player_two, current_turn: player_one) }
+  subject(:game) { described_class.new(player_white: player_one, player_black: player_two) }
 
   describe '::load' do
     context 'when the program wants to load the saved game' do
       let(:saved_game) { double('saved_game.yml') }
       let(:hash_data) do
-        { player_white: player_one, player_black: player_two, current_turn: player_one, fen: 'fen_string' }
+        { player_white: player_one,
+          player_black: player_two,
+          fen: 'fen_string',
+          repetition_tracker: repetition_tracker }
       end
       let(:saved_chessboard) { double('chessboard') }
 
@@ -25,8 +29,8 @@ describe Chess::Game do
       it 'returns attributes required to initialize a game' do
         data_player_white = hash_data[:player_white]
         data_player_black = hash_data[:player_black]
-        data_current_turn = hash_data[:current_turn]
         data_fen = hash_data[:fen]
+        data_repetition_tracker = hash_data[:repetition_tracker]
 
         Chess::Game.load
         expect(YAML).to have_received(:load_file).with('saved_game.yml',
@@ -36,8 +40,8 @@ describe Chess::Game do
         expect(Chess::Game).to have_received(:new).with(chessboard: saved_chessboard,
                                                         player_white: data_player_white,
                                                         player_black: data_player_black,
-                                                        current_turn: data_current_turn,
-                                                        fen: data_fen)
+                                                        fen: data_fen,
+                                                        repetition_tracker: data_repetition_tracker)
       end
     end
   end
