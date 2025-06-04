@@ -31,9 +31,9 @@ module Chess
     def remove_en_passanted_pawn(dest, chessboard)
       # if dest is 3, this means white pawn is captured at fourth rank
       # else it would be 6, captured black pawn at fifth rank
-      rank = dest[0]
-      en_passanted_color = (rank == '6' ? :black : :white)
-      rank_offset = (en_passanted_color == :white ? -1 : 1)
+      rank = dest[1].to_i
+      en_passanted_color = (rank == RANK_ORDINALS[:sixth] ? :black : :white)
+      rank_offset = (en_passanted_color == :white ? 1 : -1)
       opponent_pawn_coordinate = self.class.coordinate_string_to_symbol(dest, rank_offset: rank_offset)
       chessboard.remove_piece(opponent_pawn_coordinate)
     end
