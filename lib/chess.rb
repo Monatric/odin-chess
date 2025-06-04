@@ -29,6 +29,7 @@ module Chess
   require_relative 'helpers/move_list'
   require_relative 'helpers/move_validator'
   require_relative 'helpers/threat_analyzer'
+  require_relative 'helpers/threefold_repetition_tracker'
 
   require_relative 'displayable'
   require_relative 'player'
