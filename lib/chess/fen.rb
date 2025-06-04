@@ -7,14 +7,12 @@ module Chess
 
     def initialize(game: Game.new,
                    chessboard: Chessboard.new,
-                   halfmove_clock: HalfmoveClockField.new(chessboard),
-                   fullmove_number: FullmoveNumberField.new(game),
                    notation: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1')
       @game = game
       @chessboard = chessboard
-      @halfmove_clock = halfmove_clock
-      @fullmove_number = fullmove_number
       @notation = notation
+      @halfmove_clock = HalfmoveClockField.new(chessboard, FEN.parse_halfmove_clock_field(@notation))
+      @fullmove_number = FullmoveNumberField.new(game, FEN.parse_fullmove_number_field(@notation))
     end
 
     def self.parse_piece_placement_field(fen)
@@ -34,7 +32,7 @@ module Chess
     end
 
     def self.parse_halfmove_clock_field(fen)
-      fen.notation.split(' ')[4]
+      fen.split(' ')[4]
     end
 
     def self.parse_fullmove_number_field(fen)
