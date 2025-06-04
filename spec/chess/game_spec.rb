@@ -141,12 +141,20 @@ describe Chess::Game do
     let(:player_one) { double('Player white') }
     let(:player_two) { double('Player black') }
 
+    subject(:game_switch_turn) do
+      described_class.new(player_white: player_one, player_black: player_two, fen: fen)
+    end
+
+    before do
+      allow(Chess::FEN).to receive(:new).and_return(fen)
+    end
+
     context 'when the player is white' do
-      subject(:game_switch_turn) do
-        described_class.new(player_white: player_one, player_black: player_two, current_turn: player_one, fen: fen)
-      end
+      let(:fen_active_color) { 'w' }
 
       before do
+        allow(fen).to receive(:notation).and_return(fen_active_color)
+        allow(game_switch_turn).to receive(:current_turn).and_return(player_one)
         allow(player_one).to receive(:color)
       end
 
@@ -157,11 +165,11 @@ describe Chess::Game do
     end
 
     context 'when the player is black' do
-      subject(:game_switch_turn) do
-        described_class.new(player_white: player_one, player_black: player_two, current_turn: player_two, fen: fen)
-      end
+      let(:fen_active_color) { 'b' }
 
       before do
+        allow(fen).to receive(:notation).and_return(fen_active_color)
+        allow(game_switch_turn).to receive(:current_turn).and_return(player_two)
         allow(player_two).to receive(:color)
       end
 
