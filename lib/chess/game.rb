@@ -119,7 +119,8 @@ module Chess
     end
 
     def draw_by_fifty_moves?
-      FEN.parse_halfmove_clock_field(@fen) == '50'
+      notation = @fen.notation
+      FEN.parse_halfmove_clock_field(notation) == '50'
     end
   end
 end
