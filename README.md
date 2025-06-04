@@ -55,6 +55,10 @@ After that, there are three options you may want to use.
 2. "save" - Saves the game
 3. "exit" - Exits the game
 
+## Game demo
+
+![Game demo](public/game-demo.gif)
+
 ## Learning Outcome
 
 - OOP fundamentals. Encapsulation was my first issue; I allowed other classes to manipulate other classes' data. Apparently we shouldn't even let the classes know much about other classes in the first place.
