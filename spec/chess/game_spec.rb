@@ -211,19 +211,25 @@ describe Chess::Game do
 
   describe '#other_turn_color' do
     context 'when the current turn is white' do
+      let(:fen_white) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1' }
+      subject(:game_player_color) do
+        described_class.new(player_white: player_one, player_black: player_two, fen: fen_white)
+      end
+
       it 'returns :black' do
-        color = game.other_turn_color
+        color = game_player_color.other_turn_color
         expect(color).to eq :black
       end
     end
 
     context 'when the current turn is black' do
-      subject(:game) do
-        described_class.new(player_white: player_one, player_black: player_two, current_turn: player_two)
+      let(:fen_black) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ b KQkq - 0 1' }
+      subject(:game_player_color) do
+        described_class.new(player_white: player_one, player_black: player_two, fen: fen_black)
       end
 
       it 'returns :white' do
-        color = game.other_turn_color
+        color = game_player_color.other_turn_color
         expect(color).to eq :white
       end
     end
