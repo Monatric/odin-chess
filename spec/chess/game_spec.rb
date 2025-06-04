@@ -185,7 +185,10 @@ describe Chess::Game do
     let(:player_two) { double('player_two', color: :black) }
 
     context 'when the current turn is white' do
-      subject(:game_player_color) { described_class.new(current_turn: player_one) }
+      let(:fen_white) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ w KQkq - 0 1' }
+      subject(:game_player_color) do
+        described_class.new(player_white: player_one, player_black: player_two, fen: fen_white)
+      end
 
       it 'returns :white' do
         color = game_player_color.current_turn_color
@@ -194,7 +197,10 @@ describe Chess::Game do
     end
 
     context 'when the current turn is black' do
-      subject(:game_player_color) { described_class.new(current_turn: player_two) }
+      let(:fen_black) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/ b KQkq - 0 1' }
+      subject(:game_player_color) do
+        described_class.new(player_white: player_one, player_black: player_two, fen: fen_black)
+      end
 
       it 'returns :black' do
         color = game_player_color.current_turn_color
