@@ -11,6 +11,7 @@ Chess is a classical board game that is played since the ancient times until now
 3. To make a move, the player must enter the origin and destination coordinates e.g. "e2e4"
 4. The game consists of a save and load feature.
 5. The game uses FEN to manage the states of the board, pieces, etc.
+6. The game follows the standard chess rules.
 
 ## Specific instructions
 
@@ -34,7 +35,12 @@ To castle long as black:
 
 - e8c8
 
-For captures, promotions, and checks, it is all the same. No additional symbols; just the source and destination coordinates.
+To promote a pawn:
+
+- f7f8
+- This will prompt the user to select between 1-4, indicating each piece corresponding to the number.
+
+For captures and and checks, it is all the same. No additional symbols; just the source and destination coordinates.
 
 ### Game options
 
