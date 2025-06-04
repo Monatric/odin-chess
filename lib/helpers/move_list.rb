@@ -14,6 +14,8 @@ module Chess
       current_turn_covered_squares = covered_squares_of_color_with_source(color, chessboard)
       current_turn_covered_squares.map do |source, dests|
         dests.each do |dest|
+          next if dest.nil?
+
           legal_moves << dest if ThreatAnalyzer.move_avoids_check?(source, dest, game)
         end
       end
