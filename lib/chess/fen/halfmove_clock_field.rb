@@ -7,7 +7,7 @@ module Chess
 
     def initialize(chessboard = Chessboard.new, halfmove_clock = 0)
       @chessboard = chessboard
-      @halfmove_clock = halfmove_clock
+      @halfmove_clock = halfmove_clock.to_i
       @halfmove_clock_tracker = { piece_count: 0, pawn_coordinates: [], prev_piece_placement_field: '' }
       generate
     end

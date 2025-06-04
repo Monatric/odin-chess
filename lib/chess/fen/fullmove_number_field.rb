@@ -7,7 +7,7 @@ module Chess
 
     def initialize(game, fullmove_number = 1, move_log_with_colors = [])
       @game = game
-      @fullmove_number = fullmove_number
+      @fullmove_number = fullmove_number.to_i
       @move_log_with_colors = move_log_with_colors
     end
 
