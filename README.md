@@ -6,12 +6,13 @@ Chess is a classical board game that is played since the ancient times until now
 
 ## Features
 
-1. Enter `ruby main.rb` to run the game.
-2. The game can be played by two players via command line.
-3. To make a move, the player must enter the origin and destination coordinates e.g. "e2e4"
-4. The game consists of a save and load feature.
-5. The game uses FEN to manage the states of the board, pieces, etc.
-6. The game follows the standard chess rules.
+1. Clone the repo locally or [play at replit](https://replit.com/@Monatric/chess)
+2. Enter `ruby main.rb` to run the game.
+3. The game can be played by two players via command line.
+4. To make a move, the player must enter the origin and destination coordinates e.g. "e2e4"
+5. The game consists of a save and load feature.
+6. The game uses FEN to manage the states of the board, pieces, etc.
+7. The game follows the standard chess rules.
 
 ## Specific instructions
 
