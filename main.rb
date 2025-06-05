@@ -2,7 +2,7 @@
 
 Dir['lib/**/*.rb'].sort.each { |file| require_relative file }
 
-def new_game(game)
+def game_loop(game)
   loop do
     game.chessboard.show
     end_game(game) if game.game_over?
@@ -104,12 +104,12 @@ def start_new_game
   chessboard = Chess::Chessboard.new
   game = Chess::Game.new(chessboard: chessboard)
 
-  new_game(game)
+  game_loop(game)
 end
 
 def start_load_game
   game = Chess::Game.load
-  new_game(game)
+  game_loop(game)
 end
 
 def end_game(game)
