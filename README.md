@@ -17,7 +17,7 @@ Chess is a classical board game that is played since the ancient times until now
 
 ### Movement
 
-The game follows the Smith notation for moving the pieces. Smith notation is a straightforward chess notation designed to be reversible and represent any move without ambiguity. The notation encodes the source square, destination square, and what piece was captured, if any.
+The game follows the Smith notation for moving the pieces. Smith notation is a straightforward chess notation designed to be reversible and represent any move without ambiguity. The notation encodes the source square and destination square. However, I didn't include the part where the notation includes the piece captured.
 
 For example, enter the coordinate of the piece you want to move, such as "e2", and enter the coordinate where you want the piece to move, such as "e4". Thus, the movements look as follows:
 
