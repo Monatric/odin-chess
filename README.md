@@ -1,6 +1,6 @@
 # Ruby Final Project: Chess
 
-This is the final project in the Ruby course of The Odin Project from the Rails path.
+This is the final project in the [Ruby course of The Odin Project](https://www.theodinproject.com/lessons/ruby-ruby-final-project) from the RoR path.
 
 Chess is a classical board game that is played since the ancient times until now. This is composed of a 8x8 dimension board, with 16 pieces each from both players.
 
@@ -71,6 +71,8 @@ After that, there are three options you may want to use.
 - Testing, testing, testing. Suffice to say I at least got a little used to using RSpec. I might've developed an idea on which methods should be stubbed, how doubles work, and which methods should be tested in isolation or integration. But the overall concepts are still tough to digest.
 - Namespacing, modules, keyword arguments, class methods, inheritance, separation of concerns, and spying in tests are some of the concepts I learned along the way that I can think of on top of my head.
 - There is an issue with slight lagging here, and the main reason is repeated looping for finding the covered squares of pieces, legal moves, and analyzing threats and game status such as checkmates and stalemates, which became computationally expensive. There's an opportunity here to refactor as well to reduce to fewer or one loop instead.
+- I've also realized pretty late how comments per method as part of its documentation are very valuable. Since I worked on this project while doing my college, I've gradually forgotten the purposes of some of my methods, despite having a clear well-written name.
+- Perhaps drawing an actual flowchart for different classes and interactions would've helped for visualizing the project. Although in a sense this visualization is pretty difficult since there were a lot of factors I did not anticipate which caused multiple refactoring rabbit holes.
 - There's still a lot of refactoring opportunities I can dive in here. But I'll probably leave this for now.
 
 ## Time Spent
