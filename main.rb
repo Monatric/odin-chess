@@ -4,9 +4,10 @@ Dir['lib/**/*.rb'].sort.each { |file| require_relative file }
 
 def game_loop(game)
   loop do
+    system 'clear'
+    puts show_options
     game.chessboard.show
     end_game(game) if game.game_over?
-    puts show_options
     puts "It is #{game.current_turn_color}'s turn"
     get_player_move(game)
     game.repetition_tracker.update
