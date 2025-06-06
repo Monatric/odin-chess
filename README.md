@@ -2,24 +2,35 @@
 
 This is the final project in the [Ruby course of The Odin Project](https://www.theodinproject.com/lessons/ruby-ruby-final-project) from the RoR path.
 
-Chess is a classical board game that is played since the ancient times until now. This is composed of a 8x8 dimension board, with 16 pieces each from both players.
+Chess is a classical board game that is played since the ancient times. This is composed of a 8x8 dimension board, with 16 pieces each from both players.
 
 ## Game demo
 
 ![Game demo](public/fried-liver-demo.gif)
 *Fried Liver Attack opening with a King move blunder*
 
-## How to play & Features
+## How to play
 
-1. Clone the repo locally or [play at replit](https://replit.com/@Monatric/chess)
-2. Enter `ruby main.rb` to run the game.
-3. The game can be played by two players via command line.
-4. To make a move, the player must enter the origin and destination coordinates e.g. "e2e4"
-5. The game consists of a save and load feature.
-6. The game uses FEN to manage the states of the board, pieces, etc.
-7. The game follows the standard chess rules.
+To play online, you can [play at replit](https://replit.com/@Monatric/chess)
 
-## Specific instructions
+To play locally, follow these steps:
+1. Clone the repo on your machine, `cd` into the project, and install dependencies using bundler with `bundle install`.
+1. Enter `ruby main.rb` to run the game. This project is built with Ruby 3.2 version.
+
+To run the tests:
+1. RSpec is used for testing with version 3.13.
+1. It starts with `rspec`. This runs all the tests.
+1. Check out all the other files under the `spec/` directory to test those specific files, e.g. `rspec spec/chess/game_spec.rb`.
+
+## Features
+
+- The game can be played by two players via command line
+- To make a move, the player must enter the origin and destination coordinates e.g. "e2e4"
+- Save and load your game
+- Methods are well tested with RSpec
+- The game follows the standard chess rules
+
+## Playing instructions
 
 ### Movement
 
@@ -46,7 +57,7 @@ To promote a pawn:
 - f7f8
 - This will prompt the user to select between 1-4, indicating each piece corresponding to the number.
 
-For captures and and checks, it is all the same. No additional symbols; just the source and destination coordinates.
+For captures and and checks, they are all the same. No additional symbols; just the source and destination coordinates.
 
 ### Game options
 
@@ -74,6 +85,24 @@ After that, there are three options you may want to use.
 - I've also realized pretty late how comments per method as part of its documentation are very valuable. Since I worked on this project while doing my college, I've gradually forgotten the purposes of some of my methods, despite having a clear well-written name.
 - Perhaps drawing an actual flowchart for different classes and interactions would've helped for visualizing the project. Although in a sense this visualization is pretty difficult since there were a lot of factors I did not anticipate which caused multiple refactoring rabbit holes.
 - There's still a lot of refactoring opportunities I can dive in here. But I'll probably leave this for now.
+
+## Future improvements to be made
+
+### Computer Player
+- Even a basic one seems easy to implement; just one that picks a random legal move.
+
+### User Interface
+- Colored board squares. This seems quite complicated to do so, although it is interesting to learn about. Background-less squares worked for me so I didn't bother with it that much.
+- Improve invalid move feedback. The message only prints either "invalid move" or "king is in check.". Could make use more of specific errors, like "invalid coordinates" or "piece is pinned".
+
+### Project Code
+- Refactor game conclusion, such as checkmates and draws. It is computationally expensive to run each move as it loops the board, return a list of covered squares, duplicate the board to check for all legal moves, and all that stuff. Repeat for another check for game conclusion.
+- Move the UI into its own module or in displayable instead of populating the main.rb
+- Delegate the move logic ("e2e4") into its own class, such as Position. At the later stage of the development, a lot of methods had its own way of manipulating the coordinates. I didn't stick to one notation, such as the coordinate or XY position; instead I went for both, which became confusing.
+- Pieces should know their locations too. It is only until later that I realized I had the piece ask the board for its position. 
+
+### Tests
+- I didn't write tests for every classes, but most of them are well tested. There were some parts that simply worked really well, never had to test through the CLI repeatedly, which seemed those didn't need testing at all. However, it would've still made writing methods and classes much smoother, as well as TDD-ing the methods.  
 
 ## Time Spent
 
