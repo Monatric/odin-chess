@@ -4,7 +4,12 @@ This is the final project in the Ruby course of The Odin Project from the Rails 
 
 Chess is a classical board game that is played since the ancient times until now. This is composed of a 8x8 dimension board, with 16 pieces each from both players.
 
-## Features
+## Game demo
+
+![Game demo](public/fried-liver-demo.gif)
+*Fried Liver Attack opening with a King move blunder*
+
+## How to play & Features
 
 1. Clone the repo locally or [play at replit](https://replit.com/@Monatric/chess)
 2. Enter `ruby main.rb` to run the game.
@@ -55,10 +60,6 @@ After that, there are three options you may want to use.
 1. "i" - Provides the instructions for moving a piece
 2. "save" - Saves the game
 3. "exit" - Exits the game
-
-## Game demo
-
-![Game demo](public/game-demo.gif)
 
 ## Learning Outcome
 
