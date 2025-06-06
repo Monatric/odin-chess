@@ -65,10 +65,12 @@ After that, there are three options you may want to use.
 
 - OOP fundamentals. Encapsulation was my first issue; I allowed other classes to manipulate other classes' data. Apparently we shouldn't even let the classes know much about other classes in the first place.
 - Abstraction. I may have completed the project but I am quite unsatisfied with my abstraction here. The worst issue here of them all is manipulating the board positions, and I should not have relied on a simple hash data for managing this.
+- In addition to above, I could've made a class for translating the entered moves, such as e2e4. I didn't realize how difficult how I handled this until it became repetitive, so there would be scattered logic everywhere about handling the source and destination and all that logic
 - Too much parameters for a single class, such as Game and FEN. There might be a better way to handle this.
 - Found out about circular dependencies. Like, I initialized class Chessboard in Game, and initialized both of these classes in Piece. This would've made my code even more complex.
 - Testing, testing, testing. Suffice to say I at least got a little used to using RSpec. I might've developed an idea on which methods should be stubbed, how doubles work, and which methods should be tested in isolation or integration. But the overall concepts are still tough to digest.
 - Namespacing, modules, keyword arguments, class methods, inheritance, separation of concerns, and spying in tests are some of the concepts I learned along the way that I can think of on top of my head.
+- There is an issue with slight lagging here, and the main reason is repeated looping for finding the covered squares of pieces, legal moves, and analyzing threats and game status such as checkmates and stalemates, which became computationally expensive. There's an opportunity here to refactor as well to reduce to fewer or one loop instead.
 - There's still a lot of refactoring opportunities I can dive in here. But I'll probably leave this for now.
 
 ## Time Spent
