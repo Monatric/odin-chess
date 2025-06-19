@@ -72,8 +72,6 @@ def start
 end
 
 def start_new_game
-  # magnus = Player.new('Magnus', :white)
-  # hikaru = Player.new('Hikaru', :black)
   chessboard = Chess::Chessboard.new
   game = Chess::Game.new(chessboard: chessboard)
 
@@ -102,10 +100,6 @@ def prompt_game_choice
     choice = gets.chomp
   end
   choice
-end
-
-def show_fen
-  puts fen.print_fen(game.chessboard, game)
 end
 
 # Start the program
