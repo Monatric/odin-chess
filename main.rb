@@ -9,7 +9,6 @@ def game_loop(game)
     puts Displayable.show_options
     game.chessboard.show
     end_game(game) if game.game_over?
-    puts "It is #{game.current_turn_color}'s turn"
     get_player_move(game)
     game.repetition_tracker.update
     game.switch_player!
@@ -47,6 +46,7 @@ def handle_move_in_check(source, dest, game)
 end
 
 def get_player_move(game)
+  puts "It is #{game.current_turn_color}'s turn"
   print 'Your move: '
   player_choice = gets.chomp
 
